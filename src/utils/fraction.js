@@ -1,7 +1,7 @@
 const Fraction = (numerator = 1, denominator = 1) => {
 
     if(denominator === 0){
-        raise new Error('cannot have fractions with zero in the denominator')
+        throw new Error('cannot have fractions with zero in the denominator')
         return false
     }
 
@@ -28,7 +28,7 @@ const Fraction = (numerator = 1, denominator = 1) => {
         frac.numerator = frac.numerator/x
         frac.denominator = frac.denominator/x
 
-        return frac
+        return this
     }
 
     const reduce_ = function reduceMutative() {
@@ -43,16 +43,12 @@ const Fraction = (numerator = 1, denominator = 1) => {
 
     // subtract the passed in fraction from and return a new Fraction
     const subtract = function subtractFrac(rhs) {
-        if (!Object.hasOwn(rhs, 'num')) {
-            throw new Error("Must pass a Fraction to 'subtract'")
-        }
-        let result = Fraction()
-        result.numerator = (frac.numerator * rhs.denominator) + (frac.denominator * rhs.numerator)
-        result.denominator = frac.denominator * rhs.denominator
-        return result
+        let num = (frac.numerator * rhs.den()) - (frac.denominator * rhs.num())
+        let den = frac.denominator * rhs.den()
+        return Fraction(num, den)
     }
 
-    const subtract_ = fraction subtractMutative(rhs){
+    const subtract_ = function subtractMutative(rhs){
         let temp = subtract(rhs)
         frac.numerator = temp.num()
         frac.denominator = temp.den()
@@ -60,10 +56,9 @@ const Fraction = (numerator = 1, denominator = 1) => {
 
     // add the passed in fraction and return a new Fraction
     const add = function addFrac(rhs) {
-        let result = Fraction()
-        result.numerator = (frac.numerator * frac.denominator) + (frac.denominator * rhs.denominator)
-        result.denominator = frac.denominator * rhs.denominator
-        return result
+        let num = (frac.numerator * rhs.den()) + (frac.denominator * rhs.den())
+        let den = frac.denominator * rhs.den()
+        return Fraction(num, den)
     }
 
     // add the passed in fraction and return a new Fraction
