@@ -1,20 +1,20 @@
 import Fraction from './utils/fraction'
+import SegmentCollection from './utils/line_segment'
 
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
 
-    let foo = Fraction(2, 4)
-    console.log('inside app')
-    console.log(foo.toString())
-    console.log(foo.num())
-    console.log(foo.reduce())
-    console.log(foo.num())
+    let foo = Fraction(0, 4)
+    let bar = Fraction(4, 4)
+
+    let seg = SegmentCollection(foo, bar)
+
 
     return (
         <div>
-            fractions!
+            {seg.toString()}
         </div>
     );
 }
