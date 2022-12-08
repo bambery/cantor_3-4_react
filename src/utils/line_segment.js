@@ -5,15 +5,15 @@ const LineSegment = ( leftEndpoint, rightEndpoint ) => {
     let right = rightEndpoint
     let size = left.subtract(right)
 
-    const toString = () => {
-        return `Left: ${left.toString()}, Right: ${right.toString()}, Length: ${size.toString()}`;
+    const s = function str() {
+        return `Left: ${left.str()}, Right: ${right.str()}, Length: ${size.str()}`;
     }
 
     return {
         left,
         right,
         size,
-        toString
+        str
     }
 }
 

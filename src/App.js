@@ -14,7 +14,7 @@ function App() {
 
     return (
         <div>
-            {seg.toString()}
+            {seg.str()}
         </div>
     );
 }

@@ -1,10 +1,16 @@
 const Fraction = (numerator = 1, denominator = 1) => {
+
+    if(denominator === 0){
+        raise new Error('cannot have fractions with zero in the denominator')
+        return false
+    }
+
     const frac = {
         numerator,
         denominator
     }
 
-    const reduce = () => {
+    const reduce = function reduceFrac() {
         if (frac.numerator === 0 || frac.denominator === 0 || frac.numerator === frac.denominator) {
             // decide to not reduce the leftmost/rightmost interval for now
             return frac
@@ -25,12 +31,18 @@ const Fraction = (numerator = 1, denominator = 1) => {
         return frac
     }
 
-    const toString = () => {
+    const reduce_ = function reduceMutative() {
+        let temp = reduce()
+        frac.numerator = temp.num()
+        frac.denominator = temp.den()
+    }
+
+    const str = function toString() {
         return `${frac.numerator}/${frac.denominator}`
     }
 
     // subtract the passed in fraction from and return a new Fraction
-    const subtract = (rhs) => {
+    const subtract = function subtractFrac(rhs) {
         if (!Object.hasOwn(rhs, 'num')) {
             throw new Error("Must pass a Fraction to 'subtract'")
         }
@@ -40,8 +52,14 @@ const Fraction = (numerator = 1, denominator = 1) => {
         return result
     }
 
+    const subtract_ = fraction subtractMutative(rhs){
+        let temp = subtract(rhs)
+        frac.numerator = temp.num()
+        frac.denominator = temp.den()
+    }
+
     // add the passed in fraction and return a new Fraction
-    const add = (rhs) => {
+    const add = function addFrac(rhs) {
         let result = Fraction()
         result.numerator = (frac.numerator * frac.denominator) + (frac.denominator * rhs.denominator)
         result.denominator = frac.denominator * rhs.denominator
@@ -49,7 +67,7 @@ const Fraction = (numerator = 1, denominator = 1) => {
     }
 
     // add the passed in fraction and return a new Fraction
-    const add$ = (rhs) => {
+    const add_ = function add_(rhs) {
         let temp = add(rhs)
         frac.numerator = temp.num()
         frac.denominator = temp.den()
@@ -58,9 +76,13 @@ const Fraction = (numerator = 1, denominator = 1) => {
     return {
         num() { return frac.numerator },
         den() { return frac.denominator },
+        str,
         reduce,
-        toString,
-        subtract
+        reduce_,
+        subtract,
+        subtract_,
+        add,
+        add_
     }
 }
 
