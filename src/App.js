@@ -7,10 +7,10 @@ import './App.css';
 
 function App() {
 
-    let foo = Fraction(0, 2)
-    let fooR = Fraction(1, 2)
-    let bar = Fraction(3, 4)
-    let barR = Fraction(4,4)
+    let foo = new Fraction(0, 2)
+    let fooR = new Fraction(1, 2)
+    let bar = new Fraction(3, 4)
+    let barR = new Fraction(4,4)
 
     let ls1 = LineSegment(foo, fooR)
     let ls2 = LineSegment(bar, barR)
@@ -19,6 +19,7 @@ function App() {
     let foobar = seg.smallestInterval()
 
     debugger
+
     return (
         <div>
             whast up
