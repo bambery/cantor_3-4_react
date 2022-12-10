@@ -1,6 +1,6 @@
 import Fraction from './utils/fraction'
-import LineSegment from './utils/line_segment'
-import SegmentCollection from './utils/segment_collection'
+import Interval from './utils/interval'
+import IntervalCollection from './utils/interval_collection'
 
 import logo from './logo.svg';
 import './App.css';
@@ -12,14 +12,17 @@ function App() {
     let bar = new Fraction(3, 4)
     let barR = new Fraction(4,4)
 
-    let ls1 = LineSegment(foo, fooR)
-    let ls2 = LineSegment(bar, barR)
+    let ls1 = new Interval(foo, fooR)
+    let ls2 = new Interval(bar, barR)
 
+    let sc1 = new IntervalCollection([ls1, ls2])
+    debugger
+
+/*
     let seg = SegmentCollection([ls1, ls2])
     let foobar = seg.smallestInterval()
 
-    debugger
-
+    */
     return (
         <div>
             whast up

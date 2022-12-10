@@ -8,26 +8,27 @@ class Fraction {
             return false
         }
 
-        this.#numerator = numerator
-        this.#denominator = denominator
+        if (typeof numerator !== 'undefined') this.#numerator = numerator
+        if (typeof denominator !== 'undefined') this.#denominator = denominator
+        this.str = `${this.#numerator}/${this.#denominator}`
     }
 
     get num() {
-        return this.numerator
+        return this.#numerator
     }
 
     get den() {
-        return this.denominator
+        return this.#denominator
     }
 
     reduce() {
-        if (this.numerator === 0 || this.numerator === this.denominator) {
+        if (this.#numerator === 0 || this.#numerator === this.#denominator) {
             // decide to not reduce the leftmost/rightmost interval for now
             return this
         }
 
-        let x = this.numerator
-        let y = this.denominator
+        let x = this.#numerator
+        let y = this.#denominator
         let mod = null
         while (mod !== 0){
             mod = x % y
@@ -35,44 +36,40 @@ class Fraction {
             y = mod
         }
 
-        return new Fraction(this.numerator/x, this.denominator/x)
+        return new Fraction(this.#numerator/x, this.#denominator/x)
     }
 
     reduce_() {
         let temp = this.reduce()
-        this.numerator = temp.num
-        this.denominator = temp.den
-    }
-
-    toString() {
-        return `${this.numerator}/${this.denominator}`
+        this.#numerator = temp.num
+        this.#denominator = temp.den
     }
 
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
-        let num = (this.numerator * rhs.den) - (this.denominator * rhs.num)
-        let den = this.denominator * rhs.den
+        let num = (this.#numerator * rhs.den) - (this.#denominator * rhs.num)
+        let den = this.#denominator * rhs.den
         return new Fraction(num, den)
     }
 
     subtract_(rhs) {
         let temp = this.subtract(rhs)
-        this.numerator = temp.num
-        this.denominator = temp.den
+        this.#numerator = temp.num
+        this.#denominator = temp.den
         return this
     }
 
     // add the passed in fraction and return a new Fraction
     add(rhs) {
-        let num = (this.numerator * rhs.den) + (this.denominator * rhs.den)
-        let den = this.denominator * rhs.den
+        let num = (this.#numerator * rhs.den) + (this.#denominator * rhs.num)
+        let den = this.#denominator * rhs.den
         return new Fraction(num, den)
     }
 
     add_(rhs) {
         let temp = this.add(rhs)
-        this.numerator = temp.num
-        this.denominator = temp.den
+        this.#numerator = temp.num
+        this.#denominator = temp.den
         return this
     }
 }
