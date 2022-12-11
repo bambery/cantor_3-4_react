@@ -1,6 +1,6 @@
-import Fraction from './utils/fraction'
-import Interval from './utils/interval'
-import IntervalCollection from './utils/interval_collection'
+import Fraction from './models/fraction'
+import Interval from './models/interval'
+import IntervalCollection from './models/interval_collection'
 
 import logo from './logo.svg';
 import './App.css';
@@ -16,13 +16,21 @@ function App() {
     let ls2 = new Interval(bar, barR)
 
     let sc1 = new IntervalCollection([ls1, ls2])
+
+    let baz = new Fraction(0, 10)
+    let bazR = new Fraction(2, 10)
+    let moo = new Fraction(7, 10)
+    let mooR = new Fraction(10, 10)
+
+    let ls3 = new Interval(baz, bazR)
+    let ls4 = new Interval(moo, mooR)
+
+    let sc2 = new IntervalCollection([ls3, ls4])
+
+    window.Fraction = Fraction
+
     debugger
 
-/*
-    let seg = SegmentCollection([ls1, ls2])
-    let foobar = seg.smallestInterval()
-
-    */
     return (
         <div>
             whast up

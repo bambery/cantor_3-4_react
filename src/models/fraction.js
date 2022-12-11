@@ -45,6 +45,7 @@ class Fraction {
         this.#denominator = temp.den
     }
 
+    // FIXME: the arithmetic functions should utilize the LCM/GCD - need to move those into a real util
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
         let num = (this.#numerator * rhs.den) - (this.#denominator * rhs.num)
