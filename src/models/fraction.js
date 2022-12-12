@@ -1,8 +1,5 @@
 import { lcm, type } from '../shared/utils'
 
-window.lcm = lcm
-window.type = type
-
 class Fraction {
     #numerator = 1
     #denominator = 1
