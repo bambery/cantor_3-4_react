@@ -1,12 +1,12 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import Utils from '../shared/utils'
+import {lcm, type, checkArrContents} from '../shared/utils'
 
 class IntervalArr {
 
     constructor( intervalArrArg ) {
         if(!Array.isArray(intervalArrArg)){
-            throw new Error("must pass an array of line segments to new IntervalArr")
+            throw new TypeError("must pass an array of line segments to new IntervalArr")
             return null
         }
 
@@ -18,10 +18,14 @@ class IntervalArr {
     }
 
     push_(interval){
+        if(!type(interval) === "Interval"){
+            throw new TypeError(`Can only add Intervals, you passed a ${type(interval)}.`)
+        }
         this.collection.push(interval)
     }
 
     concat(intervalArr) {
+        checkArrContents(intervalArr, "Interval")
         this.collection.concat(intervalArr)
     }
 
@@ -35,12 +39,12 @@ class IntervalArr {
             denominators.push(interval.right.den)
         })
 
-        return new Fraction(1, utils.lcm(denominators))
+        return new Fraction(1, lcm(denominators))
     }
 
     // convert all fractions to use a common denominator - used for display purposes
     commonDen() {
-        // this function assumes that the smallest interval will have a 1 in the numerator - always true for 3/4
+        // this function assumes that the smallest interval will have a 1 in the numerator - always true for 3/4, unusre if true for others
         // smallest den = the denominator for the smallest interval
         let smallestDen = this.smallestInterval().den
         let common = this.collection.map( interval => {
@@ -63,16 +67,18 @@ class IntervalCollection {
     #myIntervals
 
     constructor( intervalsArrArg ){
+        checkArrContents(intervalsArrArg, "Interval")
+
         this.#myIntervals = new IntervalArr(intervalsArrArg)
         // count of intervals in the collection
         this.count = this.#myIntervals.collection.length
-        // total length of all intervals in collection
     }
 
     get intervals() {
         return this.#myIntervals
     }
 
+    // total length of all intervals in collection
     get len() {
         return this.intervals.all.reduce((acc, curr) => acc.add(curr.len), new Fraction(0,1))
     }

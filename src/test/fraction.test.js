@@ -1,4 +1,5 @@
 import Fraction from '../models/fraction'
+import { FracError } from '../models/errors'
 
 describe('Fractions', function() {
     describe('static class method: Fraction.commonDen', function() {
@@ -40,27 +41,25 @@ describe('Fractions', function() {
         })
 
         it('fails to create a fraction for 2/1', function(){
-            // eventually need to create custom errors
-            expect( () => new Fraction(2,1)).toThrow()
+            expect( () => new Fraction(2,1)).toThrow(FracError.FractionTooLarge)
         })
 
         it('fails to create a fraction with zero in the denominator', function(){
-            // eventually need to create custom errors
-            expect( () => new Fraction(1,0)).toThrow()
+            expect( () => new Fraction(1,0)).toThrow(FracError.ZeroDenominator)
         })
 
         it('fails to create a fraction with negative numerator or denominator', function(){
-            expect( () => new Fraction(-1,1)).toThrow()
-            expect( () => new Fraction(1,-1)).toThrow()
-            expect( () => new Fraction(-1,-1)).toThrow()
+            expect( () => new Fraction(-1,1)).toThrow(FracError.NoNegativeFractions)
+            expect( () => new Fraction(1,-1)).toThrow(FracError.NoNegativeFractions)
+            expect( () => new Fraction(-1,-1)).toThrow(FracError.NoNegativeFractions)
         })
 
     })
 
     it('cannot directly modify numerator or denominator', function() {
         let frac = new Fraction(3, 4)
-        expect( () => frac.num = 1).toThrow()
-        expect( () => frac.den= 1).toThrow()
+        expect( () => frac.num = 1).toThrow(TypeError)
+        expect( () => frac.den= 1).toThrow(TypeError)
     })
 
     describe('Fraction arithmetic', function() {
@@ -108,7 +107,7 @@ describe('Fractions', function() {
             })
 
             it('fails if the sum would be greater than 1', function(){
-                expect( ()=> frac_4_5.add(frac_2_5) ).toThrow()
+                expect( ()=> frac_4_5.add(frac_2_5) ).toThrow(FracError.FractionTooLarge)
             })
 
             it('succeeds if the sum would be 1', function() {
@@ -150,7 +149,7 @@ describe('Fractions', function() {
             })
 
             it('fails if the result would be negative', function(){
-                expect( () => frac_2_5.subtract(frac_5_4) ).toThrow()
+                expect( () => frac_2_5.subtract(frac_5_7) ).toThrow(FracError.NoNegativeFractions)
             })
 
             it('succeeds if the result would be zero', function(){
