@@ -3,6 +3,9 @@ const gcd = function gcd(a, b){
 }
 
 const lcm = function lcm(arr) {
+    if(!Array.isArray(arr)){
+        throw new Error("Must pass an array of integers to lcm")
+    }
     let ans = arr[0]
 
     for ( let i = 1; i < arr.length; i++ ) {
@@ -12,4 +15,5 @@ const lcm = function lcm(arr) {
 }
 
 export {
+    lcm
 }
