@@ -1,28 +1,29 @@
 import { lcm, type } from '../shared/utils'
+import { FracError } from './errors'
 
 class Fraction {
     #numerator = 1
     #denominator = 1
 
     constructor(numerator, denominator) {
-        if(denominator <= 0){
-            throw new Error('cannot have fractions with zero or negative in the denominator')
+        if(denominator === 0){
+            throw new FracError.ZeroDenominator()
+        } else if (numerator < 0 || denominator < 0){
+            throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
-            throw new Error("Cannot support fractions greater than 1")
-        } else if (numerator < 0){
-            throw new Error("Cannot support negative numbers")
+            throw new FracError.FractionTooLarge()
         } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
             this.#numerator = numerator
             this.#denominator = denominator
-            // stop removing this into a getter! It makes console debugging easier this way
-            this.str = `${this.#numerator}/${this.#denominator}`
         }
+        // stop moving this into a getter! Console debugging is easier this way
+        this.str = `${this.#numerator}/${this.#denominator}`
     }
 
     // given 2 fractions, convert them to have a common denominator and return them in a 2 item Array
     static commonDen(fracA, fracB){
         if (type(fracA) !== 'Fraction' || type(fracB) !== 'Fraction'){
-            throw new Error('Must pass two fractions as separate arguments to Fraction.commonDen')
+            throw new TypeError(`Must pass two fractions as separate arguments to Fraction.commonDen: you passed in ${type(fracA)} and ${type(fracB)}`)
         }
         const common = lcm([fracA.den, fracB.den])
         let numA = (fracA.num * (common/fracA.den))
@@ -66,12 +67,12 @@ class Fraction {
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
         if (type(rhs) !== 'Fraction'){
-            throw new Error('Must pass only Fraction argument')
+            throw new TypeError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
         }
         let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
         let numerator = leftHS.num - rightHS.num
         if(numerator < 0){
-            throw new Error(`ERROR: Difference of ${this.str} and ${rhs.str} would be less than 0.`)
+            throw new FracError.NoNegativeFractions(`Difference of ${this.str} and ${rhs.str} would be less than 0.`)
         }
         return new Fraction(numerator, leftHS.den)
     }
@@ -90,13 +91,13 @@ class Fraction {
     // add the passed in fraction and return a new Fraction
     add(rhs) {
         if (type(rhs) !== 'Fraction'){
-            throw new Error('Must pass only Fraction argument')
+            throw new TypeError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
         }
 
         let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
         let numerator = leftHS.num + rightHS.num
         if (numerator > leftHS.den){
-            throw new Error(`ERROR: Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
+            throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
         }
         return new Fraction(numerator, leftHS.den)
     }

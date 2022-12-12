@@ -1,11 +1,10 @@
-const gcd = function gcd(a, b){
+function gcd(a, b){
     return b === 0 ? a : gcd(b, a % b)
 }
 
-const lcm = function lcm(arr) {
-    if(!Array.isArray(arr)){
-        throw new Error("Must pass an array of integers to lcm")
-    }
+function lcm(arr) {
+    checkArrContents(arr, "number")
+
     let ans = arr[0]
 
     for ( let i = 1; i < arr.length; i++ ) {
@@ -52,7 +51,19 @@ function type(value) {
     return baseType;
 }
 
+function checkArrContents(arr, typeStr){
+    if( !Array.isArray(arr) ){
+        throw new TypeError(`Must pass an Array of type ${typeStr}`)
+    }
+    let not_intervals = arr.filter( item => !(type(item) === typeStr))
+    if(not_intervals.length !== 0){
+        throw new TypeError(`Must pass an Array of ${typeStr}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
+    }
+    return true
+}
+
 export {
     lcm,
-    type
+    type,
+    checkArrContents
 }
