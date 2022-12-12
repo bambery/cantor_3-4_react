@@ -12,6 +12,8 @@ function App() {
     let bar = new Fraction(3, 4)
     let barR = new Fraction(4,4)
 
+    foo.add(bar)
+
     let ls1 = new Interval(foo, fooR)
     let ls2 = new Interval(bar, barR)
 

@@ -1,6 +1,6 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import Utils as utils from '../shared/utils'
+import Utils from '../shared/utils'
 
 class IntervalArr {
 
