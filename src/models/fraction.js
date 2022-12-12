@@ -5,12 +5,16 @@ class Fraction {
     constructor(numerator, denominator) {
         if(denominator === 0){
             throw new Error('cannot have fractions with zero in the denominator')
-            return false
+        } else if (denominator < numerator){
+            throw new Error("Cannot support fractions greater than 1")
+        } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
+            this.#numerator = numerator
+            this.#denominator = denominator
         }
+    }
 
-        if (typeof numerator !== 'undefined') this.#numerator = numerator
-        if (typeof denominator !== 'undefined') this.#denominator = denominator
-        this.str = `${this.#numerator}/${this.#denominator}`
+    get str() {
+        return `${this.#numerator}/${this.#denominator}`
     }
 
     get num() {
