@@ -19,7 +19,7 @@ class Fraction {
             this.#denominator = denominator
             // stop removing this into a getter! It makes console debugging easier this way
             this.str = `${this.#numerator}/${this.#denominator}`
-}
+        }
     }
 
     // given 2 fractions, convert them to have a common denominator and return them in a 2 item Array
