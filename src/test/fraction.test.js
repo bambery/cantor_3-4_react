@@ -71,7 +71,7 @@ describe('Fractions', function() {
             let frac_4_5 = new Fraction(4, 5)
 
             it('does not modify the original fractions', function() {
-                let sum = frac_2_5.add(frac_1_5)
+                let sum = frac_2_5.add(frac_1_5) // eslint-disable-line
                 expect(frac_2_5.num).toEqual(2)
                 expect(frac_2_5.den).toEqual(5)
 
@@ -107,7 +107,7 @@ describe('Fractions', function() {
             })
 
             it('fails if the sum would be greater than 1', function(){
-                expect( ()=> frac_4_5.add(frac_2_5) ).toThrow(FracError.FractionTooLarge)
+                expect( () => frac_4_5.add(frac_2_5) ).toThrow(FracError.FractionTooLarge)
             })
 
             it('succeeds if the sum would be 1', function() {
@@ -124,7 +124,7 @@ describe('Fractions', function() {
             let frac_2_5 = new Fraction(2, 5)
 
             it('does not modify the original fractions', function(){
-                let diff = frac_5_7.subtract(frac_2_5)
+                let diff = frac_5_7.subtract(frac_2_5) // eslint-disable-line
 
                 expect(frac_5_7.num).toEqual(5)
                 expect(frac_5_7.den).toEqual(7)
@@ -205,8 +205,8 @@ describe('Fractions', function() {
                 [new Fraction(56, 63), new Fraction(8, 9)]
             ])('properly reduces fractions', (orig, result) => {
                 it(`reduce ${orig.str} to ${result.str}`, () => {
-                        expect(orig.reduce().num).toEqual(result.num)
-                        expect(orig.reduce().den).toEqual(result.den)
+                    expect(orig.reduce().num).toEqual(result.num)
+                    expect(orig.reduce().den).toEqual(result.den)
                 })
             })
         })

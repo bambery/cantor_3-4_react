@@ -2,8 +2,8 @@ import Fraction from './models/fraction'
 import Interval from './models/interval'
 import IntervalCollection from './models/interval_collection'
 
-import logo from './logo.svg';
-import './App.css';
+//import logo from './logo.svg';
+import './App.css'
 
 function App() {
 
@@ -37,7 +37,7 @@ function App() {
         <div>
             whast up
         </div>
-    );
+    )
 }
 
-export default App;
+export default App

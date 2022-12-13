@@ -1,5 +1,3 @@
-import Fraction from './fraction'
-
 class Interval {
     #leftEndpoint = null
     #rightEndpoint = null
@@ -8,7 +6,7 @@ class Interval {
         this.#leftEndpoint = leftEndpointArg
         this.#rightEndpoint = rightEndpointArg
         this.len = this.#rightEndpoint.subtract(this.#leftEndpoint)
-        this.str = `Left: ${this.#leftEndpoint.str}, Right: ${this.#rightEndpoint.str}, Length: ${this.len.reduce().str}`;
+        this.str = `Left: ${this.#leftEndpoint.str}, Right: ${this.#rightEndpoint.str}, Length: ${this.len.reduce().str}`
     }
 
     get left() {
