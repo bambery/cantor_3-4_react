@@ -5,8 +5,8 @@ class ZeroDenominator extends Error {
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, ZeroDenominator)
         }
-        this.name = "ZeroDenominator"
-        this.message = message ? message : "Cannot have fractions with zero in the denominator"
+        this.name = 'ZeroDenominator'
+        this.message = message ? message : 'Cannot have fractions with zero in the denominator'
     }
 }
 
@@ -17,8 +17,8 @@ class NoNegativeFractions extends Error {
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, NoNegativeFractions)
         }
-        this.name = "NoNegativeFractions"
-        this.message = message ? message : "Cannot support negative fractions"
+        this.name = 'NoNegativeFractions'
+        this.message = message ? message : 'Cannot support negative fractions'
     }
 }
 
@@ -29,8 +29,8 @@ class FractionTooLarge extends Error {
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, FractionTooLarge)
         }
-        this.name = "FractionTooLarge"
-        this.message = message ? message : "Cannot support fractions greater than 1"
+        this.name = 'FractionTooLarge'
+        this.message = message ? message : 'Cannot support fractions greater than 1'
     }
 }
 

@@ -1,13 +1,12 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import {lcm, type, checkArrContents} from '../shared/utils'
+import { lcm, type, checkArrContents } from '../shared/utils'
 
 class IntervalArr {
 
     constructor( intervalArrArg ) {
         if(!Array.isArray(intervalArrArg)){
-            throw new TypeError("must pass an array of line segments to new IntervalArr")
-            return null
+            throw new TypeError('must pass an array of line segments to new IntervalArr')
         }
 
         this.collection = intervalArrArg
@@ -18,14 +17,14 @@ class IntervalArr {
     }
 
     push_(interval){
-        if(!type(interval) === "Interval"){
+        if(!type(interval) === 'Interval'){
             throw new TypeError(`Can only add Intervals, you passed a ${type(interval)}.`)
         }
         this.collection.push(interval)
     }
 
     concat(intervalArr) {
-        checkArrContents(intervalArr, "Interval")
+        checkArrContents(intervalArr, 'Interval')
         this.collection.concat(intervalArr)
     }
 
@@ -48,12 +47,12 @@ class IntervalArr {
         // smallest den = the denominator for the smallest interval
         let smallestDen = this.smallestInterval().den
         let common = this.collection.map( interval => {
-            const Lmultiple     = smallestDen / interval.left.den;
-            const Rmultiple     = smallestDen / interval.right.den;
-            const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple);
-            const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple);
+            const Lmultiple     = smallestDen / interval.left.den
+            const Rmultiple     = smallestDen / interval.right.den
+            const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
+            const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
 
-            const tempSeg = new Interval(newLeft, newRight);
+            const tempSeg = new Interval(newLeft, newRight)
             return tempSeg
         })
         return common
@@ -67,7 +66,7 @@ class IntervalCollection {
     #myIntervals
 
     constructor( intervalsArrArg ){
-        checkArrContents(intervalsArrArg, "Interval")
+        checkArrContents(intervalsArrArg, 'Interval')
 
         this.#myIntervals = new IntervalArr(intervalsArrArg)
         // count of intervals in the collection
