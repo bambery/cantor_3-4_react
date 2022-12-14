@@ -1,3 +1,5 @@
+import { ValueError } from './errors'
+
 function gcd(a, b){
     return b === 0 ? a : gcd(b, a % b)
 }
@@ -8,16 +10,22 @@ function lcm(arr) {
     let ans = arr[0]
 
     for ( let i = 1; i < arr.length; i++ ) {
+        if (arr[i] === 0){
+            throw new ValueError(`Cannot compute lcm of 0: zero value passed in at index ${i}`)
+        }
         ans = (( arr[i] * ans ) / ( gcd(arr[i], ans) ))
     }
     return ans
 }
 
-// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
+// modified to include NaN from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 function type(value) {
     if (value === null) {
         return 'null'
+    } else if (Number.isNaN(value)) {
+        return 'NaN'
     }
+
     const baseType = typeof value
     // Primitive types
     if (!['object', 'function'].includes(baseType)) {
@@ -61,6 +69,11 @@ function checkArrContents(arr, typeStr){
     }
     return true
 }
+
+if (process.env['NODE_ENV'] == 'test') {
+    exports.gcd = gcd
+}
+
 
 export {
     lcm,

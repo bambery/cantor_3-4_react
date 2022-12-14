@@ -1,5 +1,5 @@
 import { lcm, type } from '../shared/utils'
-import { FracError } from './errors'
+import { FracError } from '../shared/errors'
 
 class Fraction {
     #numerator = 1
