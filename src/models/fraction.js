@@ -56,13 +56,6 @@ class Fraction {
 
         return new Fraction(this.#numerator/x, this.#denominator/x)
     }
-/*
-    reduce_() {
-        let temp = this.reduce()
-        this.#numerator = temp.num
-        this.#denominator = temp.den
-    }
-    */
 
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
@@ -76,19 +69,7 @@ class Fraction {
         }
         return new Fraction(numerator, leftHS.den)
     }
-/*
-    subtract_(rhs) {
-        if (type(rhs) !== 'Fraction'){
-            throw new Error('Must pass only Fraction argument')
-        }
-        let temp = this.subtract(rhs)
-        this.#numerator = temp.num
-        this.#denominator = temp.den
-        return this
-    }
-    */
 
-    // add the passed in fraction and return a new Fraction
     add(rhs) {
         if (type(rhs) !== 'Fraction'){
             throw new TypeError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
@@ -101,14 +82,19 @@ class Fraction {
         }
         return new Fraction(numerator, leftHS.den)
     }
-/*
-    add_(rhs) {
-        let temp = this.add(rhs)
-        this.#numerator = temp.num
-        this.#denominator = temp.den
-        return this
+
+    lessThan(rhs){
+        let [fracA, fracB] = Fraction.commonDen(this, rhs)
+        return (fracA.num < fracB.num)
     }
-    */
+
+    equals(rhs){
+        let [fracA, fracB] = Fraction.commonDen(this, rhs)
+        return (fracA.num === fracB.num)
+    }
 }
+
+Fraction.unit = new Fraction(1, 1)
+export const unit = Fraction.unit
 
 export default Fraction
