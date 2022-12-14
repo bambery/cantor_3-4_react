@@ -70,7 +70,7 @@ function checkArrContents(arr, typeStr){
     return true
 }
 
-if (process.env['NODE_ENV'] == 'test') {
+if (process.env['NODE_ENV'] === 'test') {
     exports.gcd = gcd
 }
 

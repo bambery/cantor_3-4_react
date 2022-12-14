@@ -53,7 +53,7 @@ describe('Shared Utilities', function(){
             [ '[7, 12]', 'string'],
             [ NaN, 'NaN' ],
             [ null, 'null' ],
-            [ ()=>{Function.prototype}, 'Function' ]
+            [ () => { Function.prototype }, 'Function' ]
         ])('given a variable', (variable, correctType) => {
             it(`returns the correct type for ${correctType}`, () => {
                 let result = type(variable)
@@ -66,7 +66,7 @@ describe('Shared Utilities', function(){
         describe.each([
             [ [5, 9, 5], 'number' ],
             [ [new Fraction(0,3), new Fraction(4,5)], 'Fraction' ],
-            [ ["hello", "world"], 'string' ],
+            [ ['hello', 'world'], 'string' ],
             [ [[7, 12], [4, 0]], 'Array']
         ])('given an array', (arr, desiredType) => {
             it(`checks that the arr contains only items of type ${desiredType}`, () => {
@@ -76,7 +76,7 @@ describe('Shared Utilities', function(){
         })
 
         it('fails if array has incongruous items', function() {
-            expect( () => checkArrContents([ 1, 2, 4, "5", 6], 'number')).toThrow(TypeError)
+            expect( () => checkArrContents([ 1, 2, 4, '5', 6], 'number')).toThrow(TypeError)
             expect( () => checkArrContents([ new Fraction(1,2), new Fraction(1,3), undefined, new Fraction(1, 6)], 'Fraction')).toThrow(TypeError)
         })
     })
