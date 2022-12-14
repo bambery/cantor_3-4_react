@@ -34,15 +34,27 @@ class FractionTooLarge extends Error {
     }
 }
 
+export class IntervalRangeError extends Error {
+    constructor(message, options) {
+        super(message, options)
+
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, IntervalRangeError)
+        }
+        this.name = 'IntervalRangeError'
+        this.message = message ? message : 'An invalid value was passed'
+    }
+}
+
 export class ValueError extends Error {
     constructor(message, options) {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, FractionTooLarge)
+            Error.captureStackTrace(this, ValueError)
         }
         this.name = 'ValueError'
-        this.message = message ? message : 'An invalid value was passed'
+        this.message = message ? message : 'An invalid value was passed as an argument'
     }
 }
 
