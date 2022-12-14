@@ -94,7 +94,6 @@ class Fraction {
     }
 }
 
-Fraction.unit = new Fraction(1, 1)
-export const unit = Fraction.unit
+Fraction.prototype.toString = function fracToString() { return this.str }
 
 export default Fraction

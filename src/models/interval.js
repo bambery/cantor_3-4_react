@@ -1,4 +1,3 @@
-import { unit as unitFraction } from './fraction'
 import { type } from '../shared/utils'
 import { IntervalRangeError } from '../shared/errors'
 
@@ -13,8 +12,6 @@ class Interval {
             throw new IntervalRangeError('Left endpoint must be smaller than right endpoint.')
         } else if (leftEndpointArg.equals(rightEndpointArg)) {
             throw new IntervalRangeError('Interval must have length greater than 0.')
-        } else if (!rightEndpointArg.subtract(leftEndpointArg).lessThan(unitFraction)){
-            throw new IntervalRangeError('Interval must have length less than or equal to 1.')
         }
 
         this.#leftEndpoint = leftEndpointArg
