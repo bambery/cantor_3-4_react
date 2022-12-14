@@ -2,29 +2,6 @@ import Fraction from '../models/fraction'
 import { FracError } from '../shared/errors'
 
 describe('Fractions', function() {
-    describe('static class method: Fraction.commonDen', function() {
-        describe.each([
-            [new Fraction(5, 7), new Fraction(1, 6), new Fraction(30, 42), new Fraction(7, 42)],
-            [new Fraction(5, 7), new Fraction(30, 47), new Fraction(235, 329), new Fraction(210, 329)],
-            [new Fraction(3, 4), new Fraction(7, 12), new Fraction(9, 12), new Fraction(7, 12)],
-            [new Fraction(1, 86), new Fraction(0, 2), new Fraction(1, 86), new Fraction(0, 86)],
-            [new Fraction(6, 16), new Fraction(8, 24), new Fraction(18, 48), new Fraction(16, 48)],
-            [new Fraction(4, 16), new Fraction(2, 8), new Fraction(4, 16), new Fraction(4, 16)]
-        ])('converts itself and the passed in fraction to a common denominator', (first, second, firstResult, secondResult) => {
-            it(`convert ${first.str} => ${firstResult.str} and ${second.str} => ${secondResult.str}`, () => {
-                let [firstTest, secondTest] = Fraction.commonDen(first, second)
-
-                expect(firstTest.num).toEqual(firstResult.num)
-                expect(firstTest.den).toEqual(firstResult.den)
-
-                expect(secondTest.num).toEqual(secondResult.num)
-                expect(secondTest.den).toEqual(secondResult.den)
-
-                expect(firstResult.den).toEqual(secondResult.den)
-            })
-
-        })
-    })
 
     describe('creating fractions', function() {
         it('default creates a 1/1 fraction', function() {
@@ -60,6 +37,28 @@ describe('Fractions', function() {
         let frac = new Fraction(3, 4)
         expect( () => frac.num = 1).toThrow(TypeError)
         expect( () => frac.den= 1).toThrow(TypeError)
+    })
+
+    describe('Fraction comparisons', function() {
+        describe.each([
+            [ new Fraction(1,2), new Fraction(1,2), false ],
+            [ new Fraction(0,2), new Fraction(1,2), true ],
+            [ new Fraction(2,2), new Fraction(4,4), false ],
+            [ new Fraction(2,3), new Fraction(1,8), false ],
+            [ new Fraction(1,3), new Fraction(3,4), true]])('lessThan', (lhs, rhs, answer) => {
+            expect(lhs.lessThan(rhs)).toEqual(answer)
+        })
+
+        describe.each([
+            [ new Fraction(0,2), new Fraction(0,4), true ],
+            [ new Fraction(1,2), new Fraction(2,4), true ],
+            [ new Fraction(2,2), new Fraction(4,4), true ],
+            [ new Fraction(1,2), new Fraction(1,2), true ],
+            [ new Fraction(2,3), new Fraction(1,8), false ],
+            [ new Fraction(3,4), new Fraction(1,4), false ]
+        ])('equals', (lhs, rhs, answer) => {
+            expect(lhs.equals(rhs)).toEqual(answer)
+        })
     })
 
     describe('Fraction arithmetic', function() {
@@ -208,6 +207,29 @@ describe('Fractions', function() {
                     expect(orig.reduce().num).toEqual(result.num)
                     expect(orig.reduce().den).toEqual(result.den)
                 })
+            })
+        })
+    })
+
+    describe('static class method: Fraction.commonDen', function() {
+        describe.each([
+            [new Fraction(5, 7), new Fraction(1, 6), new Fraction(30, 42), new Fraction(7, 42)],
+            [new Fraction(5, 7), new Fraction(30, 47), new Fraction(235, 329), new Fraction(210, 329)],
+            [new Fraction(3, 4), new Fraction(7, 12), new Fraction(9, 12), new Fraction(7, 12)],
+            [new Fraction(1, 86), new Fraction(0, 2), new Fraction(1, 86), new Fraction(0, 86)],
+            [new Fraction(6, 16), new Fraction(8, 24), new Fraction(18, 48), new Fraction(16, 48)],
+            [new Fraction(4, 16), new Fraction(2, 8), new Fraction(4, 16), new Fraction(4, 16)]
+        ])('converts itself and the passed in fraction to a common denominator', (first, second, firstResult, secondResult) => {
+            it(`convert ${first.str} => ${firstResult.str} and ${second.str} => ${secondResult.str}`, () => {
+                let [firstTest, secondTest] = Fraction.commonDen(first, second)
+
+                expect(firstTest.num).toEqual(firstResult.num)
+                expect(firstTest.den).toEqual(firstResult.den)
+
+                expect(secondTest.num).toEqual(secondResult.num)
+                expect(secondTest.den).toEqual(secondResult.den)
+
+                expect(firstResult.den).toEqual(secondResult.den)
             })
         })
     })
