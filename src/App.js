@@ -1,4 +1,4 @@
-require('dotenv').config()
+//require('dotenv').config()
 import Fraction from './models/fraction'
 import Interval from './models/interval'
 import IntervalCollection from './models/interval_collection'
