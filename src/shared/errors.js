@@ -34,6 +34,18 @@ class FractionTooLarge extends Error {
     }
 }
 
+export class ValueError extends Error {
+    constructor(message, options) {
+        super(message, options)
+
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, FractionTooLarge)
+        }
+        this.name = 'ValueError'
+        this.message = message ? message : 'An invalid value was passed'
+    }
+}
+
 export const FracError = {
     ZeroDenominator,
     NoNegativeFractions,

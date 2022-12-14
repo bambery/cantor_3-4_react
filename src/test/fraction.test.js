@@ -1,5 +1,5 @@
 import Fraction from '../models/fraction'
-import { FracError } from '../models/errors'
+import { FracError } from '../shared/errors'
 
 describe('Fractions', function() {
     describe('static class method: Fraction.commonDen', function() {
