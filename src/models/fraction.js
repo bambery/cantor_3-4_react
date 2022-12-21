@@ -6,15 +6,21 @@ class Fraction {
     #denominator = 1
 
     constructor(numerator, denominator) {
-        if(denominator === 0){
+        if (![0, 2].includes(arguments.length)) {
+            throw new TypeError('Must pass two numbers to new Fraction')
+        } else if(denominator === 0){
             throw new FracError.ZeroDenominator()
         } else if (numerator < 0 || denominator < 0){
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
             throw new FracError.FractionTooLarge()
         } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
-            this.#numerator = numerator
-            this.#denominator = denominator
+            if (type(numerator) === 'number' && type(denominator) === 'number'){
+                this.#numerator = numerator
+                this.#denominator = denominator
+            } else {
+                throw new TypeError(`Must pass two numbers to new Fraction: you passed ${type(numerator)} and ${type(denominator)}`)
+            }
         }
         // stop moving this into a getter! Console debugging is easier this way
         this.str = `${this.#numerator}/${this.#denominator}`
@@ -95,5 +101,7 @@ class Fraction {
 }
 
 Fraction.prototype.toString = function fracToString() { return this.str }
+
+Fraction.unit = new Fraction(1, 1)
 
 export default Fraction

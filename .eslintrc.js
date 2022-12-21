@@ -44,6 +44,7 @@ module.exports = {
         'arrow-spacing': [
             'error', { 'before': true, 'after': true }
         ],
-        'no-unused-vars': ["warn"]
+        'no-unused-vars': ["warn"],
+        'no-useless-catch': 0
     }
 }

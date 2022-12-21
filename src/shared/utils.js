@@ -5,7 +5,11 @@ function gcd(a, b){
 }
 
 function lcm(arr) {
-    checkArrContents(arr, 'number')
+    try {
+        checkArrContents(arr, 'number')
+    } catch(e) {
+        throw e
+    }
 
     let ans = arr[0]
 

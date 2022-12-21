@@ -17,6 +17,10 @@ describe('Fractions', function() {
             expect( frac.num / frac.den).toEqual(0.5)
         })
 
+        it('fails to create a fraction when only one number is passed in', function(){
+            expect( () => new Fraction(1) ).toThrow(TypeError)
+        })
+
         it('fails to create a fraction for 2/1', function(){
             expect( () => new Fraction(2,1)).toThrow(FracError.FractionTooLarge)
         })
