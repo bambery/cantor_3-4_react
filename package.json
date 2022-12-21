@@ -14,7 +14,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --verbose",
+    "test": "react-scripts test",
+    "test:all": "react-scripts test --verbose --watchAll",
     "test:debug": "NODE_ENV=test react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
     "coverage": "react-scripts test --collectCoverage --watchAll",
@@ -42,5 +43,11 @@
   "devDependencies": {
     "eslint": "^8.29.0",
     "eslint-plugin-react": "^7.31.11"
+  },
+  "jest": {
+      "coveragePathIgnorePatterns" : [
+          "./src/App.js",
+          "./src/index.js"
+      ]
   }
 }

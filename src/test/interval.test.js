@@ -8,7 +8,7 @@ describe('Interval', function() {
             [ new Fraction(0,2), new Fraction(1,1), new Fraction(1,1) ],
             [ new Fraction(0,5), new Fraction(3, 5), new Fraction(3, 5) ],
             [ new Fraction(2,3), new Fraction(18,21), new Fraction(4, 21) ]
-        ])('creates an interval when passed two appropriate fractions', (left, right, correctLen) => {
+        ])('when passed two appropriate fractions', (left, right, correctLen) => {
             it(`Creates an Interval [${left.str}, ${right.str}] with length ${correctLen.str}`, () => {
                 let testLen = new Interval(left, right).len.reduce()
                 expect(testLen.equals(correctLen)).toBeTruthy()
@@ -25,6 +25,10 @@ describe('Interval', function() {
 
         it('fails if one argument is not Fraction', function() {
             expect( () => { new Interval(new Fraction(0,2), 0) }).toThrow(TypeError)
+        })
+
+        it('fails if passed no arguments with new', function(){
+            expect( () => new Interval ).toThrow(TypeError)
         })
     })
 
