@@ -78,7 +78,6 @@ if (process.env['NODE_ENV'] === 'test') {
     exports.gcd = gcd
 }
 
-
 export {
     lcm,
     type,

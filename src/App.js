@@ -33,6 +33,9 @@ function App() {
 
     debugger
 
+    // numberline
+    // summary
+    // intervalChart
     return (
         <div>
             whast up
