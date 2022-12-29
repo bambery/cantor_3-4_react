@@ -2,6 +2,8 @@ import Fraction from './models/fraction'
 import Interval from './models/interval'
 import IntervalCollection from './models/interval_collection'
 
+import { removeIntervals as cantor } from './shared/cantor'
+
 //import logo from './logo.svg';
 import './App.css'
 
@@ -19,17 +21,18 @@ function App() {
 
     let sc1 = new IntervalCollection([ls1, ls2])
 
-    let baz = new Fraction(0, 10)
-    let bazR = new Fraction(2, 10)
-    let moo = new Fraction(7, 10)
-    let mooR = new Fraction(10, 10)
+    let aaL = new Fraction(0,5)
+    let aaR = new Fraction(5,5)
 
-    let ls3 = new Interval(baz, bazR)
-    let ls4 = new Interval(moo, mooR)
-
-    let sc2 = new IntervalCollection([ls3, ls4])
-
+    let inta = new Interval(aaL, aaR)
+    window.cantor = cantor
     window.Fraction = Fraction
+    window.Interval = Interval
+
+    debugger
+    let hh = new Interval(new Fraction(2, 5), new Fraction(3, 5))
+
+    let res = cantor(hh, 5, [2, 4])
 
     debugger
 

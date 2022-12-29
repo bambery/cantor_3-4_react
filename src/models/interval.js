@@ -34,12 +34,13 @@ class Interval {
     }
 
     commonDen(desiredDen = null) {
+        var common = null
         if(!desiredDen){
-            var common = lcm([this.left.den, this.right.den])
+            common = lcm([this.left.den, this.right.den])
         } else if (desiredDen % this.left.den > 0 || desiredDen % this.right.den > 0){
             throw new ValueError(`Cannot convert ${this.str} to denominator ${desiredDen}.`)
         } else {
-            var common = desiredDen
+            common = desiredDen
         }
         let pointL = new Fraction(common/this.left.den * this.left.num, common)
         let pointR = new Fraction(common/this.right.den * this.right.num, common)
@@ -54,7 +55,7 @@ class Interval {
         let subCommon = intToSub.commonDen(commonDenominator)
 
         // check that the interval to be subtracted is contained in the current interval
-        if(!intCommon.right.lessThan(subCommon.left)){
+        if(!intCommon.left.lessThan(subCommon.left) || !intCommon.right.greaterThan(subCommon.right)){
             throw new IntervalRangeError(`Interval ${intToSub.str} is not contained within and cannot be subtracted from ${this.str}.`)
         }
 
@@ -68,7 +69,7 @@ class Interval {
         let commonDenominator = lcm([this.left.den, this.right.den, intToAdd.left.den, intToAdd.right.den])
         let intCommon = this.commonDen(commonDenominator)
         let addCommon = intToAdd.commonDen(commonDenominator)
-        if(intCommon.right.num + 1 !== subCommon.left.num){
+        if(intCommon.right.num + 1 !== addCommon.left.num){
             throw new IntervalRangeError(`The given interval, ${intToAdd.str}, is not sequrntial to this interval, ${this.str}.`)
         }
 

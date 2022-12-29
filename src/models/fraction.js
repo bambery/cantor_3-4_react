@@ -13,6 +13,7 @@ class Fraction {
         } else if (numerator < 0 || denominator < 0){
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
+            debugger // eslint-disable-line
             throw new FracError.FractionTooLarge()
         } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
             if (type(numerator) === 'number' && type(denominator) === 'number'){
@@ -92,6 +93,11 @@ class Fraction {
     lessThan(rhs){
         let [fracA, fracB] = Fraction.commonDen(this, rhs)
         return (fracA.num < fracB.num)
+    }
+
+    greaterThan(rhs){
+        let [fracA, fracB] = Fraction.commonDen(this, rhs)
+        return (fracA.num > fracB.num)
     }
 
     equals(rhs){

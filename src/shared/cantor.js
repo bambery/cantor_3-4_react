@@ -1,6 +1,8 @@
 import Fraction from '../models/fraction'
 import Interval from '../models/interval'
 import IntervalCollection from '../models/interval_collection'
+import { ValueError } from './errors'
+import { lcm } from './utils'
 
 // cantor3_4
 // 0. given n number of iterations
@@ -14,39 +16,30 @@ import IntervalCollection from '../models/interval_collection'
 // 8.   push myCol to results to save the step for display later
 // 9.   bump counter
 //
-// remove_interval
-// ***** will not handle removal of adjacent intervals at the moment
-// given:   an interval - myint,
-//          array of integers representing the numbered segments to remove - toRem
-//              (each integer must be greater than 1 and less than the common denominator [exclude end segments])
-//
-//  1. result = []
-//  2. let fooL = myint.left
-//  3. while toRem is not empty
-//  4.      pop p off of toRem
-//  5.      let fooR = Frac(p-1, den)
-//  6.      let bar = Interval(fooL, fooR)
-//  7       result.push(bar)
-//  8.      let fooL = Frac(p, den)
-//  9. when toRem is empty
-//  10. let fooR = Frac(fooL, myint.right)
-//
 
-function removeInterval(interval, toRemove){
-    let result = []
-    let pointL = interval.left
+export function removeIntervals(interval, numSegments, toRemove){
+    if(toRemove.includes(1) || toRemove.includes(numSegments)){
+        throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
+    }
+
+    // sort desc
+    toRemove.sort( (a,b) => b - a )
+
+    // TODO need to add check for adjacent segments, add if found
     let commonInt = interval.commonDen()
-    let commonDen = commonInt.left.den
-    //
-    // at this point, need to check that the numbers in the array are valid
-    // need to check if any numbers are sequential. If so, combine the segments into one gap
-    while(toRemove.length > 0){
-        let segNum = toRemove.shift()
+    commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
+    let cDen = commonInt.left.den
+    let toRemoveInt = toRemove.map( seg => new Interval(new Fraction(commonInt.left.num + seg - 1, cDen), new Fraction(commonInt.left.num + seg, cDen)) )
+    let result = [commonInt]
 
-        let pointR = new Fraction(segNum - 1, commonDen)
-        let newInt = new Interval(pointL, pointR)
-        results.push(newInt)
-        let pointL = new Fraction(segNum, commonDen)
+    // need to check if any numbers are sequential. If so, combine the segments into one gap
+    while(toRemoveInt.length > 0){
+        let curr = result.pop()
+        if(curr === undefined){
+            throw new Error('u messed up')
+        }
+        let seg = toRemoveInt.pop()
+        result = result.concat(curr.subtract(seg))
     }
 
     return result

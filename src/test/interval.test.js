@@ -77,4 +77,9 @@ describe('Interval', function() {
             expect(result[1].right.equals(resultFracs[3])).toBeTruthy()
         })
     })
+
+    it.skip('fails if trying to subtract intervals which are not contained in the parent interval', function(){
+        // another each with various edge cases
+    })
+
 })
