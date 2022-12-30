@@ -117,7 +117,14 @@ class IntervalCollection {
     concat_(intervalArr) {
         this.#myIntervals.all.concat_(intervalArr)
     }
+
+    forEach(cb) {
+        for(let i = 0; i < this.count; i+=1){
+            cb(this.#myIntervals.all[i], i, this)
+        }
+    }
 }
+
 export default IntervalCollection
 
 if(process.env['NODE_ENV'] === 'test') {

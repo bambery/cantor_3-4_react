@@ -2,7 +2,6 @@ import Fraction from '../models/fraction'
 import Interval from '../models/interval'
 import IntervalCollection from '../models/interval_collection'
 import { ValueError } from './errors'
-import { lcm } from './utils'
 
 // cantor3_4
 // 0. given n number of iterations
@@ -16,8 +15,28 @@ import { lcm } from './utils'
 // 8.   push myCol to results to save the step for display later
 // 9.   bump counter
 //
+//
 
-export function removeIntervals(interval, numSegments, toRemove){
+// returns an array of IntervalCollections, where each IntervalCollection is one iteration of Cantor
+export function cantor(numSegments, toRemove, numIter) {
+    let results = []
+    let iterResults = []
+    let myCollection = new IntervalCollection([Interval.unit])
+    while(numIter > 0){
+        myCollection.forEach( interval => {
+            debugger // eslint-disable-line
+            let res = removeIntervals(interval, numSegments, toRemove)
+            iterResults = iterResults.concat(res)
+        })
+        results.push(new IntervalCollection(iterResults))
+        iterResults = []
+        myCollection = results[results.length - 1]
+        numIter = numIter - 1
+    }
+    return results
+}
+
+function removeIntervals(interval, numSegments, toRemove){
     if(toRemove.includes(1) || toRemove.includes(numSegments)){
         throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
     }
@@ -43,4 +62,8 @@ export function removeIntervals(interval, numSegments, toRemove){
     }
 
     return result
+}
+
+if(process.env['NODE_ENV'] === 'test') {
+    exports.removeIntervals = removeIntervals
 }

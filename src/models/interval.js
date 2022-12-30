@@ -18,7 +18,7 @@ class Interval {
         this.#leftEndpoint = leftEndpointArg
         this.#rightEndpoint = rightEndpointArg
         // do not move into getter - makes console debugging easier
-        this.str = `Left: ${this.#leftEndpoint.str}, Right: ${this.#rightEndpoint.str}, Length: ${this.len.reduce().str}`
+        this.str = `{Interval: Left: ${this.#leftEndpoint.str}, Right: ${this.#rightEndpoint.str}, Length: ${this.len.reduce().str}}`
     }
 
     get len() {
@@ -76,5 +76,8 @@ class Interval {
         return new Interval(intCommon.left, addCommon.right)
     }
 }
+
+Interval.unit = new Interval( new Fraction(0, 1), new Fraction(1, 1) )
+Interval.prototype.toString = function intervalToString() { return this.str }
 
 export default Interval
