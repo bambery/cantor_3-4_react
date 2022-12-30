@@ -114,8 +114,45 @@ describe('Cantor Library', function() {
 
             })
 
-            it.skip('Performs 1 iteration removing the 2nd and 3rd segments of a unit interval divided into 5 segments', function() {
-                console.log('have not implemented this yet')
+            it('Performs 1 iteration removing the 2nd and 3rd segments of a unit interval divided into 5 segments', function() {
+                let res = cantor(5, [2, 3], 1)
+                expect(res.length).toEqual(1)
+                expect(res[0].count).toEqual(2)
+                let first = res[0].intervals.all[0]
+                expect(first.left.equals(new Fraction(0,5))).toBeTruthy()
+                expect(first.right.equals(new Fraction(1,5))).toBeTruthy()
+                let second = res[0].intervals.all[1]
+                expect(second.left.equals(new Fraction(3,5))).toBeTruthy()
+                expect(second.right.equals(new Fraction(5,5))).toBeTruthy()
+
+            })
+
+            it('Performs 2 iterations removing the 2nd and 3rd segments of a unit interval dividided into 5', function(){
+                let res = cantor(5, [2, 3], 2)
+
+                expect(res.length).toEqual(2)
+                expect(res[0].count).toEqual(2)
+                let first = res[0].intervals.all[0]
+                expect(first.left.equals(new Fraction(0,5))).toBeTruthy()
+                expect(first.right.equals(new Fraction(1,5))).toBeTruthy()
+                let second = res[0].intervals.all[1]
+                expect(second.left.equals(new Fraction(3,5))).toBeTruthy()
+                expect(second.right.equals(new Fraction(5,5))).toBeTruthy()
+
+                expect(res[1].count).toEqual(4)
+                first = res[1].intervals.all[0]
+                expect(first.left.equals(new Fraction(0,25))).toBeTruthy()
+                expect(first.right.equals(new Fraction(1,25))).toBeTruthy()
+                second = res[1].intervals.all[1]
+                expect(second.left.equals(new Fraction(3,25))).toBeTruthy()
+                expect(second.right.equals(new Fraction(5, 25))).toBeTruthy()
+                let third = res[1].intervals.all[2]
+                expect(third.left.equals(new Fraction(15,25))).toBeTruthy()
+                expect(third.right.num).toEqual(17)
+                expect(third.right.equals(new Fraction(17,25))).toBeTruthy()
+                let fourth = res[1].intervals.all[3]
+                expect(fourth.left.equals(new Fraction(21,25))).toBeTruthy()
+                expect(fourth.right.equals(new Fraction(25,25))).toBeTruthy()
             })
         })
     })

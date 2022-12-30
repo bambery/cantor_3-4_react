@@ -32,7 +32,7 @@ function App() {
 
     let hh = new Interval(new Fraction(2, 5), new Fraction(3, 5))
 
-    let res = cantor(3, [2], 3)
+    let res = cantor(5, [2, 3], 2)
 
     debugger
 

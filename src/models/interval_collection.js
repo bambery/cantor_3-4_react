@@ -57,7 +57,15 @@ class IntervalArr {
     // convert all fractions to use a common denominator - used for display purposes
     commonDen() {
         // this function assumes that the smallest interval will have a 1 in the numerator - always true for 3/4, unusre if true for others
-        let smallestDen = this.smallestInterval().den
+        let denominators = []
+
+        this.collection.forEach( interval => {
+            denominators.push(interval.left.den)
+            denominators.push(interval.right.den)
+        })
+
+        let smallestDen = lcm(denominators)
+
         let common = this.collection.map( interval => {
             const Lmultiple     = smallestDen / interval.left.den
             const Rmultiple     = smallestDen / interval.right.den
@@ -86,6 +94,7 @@ class IntervalCollection {
         this.#myIntervals = new IntervalArr(intervalsArrArg)
         // count of intervals in the collection
         this.count = this.#myIntervals.collection.length
+        this.str = `{IntervalCollection - count: ${this.count}, collection: ${this.intervals.all.map(interval => interval.str)}}`
     }
 
     get intervals() {
