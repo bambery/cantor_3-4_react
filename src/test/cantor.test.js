@@ -1,15 +1,15 @@
-import { removeIntervals, cantor } from '../shared/cantor'
+import Cantor from '../shared/cantor'
 import { ValueError } from '../shared/errors'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
 
-describe('Cantor Library', function() {
-    describe('removeIntervals', function() {
-        let unit = new Interval(new Fraction(0, 1), new Fraction(1, 1))
+describe('Cantor Sets', function() {
+    describe('removeIntervalsFrom', function() {
 
         it('allows removal of one segment from the unit interval and returns two intervals', function() {
             // needs more cases
-            let res = removeIntervals(unit, 5, [2])
+            let testCantor = new Cantor(5, [2], 1)
+            let res = testCantor.removeIntervalsFrom(Interval.unit)
 
             expect(res.length).toEqual(2)
             expect(res[0].left.equals(new Fraction(0, 5))).toBeTruthy()
@@ -19,7 +19,9 @@ describe('Cantor Library', function() {
         })
 
         it('allows removal of two segments from the unit interval and returns the remaining three intervals', function() {
-            let res = removeIntervals(unit, 5, [2, 4])
+            let testCantor = new Cantor(5, [2, 4], 1)
+            let res = testCantor.removeIntervalsFrom(Interval.unit)
+
             expect(res.length).toEqual(3)
             expect(res[0].left.equals(new Fraction(0, 5))).toBeTruthy()
             expect(res[0].right.equals(new Fraction(1, 5))).toBeTruthy()
@@ -31,7 +33,8 @@ describe('Cantor Library', function() {
 
         it('allows removal of two segments from any given interval and returns the remaining three intervals', function() {
             let hh = new Interval(new Fraction(2, 5), new Fraction(3, 5))
-            let res = removeIntervals(hh, 5, [2, 4])
+            let testCantor = new Cantor(5, [2, 4], 1)
+            let res = testCantor.removeIntervalsFrom(hh)
 
             expect(res.length).toEqual(3)
             expect(res[0].left.equals(new Fraction(10, 25))).toBeTruthy()
@@ -51,7 +54,7 @@ describe('Cantor Library', function() {
         })
     })
 
-    describe.only('Cantor iterations', function(){
+    describe('Cantor iterations', function(){
         describe('Standard Cantor: split into 3, remove middle', function(){
             it('Performs 1 iteration of standard Cantor', function() {
                 let res = cantor(3, [2], 1)

@@ -18,50 +18,55 @@ import { ValueError } from './errors'
 //
 
 // returns an array of IntervalCollections, where each IntervalCollection is one iteration of Cantor
-class Cantor {
+export default class Cantor {
     #iterCount
-    constructor( numSegments, toRemove, numIter ){
+    constructor( numSegments, toRemove, numIterations ){
+        if(toRemove.includes(1) || toRemove.includes(numSegments)){
+            throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
+        } else {
+            toRemove.sort( (a,b) => a-b )
+        }
         this.numSegments = numSegments
         this.toRemove = toRemove
-        this.#iterCount = numIter
+        this.#iterCount = 0
         this.iterations = []
+//        this.iterationsGaps = []
+
+        let results = []
+        //let resultGaps = []
+        let iterResults = []
+        //let iterGaps = []
+        let myCollection = new IntervalCollection([Interval.unit])
+
+        while(numIterations > 0){
+            myCollection.forEach( interval => {
+             //   let [res, gaps] = removeIntervalsFrom(interval, this.numSegments, this.toRemove)
+                let res = this.removeIntervalsFrom(interval)
+                iterResults = iterResults.concat(res)
+                //iterGaps = iterGaps.concat(gaps)
+            })
+            results.push(new IntervalCollection(iterResults))
+            //resultGaps.push(new IntervalCollection(iterGaps))
+            iterResults = []
+            // iterGaps = []
+            myCollection = results[results.length - 1]
+            numIterations -= 1
+            this.#iterCount += 1
+        }
+
+        this.iterations = results
     }
 
     get numIter(){
         return this.iterations.length
     }
 
-    removeIntervals(){
-    if(toRemove.includes(1) || toRemove.includes(numSegments)){
-        throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
-    }
-
-    // sort asc
-    toRemove.sort( (a,b) => a-b )
-
-    let commonInt = interval.commonDen()
-    commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
-    let cDen = commonInt.left.den
-    let segmentLength = new Fraction(commonInt.length.num, cDen)
-
-    //let toRemoveInt = toRemove.map( seg => new Interval(new Fraction(commonInt.left.num + seg - 1, cDen), new Fraction(commonInt.left.num + seg, cDen)) )
-    let toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
-    debugger
-    let result = [commonInt]
-
-    while(toRemoveInt.length > 0){
-        let curr = result.pop()
-        if(curr === undefined){
-            throw new Error('u messed up')
-        }
-        let seg = toRemoveInt.shift()
-        result = result.concat(curr.subtract(seg))
-    }
-
-    return result
-    }
-
-    // returns the array of intervals to remove
+    // inputs:
+    //  interval: the Interval to remove from
+    //  segmentLength: the measure of 1/this.numSegments for this interval
+    //  segNum: array containing the 1-index of the segments to remove
+    // returns:
+    //  An array of Intervals to remove
     convertSegmentsToIntervals(interval, segmentLength, segNum){
         let curr = []
         let intervals = []
@@ -72,11 +77,14 @@ class Cantor {
                 curr.push(segNum[i])
             } else if ( curr.length > 0 ){
             // the following digit is not sequential, but the current digit is the end of a sequential string of digits
+                debugger
+
                 let newInterval = new Interval( new Fraction(interval.left.num + ((curr.shift() - 1) * segmentLength.num), segmentLength.den), new Fraction(interval.left.num + (segNum[i] * segmentLength.num),segmentLength.den) )
                 intervals.push(newInterval)
                 curr = []
             } else {
             // current digit is not part of any sequential string
+                debugger
                 let newInterval = new Interval( new Fraction(interval.left.num + ((segNum[i] - 1) * segmentLength.num), segmentLength.den), new Fraction(interval.left.num + (segNum[i] * segmentLength.num), segmentLength.den))
                 intervals.push(newInterval)
             }
@@ -84,60 +92,46 @@ class Cantor {
 
         return intervals
     }
-    runIterations(){
-        let results = []
+
+    // arguments:
+    //  interval - the interval to have segments removed from
+    // returns:
+    //  array of Intervals, minus the intervals to be removed
+    removeIntervalsFrom(interval){
+        let commonInt = interval.commonDen()
+        commonInt = commonInt.commonDen(commonInt.left.den * this.numSegments)
+        let segmentLength = commonInt.len.equals(Fraction.unit)
+            ? new Fraction(1, this.numSegments)
+            : new Fraction(commonInt.len.num, commonInt.len.den * this.numSegments)
+        debugger
+
+        let toRemoveInt = this.convertSegmentsToIntervals(commonInt, segmentLength, this.toRemove)
+        //let gaps = [...toRemoveInt]
+        let result = [commonInt]
+
+        while(toRemoveInt.length > 0){
+            let curr = result.pop()
+            if(curr === undefined){
+                throw new Error('u messed up')
+            }
+            let seg = toRemoveInt.shift()
+            result = result.concat(curr.subtract(seg))
+        }
+        //return [result, gaps]
+        return result
+    }
+
+    runOneIteration(){
         let iterResults = []
-        let myCollection = new IntervalCollection([Interval.unit])
+        let intCollection = this.iterations[this.iterations.length - 1]
+        intCollection.forEach( interval => {
+            let res = this.removeIntervalsFrom(interval, this.numSegments, this.toRemove)
+            iterResults = iterResults.concat(res)
+        })
+        //let [res, gaps] = removeIntervalsFrom(interval, this.numSegments, this.toRemove)
+        this.iterations.push(iterResults)
+        this.#iterCount += 1
 
-        while(numIter > 0){
-            myCollection.forEach( interval => {
-                debugger
-                let res = removeIntervals(interval, numSegments, toRemove)
-                iterResults = iterResults.concat(res)
-            })
-            results.push(new IntervalCollection(iterResults))
-            iterResults = []
-            myCollection = results[results.length - 1]
-            numIter = numIter - 1
-        }
-        return results
+        return iterResults
     }
-
-
-}
-export function cantor(numSegments, toRemove, numIter) {
-}
-
-
-function removeIntervals(interval, numSegments, toRemove){
-    if(toRemove.includes(1) || toRemove.includes(numSegments)){
-        throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
-    }
-
-    // sort asc
-    toRemove.sort( (a,b) => a-b )
-
-    let commonInt = interval.commonDen()
-    commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
-    let cDen = commonInt.left.den
-
-    //let toRemoveInt = toRemove.map( seg => new Interval(new Fraction(commonInt.left.num + seg - 1, cDen), new Fraction(commonInt.left.num + seg, cDen)) )
-    let toRemoveInt = convertSegmentsToIntervals(commonInt, cDen, toRemove)
-    debugger
-    let result = [commonInt]
-
-    while(toRemoveInt.length > 0){
-        let curr = result.pop()
-        if(curr === undefined){
-            throw new Error('u messed up')
-        }
-        let seg = toRemoveInt.shift()
-        result = result.concat(curr.subtract(seg))
-    }
-
-    return result
-}
-
-if(process.env['NODE_ENV'] === 'test') {
-    exports.removeIntervals = removeIntervals
 }
