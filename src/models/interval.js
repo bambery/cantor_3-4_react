@@ -18,7 +18,7 @@ class Interval {
         this.#leftEndpoint = leftEndpointArg
         this.#rightEndpoint = rightEndpointArg
         // do not move into getter - makes console debugging easier
-        this.str = `{Interval: [${this.#leftEndpoint.str}, ${this.#rightEndpoint.str}], Length: ${this.len.reduce().str}}`
+        this.str = `{Interval: [${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}], Length: ${this.len.reduce().str}}`
     }
 
     get len() {

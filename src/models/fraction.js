@@ -13,7 +13,6 @@ class Fraction {
         } else if (numerator < 0 || denominator < 0){
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
-            debugger // eslint-disable-line
             throw new FracError.FractionTooLarge()
         } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
             if (type(numerator) === 'number' && type(denominator) === 'number'){
@@ -78,16 +77,18 @@ class Fraction {
     }
 
     add(rhs) {
-        if (type(rhs) !== 'Fraction'){
+        if(type(rhs) === 'number'){
+            return new Fraction(this.num + rhs, this.den)
+        } else if(type(rhs) === 'Fraction'){
+            let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
+            let numerator = leftHS.num + rightHS.num
+            if (numerator > leftHS.den){
+                throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
+            }
+            return new Fraction(numerator, leftHS.den)
+        } else {
             throw new TypeError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
         }
-
-        let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
-        let numerator = leftHS.num + rightHS.num
-        if (numerator > leftHS.den){
-            throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
-        }
-        return new Fraction(numerator, leftHS.den)
     }
 
     lessThan(rhs){
@@ -103,6 +104,16 @@ class Fraction {
     equals(rhs){
         let [fracA, fracB] = Fraction.commonDen(this, rhs)
         return (fracA.num === fracB.num)
+    }
+
+    mult(rhs){
+        if(type(rhs) === 'number'){
+            return new Fraction(this.num * rhs, this.den)
+        } else if (type(rhs) === 'Fraction'){
+            return new Fraction(this.num * rhs.num, this.den * rhs.den)
+        } else {
+            throw new TypeError('Can only multiply fractions by a scalar or another fraction.')
+        }
     }
 }
 

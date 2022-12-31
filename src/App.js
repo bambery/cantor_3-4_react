@@ -1,8 +1,9 @@
 import Fraction from './models/fraction'
 import Interval from './models/interval'
 import IntervalCollection from './models/interval_collection'
+import { type } from './shared/utils'
 
-import { cantor } from './shared/cantor'
+import Cantor from './shared/cantor'
 
 //import logo from './logo.svg';
 import './App.css'
@@ -25,14 +26,15 @@ function App() {
     let aaR = new Fraction(5,5)
 
     let inta = new Interval(aaL, aaR)
-    window.cantor = cantor
+    window.Cantor = Cantor
     window.Fraction = Fraction
     window.Interval = Interval
     window.IntervalCollection = IntervalCollection
+    window.mytype = type
 
     let hh = new Interval(new Fraction(2, 5), new Fraction(3, 5))
 
-    let res = cantor(5, [2, 3], 2)
+    let res = new Cantor(5, [2, 4], 2)
 
     debugger
 
