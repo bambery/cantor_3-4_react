@@ -56,7 +56,6 @@ class IntervalArr {
 
     // convert all fractions to use a common denominator - used for display purposes
     commonDen() {
-        // this function assumes that the smallest interval will have a 1 in the numerator - always true for 3/4, unusre if true for others
         let denominators = []
 
         this.collection.forEach( interval => {
@@ -69,10 +68,12 @@ class IntervalArr {
         let common = this.collection.map( interval => {
             const Lmultiple     = smallestDen / interval.left.den
             const Rmultiple     = smallestDen / interval.right.den
-            const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
-            const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
+            //const newLeft       = interval.left.mult(Lmultiple)
+            //const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
+            //const newRight      = interval.right.mult(Rmultiple)
+            //const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
 
-            const tempSeg = new Interval(newLeft, newRight)
+            const tempSeg = new Interval(interval.left.mult(Lmultiple), interval.right.mult(Rmultiple))
             return tempSeg
         })
         return common
@@ -83,7 +84,7 @@ class IntervalArr {
 class IntervalCollection {
     #myIntervals
 
-    // pass the gaps or intervals arr (or any arr of intervals), returns an array of the segments converted to the lowest common denominator
+    // pass the gaps or intervals arr (or any arr of intervals)
     constructor( intervalsArrArg ){
         try {
             checkArrContents(intervalsArrArg, 'Interval')

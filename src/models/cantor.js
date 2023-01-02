@@ -1,6 +1,6 @@
-import Fraction from '../models/fraction'
-import Interval from '../models/interval'
-import IntervalCollection from '../models/interval_collection'
+import Fraction from './fraction'
+import Interval from './interval'
+import IntervalCollection from './interval_collection'
 import { ValueError } from './errors'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
@@ -53,15 +53,11 @@ function removeIntervals(interval, numSegments, toRemove){
         ? new Fraction(1, numSegments)
         : new Fraction(commonInt.len.num, commonInt.len.den * numSegments)
 
-    //let toRemoveInt = toRemove.map( seg => new Interval(new Fraction(commonInt.left.num + seg - 1, cDen), new Fraction(commonInt.left.num + seg, cDen)) )
     let toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
     let result = [commonInt]
 
     while(toRemoveInt.length > 0){
         let curr = result.pop()
-        if(curr === undefined){
-            throw new Error('u messed up')
-        }
         let seg = toRemoveInt.shift()
         result = result.concat(curr.subtract(seg))
     }
@@ -70,7 +66,8 @@ function removeIntervals(interval, numSegments, toRemove){
 }
 
 
-// returns the array of intervals to remove
+// Given a list of the 1-based index of the segments to remove and the Interval to remove them from, returns an array of Intervals to remove.
+// Will combine sequential segments into one large segment
 function convertSegmentsToIntervals(interval, segmentLength, segNum){
     let curr = []
     let intervals = []
@@ -85,12 +82,10 @@ function convertSegmentsToIntervals(interval, segmentLength, segNum){
                 interval.left.add(segmentLength.mult(curr.shift() - 1)),
                 interval.left.add(segmentLength.mult(segNum[i]))
             )
-           // let newInterval = new Interval( new Fraction(interval.left.num + ((curr.shift() - 1) * segmentLength.num), segmentLength.den), new Fraction(interval.left.num + (segNum[i] * segmentLength.num), segmentLength.den) )
             intervals.push(newInterval)
             curr = []
         } else {
             // current digit is not part of any sequential string
-           // let newInterval = new Interval( new Fraction(interval.left.num + ((segNum[i] - 1) * segmentLength.num), segmentLength.den), new Fraction(interval.left.num + (segNum[i] * segmentLength.num), segmentLength.den))
             let newInterval = new Interval(
                 interval.left.add(segmentLength.mult(segNum[i]-1)),
                 interval.left.add(segmentLength.mult(segNum[i]))

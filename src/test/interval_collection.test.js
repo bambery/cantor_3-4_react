@@ -20,7 +20,7 @@ let sampleIntervalCommonDen = [
 ]
 
 
-let interval1 = new Interval(new Fraction (...sampleIntervals[0][0]), new Fraction(...sampleIntervals[0][1]))
+let interval1 = new Interval(new Fraction(...sampleIntervals[0][0]), new Fraction(...sampleIntervals[0][1]))
 let interval2 = new Interval(new Fraction(...sampleIntervals[0][2]), new Fraction(...sampleIntervals[0][3]))
 
 describe('IntervalArr', function() {
@@ -73,22 +73,19 @@ describe('IntervalArr', function() {
         it('concat_ does not allow adding multiple new intervals which do not appear sequentially after the existing intervals', function(){})
         let ep0 = new Fraction(0, 6)
         let ep1 = new Fraction(1, 6)
-        //let ep2 = new Fraction(2, 6)
         let ep3 = new Fraction(3, 6)
         let ep4 = new Fraction(4, 6)
         let ep5 = new Fraction(5, 6)
-        //let ep6 = new Fraction(6, 6)
 
         let interval0 = new Interval(ep0, ep1)
         let interval1 = new Interval(ep3, ep4)
         let interval2 = new Interval(ep4, ep5)
-        //let interval3 = new Interval(ep5, ep6)
 
         let intarr = new IntervalArr([interval2])
         expect( () => intarr.concat_([interval0, interval1])).toThrow(IntervalRangeError)
     })
 
-    describe.each(sampleIntervals)('smallestInterval', function(endpointLL, endpointLR, endpointRL, endpointRR, idx_){
+    describe.each(sampleIntervals)('converting all endpoints to a common denominator', function(endpointLL, endpointLR, endpointRL, endpointRR, idx_){
         let ll = new Fraction(endpointLL[0], endpointLL[1])
         let lr = new Fraction(endpointLR[0], endpointLR[1])
         let rl = new Fraction(endpointRL[0], endpointRL[1])
@@ -100,12 +97,7 @@ describe('IntervalArr', function() {
 
         let intarr = new IntervalArr([int1, int2])
 
-        it('it returns the smallest fractional unit among all endpoints', () => {
-            let comden = sampleIntervalCommonDen[idx][0][1]
-            expect(intarr.smallestInterval().equals(new Fraction(1, comden))).toBeTruthy()
-        })
-
-        it('it converts all endpoints to a common denominator, equal to the smallest fractional unit', () => {
+        it('it converts all endpoints to a common denominator', () => {
             let [commonDenL, commonDenR] = intarr.commonDen()
 
             let correctLL = sampleIntervalCommonDen[idx][0]

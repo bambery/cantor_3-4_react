@@ -14,7 +14,7 @@ class Fraction {
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
             throw new FracError.FractionTooLarge()
-        } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
+        } else if (type(numerator) !== 'undefined' && type(denominator) !== 'undefined') {
             if (type(numerator) === 'number' && type(denominator) === 'number'){
                 this.#numerator = numerator
                 this.#denominator = denominator

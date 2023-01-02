@@ -4,12 +4,15 @@ import { IntervalRangeError } from '../shared/errors'
 
 describe('Interval', function() {
     describe('creating intervals', function(){
-        describe.each([
-            [ new Fraction(0,2), new Fraction(1,1), new Fraction(1,1) ],
-            [ new Fraction(0,5), new Fraction(3, 5), new Fraction(3, 5) ],
-            [ new Fraction(2,3), new Fraction(18,21), new Fraction(4, 21) ]
-        ])('when passed two appropriate fractions', (left, right, correctLen) => {
-            it(`Creates an Interval [${left.str}, ${right.str}] with length ${correctLen.str}`, () => {
+        describe.each`
+            interval_left   | interval_right    | correct_length
+            ${[0, 2]}       | ${[1, 1]}         | ${[1, 1]}
+            ${[0, 5]}       | ${[3, 5]}         | ${[3, 5]}
+            ${[2, 3]}       | ${[18, 21]}       | ${[4, 21]}
+        `('when passed two appropriate fractions', (interval_left, interval_right, correct_length) => {
+            let left = new Fraction(interval_left[0], interval_left[1])
+            let right = new Fraction(interval_right[0], interval_right[1])
+            it(`Creates an Interval [${left.str}, ${right.str}] with length ${correct_length.str}`, () => {
                 let testLen = new Interval(left, right).len.reduce()
                 expect(testLen.equals(correctLen)).toBeTruthy()
             })
@@ -38,11 +41,12 @@ describe('Interval', function() {
         expect( () => interval.right = new Fraction(2,3)).toThrow(TypeError)
     })
 
-    describe.each([
-        [ [1, 5],   [7, 10],    [2, 10],    [7, 10] ],
-        [ [2, 7],   [4, 5],     [10, 35],   [28, 35] ],
-        [ [3, 11],  [34, 90],   [270, 990], [374, 990] ]
-    ])('converts the endpoints to a common denominator', function(origLArr, origRArr, commonLArr, commonRArr) {
+    describe.each`
+        intervalL   | intervalR     | commonLArr    | commonRArr
+        ${[1, 5]}   | ${[7, 10]}    | ${[2, 10]}    | ${[7, 10]}
+        ${[2, 7]}   | ${[4, 5]}     | ${[10, 35]}   | ${[28, 35]}
+        ${[3, 11]}  | ${[34, 90]}   | ${[270, 990]} | ${[374, 990]}
+    `('converts the endpoints to a common denominator', function(intervalL, intervalR, commonLArr, commonRArr) {
         let origL = new Fraction(origLArr[0], origLArr[1])
         let origR = new Fraction(origRArr[0], origRArr[1])
         let commonL = new Fraction(commonLArr[0], commonLArr[1])
@@ -54,11 +58,32 @@ describe('Interval', function() {
             expect(convertedInterval.left.equals(commonL)).toBeTruthy()
             expect(convertedInterval.right.equals(commonR)).toBeTruthy()
         })
+    })
+
+        /*
+        // need to chang the test cases
+    describe.each`
+        intervalL   | intervalR     | newDen | specificLArr  | specificRArr
+        ${[1, 5]}   | ${[7, 10]}    | ${100} | ${[20, 100]}  | ${[70, 100]}
+        ${[2, 7]}   | ${[4, 5]}     | ${105} | ${[30, 105]}  | ${[84, 105]}
+        ${[3, 11]}  | ${[34, 90]}   | ${ xx} | ${[270, 990]} | ${[374, 990]}
+    `('converts the endpoints to a specified denominator', function(intervalL, intervalR, specificLArr, specificRArr) {
+        let origL = new Fraction(origLArr[0], origLArr[1])
+        let origR = new Fraction(origRArr[0], origRArr[1])
+        let commonL = new Fraction(commonLArr[0], commonLArr[1])
+        let commonR = new Fraction(commonRArr[0], commonRArr[1])
+        let originalInterval = new Interval(origL, origR)
+
+        it(`given Interval [${originalInterval.left.str}, ${originalInterval.right.str}], convert to [${commonL}, ${commonR}]`, () => {
+            let convertedInterval = originalInterval.commonDen()
+            expect(convertedInterval.left.equals(commonL)).toBeTruthy()
+            expect(convertedInterval.right.equals(commonR)).toBeTruthy()
+        })
+    })
 /*
         it.skip('convert endpoints to specified denominator')
         it.skip('errors if endpoints cannot be converted to given denominator')
         */
-    })
 
     describe.each([
         [ [[0, 5], [5, 5], [1, 5], [2, 5]], [[0, 5], [1, 5],[2, 5], [5, 5]] ],

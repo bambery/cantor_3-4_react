@@ -1,5 +1,5 @@
-import { removeIntervals } from '../shared/cantor'
-import Cantor from '../shared/cantor'
+import { removeIntervals } from '../models/cantor'
+import Cantor from '../models/cantor'
 import { ValueError } from '../shared/errors'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
