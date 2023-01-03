@@ -21,8 +21,8 @@ describe('Cantor Library', function() {
             `('removes one gap', ({index, left, right}) => {
                 it(`resulting in intervals [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                 })
             })
         })
@@ -42,8 +42,8 @@ describe('Cantor Library', function() {
             `('removes one gap', ({index, left, right}) => {
                 it(`resulting in intervals [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                 })
             })
         })
@@ -64,8 +64,8 @@ describe('Cantor Library', function() {
             `('removes one gap', ({index, left, right}) => {
                 it(`resulting in intervals [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                 })
             })
         })
@@ -96,8 +96,8 @@ describe('Cantor Library', function() {
                 `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res.iterations[iteration].intervals.all[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -122,8 +122,8 @@ describe('Cantor Library', function() {
                 `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                         let interval = res.iterations[iteration].intervals.all[index]
-                        expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                        expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                        expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                        expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -157,8 +157,8 @@ describe('Cantor Library', function() {
                 `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res.iterations[iteration].intervals.all[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -183,8 +183,8 @@ describe('Cantor Library', function() {
                 `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                     let interval = res.iterations[iteration].intervals.all[index]
-                    expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                    expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                    expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                    expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -202,8 +202,8 @@ describe('Cantor Library', function() {
                     `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                         let interval = res.iterations[iteration].intervals.all[index]
-                        expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                        expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                        expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                        expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -227,8 +227,8 @@ describe('Cantor Library', function() {
                     `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                         let interval = res.iterations[iteration].intervals.all[index]
-                        expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                        expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                        expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                        expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -252,8 +252,8 @@ describe('Cantor Library', function() {
                     `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                         let interval = res.iterations[iteration].intervals.all[index]
-                        expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                        expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                        expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                        expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
@@ -277,12 +277,11 @@ describe('Cantor Library', function() {
                     `('performs 2 iterations', ({iteration, index, left, right}) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
                         let interval = res.iterations[iteration].intervals.all[index]
-                        expect(interval.left.equals( new Fraction(left[0], left[1]) )).toBeTruthy()
-                        expect(interval.right.equals( new Fraction(right[0], right[1]) )).toBeTruthy()
+                        expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
+                        expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
                 })
             })
-
         })
     })
 })

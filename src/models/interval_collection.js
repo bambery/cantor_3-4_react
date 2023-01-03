@@ -25,8 +25,6 @@ class IntervalArr {
         } else if ( this.collection.length > 0 && interval.left.lessThan(this.collection[this.collection.length - 1].right) ) {
             throw new IntervalRangeError(`intervals must appear in order from left to right, starting at a minimum 0/1 and ending at a maximum of 1/1. The last endpoint of the interval collection is ${this.collection[this.collection.length - 1].right.str} and you attempted to append an interval starting at ${interval.left.str}, which is not allowed.`)
         }
-
-    //needs check to make sure the new interval's LHS endpoint is greater than the last item in the array's RHS endpoint
         this.collection.push(interval)
     }
 
@@ -72,8 +70,11 @@ class IntervalArr {
             //const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
             //const newRight      = interval.right.mult(Rmultiple)
             //const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
-
-            const tempSeg = new Interval(interval.left.mult(Lmultiple), interval.right.mult(Rmultiple))
+            //debugger
+            const tempSeg = new Interval(
+                new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple),
+                new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
+            )
             return tempSeg
         })
         return common
