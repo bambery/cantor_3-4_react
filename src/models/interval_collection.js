@@ -37,21 +37,6 @@ class IntervalArr {
         }
     }
 
-    // the smallest division of a line segment required to represent all of the intervals in the collection, ie 1 over the lcm of the denominators of the endpoints
-    // eg: given [ 1/2, 3/5, 9/20 ], the smallest fractional unit is 1/20
-    // eg: given [ 1/5, 3/9, 4/7], the smallest fractional unit is 1/315
-    smallestInterval() {
-
-        let denominators = []
-
-        this.collection.forEach( interval => {
-            denominators.push(interval.left.den)
-            denominators.push(interval.right.den)
-        })
-
-        return new Fraction(1, lcm(denominators))
-    }
-
     // convert all fractions to use a common denominator - used for display purposes
     commonDen() {
         let denominators = []
@@ -66,11 +51,6 @@ class IntervalArr {
         let common = this.collection.map( interval => {
             const Lmultiple     = smallestDen / interval.left.den
             const Rmultiple     = smallestDen / interval.right.den
-            //const newLeft       = interval.left.mult(Lmultiple)
-            //const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
-            //const newRight      = interval.right.mult(Rmultiple)
-            //const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
-            //debugger
             const tempSeg = new Interval(
                 new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple),
                 new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
@@ -119,10 +99,6 @@ class IntervalCollection {
             g.push_(new Interval( this.intervals.all[i].right, this.intervals.all[i+1].left))
         }
         return g
-    }
-
-    smallestInterval() {
-        return this.#myIntervals.smallestInterval()
     }
 
     concat_(intervalArr) {

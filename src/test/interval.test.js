@@ -9,7 +9,7 @@ describe('Interval', function() {
             ${[0, 2]}       | ${[1, 1]}         | ${[1, 1]}
             ${[0, 5]}       | ${[3, 5]}         | ${[3, 5]}
             ${[2, 3]}       | ${[18, 21]}       | ${[4, 21]}
-        `('when passed two appropriate fractions', ({intervalLeft, intervalRight, correctLength}) => {
+        `('when passed two appropriate fractions', ({ intervalLeft, intervalRight, correctLength }) => {
             let left = new Fraction(intervalLeft)
             let right = new Fraction(intervalRight)
             let correctLen = new Fraction(correctLength)
@@ -48,7 +48,7 @@ describe('Interval', function() {
         ${[1, 5]}   | ${[7, 10]}    | ${[2, 10]}    | ${[7, 10]}
         ${[2, 7]}   | ${[4, 5]}     | ${[10, 35]}   | ${[28, 35]}
         ${[3, 11]}  | ${[34, 90]}   | ${[270, 990]} | ${[374, 990]}
-    `('converts the endpoints to a common denominator', function({intervalL, intervalR, commonL, commonR}) {
+    `('converts the endpoints to a common denominator', function({ intervalL, intervalR, commonL, commonR }) {
         let originalInterval = new Interval(new Fraction(intervalL), new Fraction(intervalR))
         let convertedCorrect = new Interval(new Fraction(commonL), new Fraction(commonR))
 
@@ -66,7 +66,7 @@ describe('Interval', function() {
         ${[[1, 5], [7, 10]]}    | ${100} | ${[20, 100]}  | ${[70, 100]}
         ${[[2, 7], [4, 5]]}     | ${105} | ${[30, 105]}  | ${[84, 105]}
         ${[[1, 4], [1, 3]]}     | ${12}  | ${[3, 12]}    | ${[4, 12]}
-    `('converts the endpoints to a specified denominator', function({interval, newDen, specificLArr, specificRArr}) {
+    `('converts the endpoints to a specified denominator', function({ interval, newDen, specificLArr, specificRArr }) {
         let originalInterval = new Interval(interval)
         let commonL = new Fraction(specificLArr)
         let commonR = new Fraction(specificRArr)
@@ -83,7 +83,7 @@ describe('Interval', function() {
         ${[[1, 5], [7, 10]]}    | ${15}
         ${[[2, 7], [4, 5]]}     | ${28}
         ${[[1, 4], [1, 3]]}     | ${16}
-    `('errors if endpoints cannot be converted to the given denominator', function({interval, newDen}) {
+    `('errors if endpoints cannot be converted to the given denominator', function({ interval, newDen }) {
         it(`Interval ${interval} can't convert to denominator ${newDen}`, () => {
             expect( () => new Interval(interval).commonDen(newDen) ).toThrow(ValueError)
         })
@@ -95,7 +95,7 @@ describe('Interval', function() {
         ${[[0, 5], [5, 5]]} | ${[[1, 5], [2, 5]]}   | ${[[0, 5],[1, 5]]}    | ${[[2, 5], [5, 5]]}
         ${[[0, 1], [1, 1]]} | ${[[2, 4], [3, 4]]}   | ${[[0, 4], [2, 4]]}   | ${[[3, 4], [4, 4]]}
         ${[[1, 2], [7, 8]]} | ${[[11, 16], [6, 8]]} | ${[[8, 16], [11, 16]]}| ${[[12, 16], [14, 16]]}
-    `('subtracting a gap from an interval returns two subintervals', function({interval, toSubtract, resultL, resultR}) {
+    `('subtracting a gap from an interval returns two subintervals', function({ interval, toSubtract, resultL, resultR }) {
         interval = new Interval(interval)
         toSubtract = new Interval(toSubtract)
         resultL = new Interval(resultL)
@@ -115,7 +115,7 @@ describe('Interval', function() {
         ${[[1, 3], [2, 3]]}     | ${[[2, 7], [4, 9]]}
         ${[[1, 3], [190, 200]]} | ${[[16, 49], [191, 200]]}
         ${[[1, 2], [2, 3]]}     | ${[[1, 2], [7, 8]]}
-    `('fails if trying to subtract intervals which are not contained in the parent interval', function({interval, toSubtract}) {
+    `('fails if trying to subtract intervals which are not contained in the parent interval', function({ interval, toSubtract }) {
         interval = new Interval(interval)
         toSubtract = new Interval(toSubtract)
         it(`from ${interval.strMinimal}, fail to subtract ${toSubtract.strMinimal}`, () => {

@@ -73,7 +73,7 @@ describe('IntervalArr', function() {
         })
     })
 
-    sampleIntervals('converting all endpoints to a common denominator', function({index, interval1, interval2, interval1Common, interval2Common}){
+    sampleIntervals('converting all endpoints to a common denominator', function({ interval1, interval2, interval1Common, interval2Common }){
 
         it('it converts all endpoints to a common denominator', () => {
             let testArr = new IntervalArr([ new Interval(interval1), new Interval(interval2) ]).commonDen()
@@ -111,7 +111,7 @@ describe('IntervalCollection', function() {
         })
     })
 
-    sampleIntervals('line segment and gap intervals', function({index, interval1, interval2}){
+    sampleIntervals('line segment and gap intervals', function({ index, interval1, interval2 }){
         let int1 = new Interval(interval1)
         let int2 = new Interval(interval2)
 
