@@ -1,26 +1,47 @@
-import { lcm, type } from '../shared/utils'
+import { lcm, type, checkArrContents } from '../shared/utils'
 import { FracError } from '../shared/errors'
 
 class Fraction {
     #numerator = 1
     #denominator = 1
 
-    constructor(numerator, denominator) {
-        if (![0, 2].includes(arguments.length)) {
-            throw new TypeError('Must pass two numbers to new Fraction')
-        } else if(denominator === 0){
+    constructor(numeratorArg, denominatorArg) {
+        let numerator, denominator
+
+        if(arguments.length === 0
+            ||(arguments.length === 1
+                && type(numeratorArg) === 'Array'
+                && numeratorArg.length === 0))
+        {
+            this.#numerator = 1
+            this.#denominator = 1
+            return this
+        } else if (arguments.length === 1
+            && type(numeratorArg) === 'Array'
+            && numeratorArg.length === 2
+            && checkArrContents(numeratorArg, 'number'))
+        {
+            numerator = numeratorArg[0]
+            denominator = numeratorArg[1]
+        } else if (arguments.length === 2
+            && type(numeratorArg) === 'number'
+            && type(denominatorArg === 'number'))
+        {
+            numerator = numeratorArg
+            denominator = denominatorArg
+        } else {
+            throw new TypeError(`Must send either an Array of two numbers, or two numbers to new Fraction: you passed ${numeratorArg}, ${denominatorArg}`)
+        }
+
+        if(denominator === 0){
             throw new FracError.ZeroDenominator()
         } else if (numerator < 0 || denominator < 0){
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
             throw new FracError.FractionTooLarge()
-        } else if (typeof numerator !== 'undefined' && typeof denominator !== 'undefined') {
-            if (type(numerator) === 'number' && type(denominator) === 'number'){
-                this.#numerator = numerator
-                this.#denominator = denominator
-            } else {
-                throw new TypeError(`Must pass two numbers to new Fraction: you passed ${type(numerator)} and ${type(denominator)}`)
-            }
+        } else {
+            this.#numerator = numerator
+            this.#denominator = denominator
         }
         // stop moving this into a getter! Console debugging is easier this way
         this.str = `${this.#numerator}/${this.#denominator}`
@@ -77,16 +98,18 @@ class Fraction {
     }
 
     add(rhs) {
-        if (type(rhs) !== 'Fraction'){
+        if(type(rhs) === 'number'){
+            return new Fraction(this.num + rhs, this.den)
+        } else if(type(rhs) === 'Fraction'){
+            let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
+            let numerator = leftHS.num + rightHS.num
+            if (numerator > leftHS.den){
+                throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
+            }
+            return new Fraction(numerator, leftHS.den)
+        } else {
             throw new TypeError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
         }
-
-        let [ leftHS, rightHS ] = Fraction.commonDen(this, rhs)
-        let numerator = leftHS.num + rightHS.num
-        if (numerator > leftHS.den){
-            throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
-        }
-        return new Fraction(numerator, leftHS.den)
     }
 
     lessThan(rhs){
@@ -94,9 +117,24 @@ class Fraction {
         return (fracA.num < fracB.num)
     }
 
+    greaterThan(rhs){
+        let [fracA, fracB] = Fraction.commonDen(this, rhs)
+        return (fracA.num > fracB.num)
+    }
+
     equals(rhs){
         let [fracA, fracB] = Fraction.commonDen(this, rhs)
         return (fracA.num === fracB.num)
+    }
+
+    mult(rhs){
+        if(type(rhs) === 'number'){
+            return new Fraction(this.num * rhs, this.den)
+        } else if (type(rhs) === 'Fraction'){
+            return new Fraction(this.num * rhs.num, this.den * rhs.den)
+        } else {
+            throw new TypeError('Can only multiply fractions by a scalar or another fraction.')
+        }
     }
 }
 

@@ -25,8 +25,6 @@ class IntervalArr {
         } else if ( this.collection.length > 0 && interval.left.lessThan(this.collection[this.collection.length - 1].right) ) {
             throw new IntervalRangeError(`intervals must appear in order from left to right, starting at a minimum 0/1 and ending at a maximum of 1/1. The last endpoint of the interval collection is ${this.collection[this.collection.length - 1].right.str} and you attempted to append an interval starting at ${interval.left.str}, which is not allowed.`)
         }
-
-    //needs check to make sure the new interval's LHS endpoint is greater than the last item in the array's RHS endpoint
         this.collection.push(interval)
     }
 
@@ -39,11 +37,8 @@ class IntervalArr {
         }
     }
 
-    // the smallest division of a line segment required to represent all of the intervals in the collection, ie 1 over the lcm of the denominators of the endpoints
-    // eg: given [ 1/2, 3/5, 9/20 ], the smallest fractional unit is 1/20
-    // eg: given [ 1/5, 3/9, 4/7], the smallest fractional unit is 1/315
-    smallestInterval() {
-
+    // convert all fractions to use a common denominator - used for display purposes
+    commonDen() {
         let denominators = []
 
         this.collection.forEach( interval => {
@@ -51,20 +46,15 @@ class IntervalArr {
             denominators.push(interval.right.den)
         })
 
-        return new Fraction(1, lcm(denominators))
-    }
+        let smallestDen = lcm(denominators)
 
-    // convert all fractions to use a common denominator - used for display purposes
-    commonDen() {
-        // this function assumes that the smallest interval will have a 1 in the numerator - always true for 3/4, unusre if true for others
-        let smallestDen = this.smallestInterval().den
         let common = this.collection.map( interval => {
             const Lmultiple     = smallestDen / interval.left.den
             const Rmultiple     = smallestDen / interval.right.den
-            const newLeft       = new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple)
-            const newRight      = new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
-
-            const tempSeg = new Interval(newLeft, newRight)
+            const tempSeg = new Interval(
+                new Fraction(interval.left.num * Lmultiple, interval.left.den * Lmultiple),
+                new Fraction(interval.right.num * Rmultiple, interval.right.den * Rmultiple)
+            )
             return tempSeg
         })
         return common
@@ -75,7 +65,7 @@ class IntervalArr {
 class IntervalCollection {
     #myIntervals
 
-    // pass the gaps or intervals arr (or any arr of intervals), returns an array of the segments converted to the lowest common denominator
+    // pass the gaps or intervals arr (or any arr of intervals)
     constructor( intervalsArrArg ){
         try {
             checkArrContents(intervalsArrArg, 'Interval')
@@ -86,6 +76,7 @@ class IntervalCollection {
         this.#myIntervals = new IntervalArr(intervalsArrArg)
         // count of intervals in the collection
         this.count = this.#myIntervals.collection.length
+        this.str = `{IntervalCollection - count: ${this.count}, collection: ${this.intervals.all.map(interval => interval.str)}}`
     }
 
     get intervals() {
@@ -110,14 +101,17 @@ class IntervalCollection {
         return g
     }
 
-    smallestInterval() {
-        return this.#myIntervals.smallestInterval()
-    }
-
     concat_(intervalArr) {
         this.#myIntervals.all.concat_(intervalArr)
     }
+
+    forEach(cb) {
+        for(let i = 0; i < this.count; i+=1){
+            cb(this.#myIntervals.all[i], i, this)
+        }
+    }
 }
+
 export default IntervalCollection
 
 if(process.env['NODE_ENV'] === 'test') {
