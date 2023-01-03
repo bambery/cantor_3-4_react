@@ -1,18 +1,20 @@
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
-import { IntervalRangeError } from '../shared/errors'
+import { ValueError, IntervalRangeError } from '../shared/errors'
 
 describe('Interval', function() {
     describe('creating intervals', function(){
         describe.each`
-            interval_left   | interval_right    | correct_length
+            intervalLeft    | intervalRight     | correctLength
             ${[0, 2]}       | ${[1, 1]}         | ${[1, 1]}
             ${[0, 5]}       | ${[3, 5]}         | ${[3, 5]}
             ${[2, 3]}       | ${[18, 21]}       | ${[4, 21]}
-        `('when passed two appropriate fractions', (interval_left, interval_right, correct_length) => {
-            let left = new Fraction(interval_left[0], interval_left[1])
-            let right = new Fraction(interval_right[0], interval_right[1])
-            it(`Creates an Interval [${left.str}, ${right.str}] with length ${correct_length.str}`, () => {
+        `('when passed two appropriate fractions', ({intervalLeft, intervalRight, correctLength}) => {
+            let left = new Fraction(intervalLeft)
+            let right = new Fraction(intervalRight)
+            let correctLen = new Fraction(correctLength)
+
+            it(`Creates an Interval [${left.str}, ${right.str}] with length ${correctLen.str}`, () => {
                 let testLen = new Interval(left, right).len.reduce()
                 expect(testLen.equals(correctLen)).toBeTruthy()
             })
@@ -37,74 +39,87 @@ describe('Interval', function() {
 
     it('cannot directly modify endpoints', function() {
         let interval = new Interval( new Fraction(0,2), new Fraction(1,2) )
-        expect( () => interval.left = new Fraction(1,3)).toThrow(TypeError)
-        expect( () => interval.right = new Fraction(2,3)).toThrow(TypeError)
+        expect( () => interval.left = new Fraction(1,3) ).toThrow(TypeError)
+        expect( () => interval.right = new Fraction(2,3) ).toThrow(TypeError)
     })
 
     describe.each`
-        intervalL   | intervalR     | commonLArr    | commonRArr
+        intervalL   | intervalR     | commonL       | commonR
         ${[1, 5]}   | ${[7, 10]}    | ${[2, 10]}    | ${[7, 10]}
         ${[2, 7]}   | ${[4, 5]}     | ${[10, 35]}   | ${[28, 35]}
         ${[3, 11]}  | ${[34, 90]}   | ${[270, 990]} | ${[374, 990]}
-    `('converts the endpoints to a common denominator', function(intervalL, intervalR, commonLArr, commonRArr) {
-        let origL = new Fraction(origLArr[0], origLArr[1])
-        let origR = new Fraction(origRArr[0], origRArr[1])
-        let commonL = new Fraction(commonLArr[0], commonLArr[1])
-        let commonR = new Fraction(commonRArr[0], commonRArr[1])
-        let originalInterval = new Interval(origL, origR)
+    `('converts the endpoints to a common denominator', function({intervalL, intervalR, commonL, commonR}) {
+        let originalInterval = new Interval(new Fraction(intervalL), new Fraction(intervalR))
+        let convertedCorrect = new Interval(new Fraction(commonL), new Fraction(commonR))
 
-        it(`given Interval [${originalInterval.left.str}, ${originalInterval.right.str}], convert to [${commonL}, ${commonR}]`, () => {
-            let convertedInterval = originalInterval.commonDen()
-            expect(convertedInterval.left.equals(commonL)).toBeTruthy()
-            expect(convertedInterval.right.equals(commonR)).toBeTruthy()
+        it(`given Interval ${originalInterval.strMinimal}, convert to ${convertedCorrect.strMinimal}`, () => {
+            let convertedTest = originalInterval.commonDen()
+            expect(convertedTest.left.equals(convertedCorrect.left)).toBeTruthy()
+            expect(convertedTest.right.equals(convertedCorrect.right)).toBeTruthy()
+            expect(convertedTest.left.den).toEqual(convertedCorrect.left.den)
+            expect(convertedTest.right.den).toEqual(convertedCorrect.right.den)
         })
     })
 
-        /*
-        // need to chang the test cases
     describe.each`
-        intervalL   | intervalR     | newDen | specificLArr  | specificRArr
-        ${[1, 5]}   | ${[7, 10]}    | ${100} | ${[20, 100]}  | ${[70, 100]}
-        ${[2, 7]}   | ${[4, 5]}     | ${105} | ${[30, 105]}  | ${[84, 105]}
-        ${[3, 11]}  | ${[34, 90]}   | ${ xx} | ${[270, 990]} | ${[374, 990]}
-    `('converts the endpoints to a specified denominator', function(intervalL, intervalR, specificLArr, specificRArr) {
-        let origL = new Fraction(origLArr[0], origLArr[1])
-        let origR = new Fraction(origRArr[0], origRArr[1])
-        let commonL = new Fraction(commonLArr[0], commonLArr[1])
-        let commonR = new Fraction(commonRArr[0], commonRArr[1])
-        let originalInterval = new Interval(origL, origR)
+        interval                | newDen | specificLArr  | specificRArr
+        ${[[1, 5], [7, 10]]}    | ${100} | ${[20, 100]}  | ${[70, 100]}
+        ${[[2, 7], [4, 5]]}     | ${105} | ${[30, 105]}  | ${[84, 105]}
+        ${[[1, 4], [1, 3]]}     | ${12}  | ${[3, 12]}    | ${[4, 12]}
+    `('converts the endpoints to a specified denominator', function({interval, newDen, specificLArr, specificRArr}) {
+        let originalInterval = new Interval(interval)
+        let commonL = new Fraction(specificLArr)
+        let commonR = new Fraction(specificRArr)
 
-        it(`given Interval [${originalInterval.left.str}, ${originalInterval.right.str}], convert to [${commonL}, ${commonR}]`, () => {
-            let convertedInterval = originalInterval.commonDen()
+        it(`given Interval ${originalInterval.strMinimal}, convert to [${commonL}, ${commonR}]`, () => {
+            let convertedInterval = originalInterval.commonDen(newDen)
             expect(convertedInterval.left.equals(commonL)).toBeTruthy()
             expect(convertedInterval.right.equals(commonR)).toBeTruthy()
         })
     })
-/*
-        it.skip('convert endpoints to specified denominator')
-        it.skip('errors if endpoints cannot be converted to given denominator')
-        */
 
-    describe.each([
-        [ [[0, 5], [5, 5], [1, 5], [2, 5]], [[0, 5], [1, 5],[2, 5], [5, 5]] ],
-        [ [[0, 1], [1, 1], [2, 4], [3, 4]], [[0, 4], [2, 4], [3, 4], [4, 4]] ],
-        [ [[1, 2], [7, 8], [11, 16], [6, 8]], [[8, 16], [11, 16], [12, 16], [14, 16]] ]
-    ])('subtracting a gap from an interval returns two subintervals', function(original, result) {
-        let origFracs = original.map(arr => new Fraction(arr[0], arr[1]))
-        let resultFracs = result.map(arr => new Fraction(arr[0], arr[1]))
-        let originalInterval = new Interval(origFracs[0], origFracs[1])
-        let toSubtract = new Interval(origFracs[2], origFracs[3])
-        it(`from ${originalInterval.str}, subtract ${toSubtract.str}`, () => {
-            let result = originalInterval.subtract(toSubtract)
-            expect(result[0].left.equals(resultFracs[0])).toBeTruthy()
-            expect(result[0].right.equals(resultFracs[1])).toBeTruthy()
-            expect(result[1].left.equals(resultFracs[2])).toBeTruthy()
-            expect(result[1].right.equals(resultFracs[3])).toBeTruthy()
+    describe.each`
+        interval                | newDen
+        ${[[1, 5], [7, 10]]}    | ${15}
+        ${[[2, 7], [4, 5]]}     | ${28}
+        ${[[1, 4], [1, 3]]}     | ${16}
+    `('errors if endpoints cannot be converted to the given denominator', function({interval, newDen}) {
+        it(`Interval ${interval} can't convert to denominator ${newDen}`, () => {
+            expect( () => new Interval(interval).commonDen(newDen) ).toThrow(ValueError)
+        })
+
+    })
+
+    describe.each`
+        interval            | toSubtract            | resultL               | resultR
+        ${[[0, 5], [5, 5]]} | ${[[1, 5], [2, 5]]}   | ${[[0, 5],[1, 5]]}    | ${[[2, 5], [5, 5]]}
+        ${[[0, 1], [1, 1]]} | ${[[2, 4], [3, 4]]}   | ${[[0, 4], [2, 4]]}   | ${[[3, 4], [4, 4]]}
+        ${[[1, 2], [7, 8]]} | ${[[11, 16], [6, 8]]} | ${[[8, 16], [11, 16]]}| ${[[12, 16], [14, 16]]}
+    `('subtracting a gap from an interval returns two subintervals', function({interval, toSubtract, resultL, resultR}) {
+        interval = new Interval(interval)
+        toSubtract = new Interval(toSubtract)
+        resultL = new Interval(resultL)
+        resultR = new Interval(resultR)
+        it(`from ${interval.strMinimal}, subtract ${toSubtract.strMinimal}`, () => {
+            let result = interval.subtract(toSubtract)
+            expect(result[0].left.equals(resultL.left)).toBeTruthy()
+            expect(result[0].right.equals(resultL.right)).toBeTruthy()
+
+            expect(result[1].left.equals(resultR.left)).toBeTruthy()
+            expect(result[1].right.equals(resultR.right)).toBeTruthy()
         })
     })
 
-    it.skip('fails if trying to subtract intervals which are not contained in the parent interval', function(){
-        // another each with various edge cases
+    describe.each`
+        interval                | toSubtract
+        ${[[1, 3], [2, 3]]}     | ${[[2, 7], [4, 9]]}
+        ${[[1, 3], [190, 200]]} | ${[[16, 49], [191, 200]]}
+        ${[[1, 2], [2, 3]]}     | ${[[1, 2], [7, 8]]}
+    `('fails if trying to subtract intervals which are not contained in the parent interval', function({interval, toSubtract}) {
+        interval = new Interval(interval)
+        toSubtract = new Interval(toSubtract)
+        it(`from ${interval.strMinimal}, fail to subtract ${toSubtract.strMinimal}`, () => {
+            expect( () => interval.subtract(toSubtract)).toThrow(IntervalRangeError)
+        })
     })
-
 })

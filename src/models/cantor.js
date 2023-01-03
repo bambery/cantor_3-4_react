@@ -1,7 +1,7 @@
 import Fraction from './fraction'
 import Interval from './interval'
 import IntervalCollection from './interval_collection'
-import { ValueError } from './errors'
+import { ValueError } from '../shared/errors'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
 

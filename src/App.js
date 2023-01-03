@@ -3,7 +3,7 @@ import Interval from './models/interval'
 import IntervalCollection from './models/interval_collection'
 import { type } from './shared/utils'
 
-import Cantor from './shared/cantor'
+import Cantor from './models/cantor'
 
 //import logo from './logo.svg';
 import './App.css'

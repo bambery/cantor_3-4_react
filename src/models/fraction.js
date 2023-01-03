@@ -1,26 +1,47 @@
-import { lcm, type } from '../shared/utils'
+import { lcm, type, checkArrContents } from '../shared/utils'
 import { FracError } from '../shared/errors'
 
 class Fraction {
     #numerator = 1
     #denominator = 1
 
-    constructor(numerator, denominator) {
-        if (![0, 2].includes(arguments.length)) {
-            throw new TypeError('Must pass two numbers to new Fraction')
-        } else if(denominator === 0){
+    constructor(numeratorArg, denominatorArg) {
+        let numerator, denominator
+
+        if(arguments.length === 0
+            ||(arguments.length === 1
+                && type(numeratorArg) === 'Array'
+                && numeratorArg.length === 0))
+        {
+            this.#numerator = 1
+            this.#denominator = 1
+            return this
+        } else if (arguments.length === 1
+            && type(numeratorArg) === 'Array'
+            && numeratorArg.length === 2
+            && checkArrContents(numeratorArg, 'number'))
+        {
+            numerator = numeratorArg[0]
+            denominator = numeratorArg[1]
+        } else if (arguments.length === 2
+            && type(numeratorArg) === 'number'
+            && type(denominatorArg === 'number'))
+        {
+            numerator = numeratorArg
+            denominator = denominatorArg
+        } else {
+            throw new TypeError(`Must send either an Array of two numbers, or two numbers to new Fraction: you passed ${numeratorArg}, ${denominatorArg}`)
+        }
+
+        if(denominator === 0){
             throw new FracError.ZeroDenominator()
         } else if (numerator < 0 || denominator < 0){
             throw new FracError.NoNegativeFractions()
         } else if (denominator < numerator){
             throw new FracError.FractionTooLarge()
-        } else if (type(numerator) !== 'undefined' && type(denominator) !== 'undefined') {
-            if (type(numerator) === 'number' && type(denominator) === 'number'){
-                this.#numerator = numerator
-                this.#denominator = denominator
-            } else {
-                throw new TypeError(`Must pass two numbers to new Fraction: you passed ${type(numerator)} and ${type(denominator)}`)
-            }
+        } else {
+            this.#numerator = numerator
+            this.#denominator = denominator
         }
         // stop moving this into a getter! Console debugging is easier this way
         this.str = `${this.#numerator}/${this.#denominator}`

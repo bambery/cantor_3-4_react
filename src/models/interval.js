@@ -1,4 +1,4 @@
-import { type, lcm } from '../shared/utils'
+import { type, lcm, checkArrContents } from '../shared/utils'
 import { IntervalRangeError, ValueError } from '../shared/errors'
 import Fraction from './fraction'
 
@@ -7,18 +7,35 @@ class Interval {
     #rightEndpoint = null
 
     constructor ( leftEndpointArg, rightEndpointArg ){
-        if (type(leftEndpointArg) !== 'Fraction' || type(rightEndpointArg) !== 'Fraction') {
-            throw new TypeError('Interval constructor requires two fractions.')
-        } else if (rightEndpointArg.lessThan(leftEndpointArg)) {
-            throw new IntervalRangeError(`Left endpoint ${leftEndpointArg.str} must be smaller than right endpoint ${rightEndpointArg.str}.`)
-        } else if (leftEndpointArg.equals(rightEndpointArg)) {
+        let tempLeft, tempRight
+        if(arguments.length === 1
+            && type(leftEndpointArg) === 'Array'
+            && leftEndpointArg.length === 2
+            && (leftEndpointArg[0].length === 2 && leftEndpointArg[1].length === 2)
+            && (type(leftEndpointArg[0]) === 'Array' && type(leftEndpointArg[1]) === 'Array')
+            && (checkArrContents(leftEndpointArg[0], 'number') && checkArrContents(leftEndpointArg[1], 'number'))
+        ){
+            tempLeft = new Fraction(leftEndpointArg[0])
+            tempRight = new Fraction(leftEndpointArg[1])
+        } else if (arguments.length === 2
+            && type(leftEndpointArg) === 'Fraction' && type(rightEndpointArg) === 'Fraction') {
+            tempLeft = leftEndpointArg
+            tempRight = rightEndpointArg
+        } else {
+            throw new TypeError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
+        }
+
+        if (tempRight.lessThan(tempLeft)) {
+            throw new IntervalRangeError(`Left endpoint ${tempLeft.str} must be smaller than right endpoint ${tempRight.str}.`)
+        } else if (tempLeft.equals(tempRight)) {
             throw new IntervalRangeError('Interval must have length greater than 0.')
         }
 
-        this.#leftEndpoint = leftEndpointArg
-        this.#rightEndpoint = rightEndpointArg
+        this.#leftEndpoint = tempLeft
+        this.#rightEndpoint = tempRight
         // do not move into getter - makes console debugging easier
         this.str = `{Interval: [${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}], Length: ${this.len.reduce().str}}`
+        this.strMinimal = `[${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}]`
     }
 
     get len() {
