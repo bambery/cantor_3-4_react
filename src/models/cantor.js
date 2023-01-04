@@ -99,4 +99,5 @@ function convertSegmentsToIntervals(interval, segmentLength, segNum){
 
 if(process.env['NODE_ENV'] === 'test') {
     exports.removeIntervals = removeIntervals
+    exports.convertSegmentsToIntervals = convertSegmentsToIntervals
 }

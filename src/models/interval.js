@@ -81,16 +81,8 @@ class Interval {
         return remainingSegments
     }
 
-    // returns a new interval representing the sum of the two sequential intervals
-    add(intToAdd) {
-        let commonDenominator = lcm([this.left.den, this.right.den, intToAdd.left.den, intToAdd.right.den])
-        let intCommon = this.commonDen(commonDenominator)
-        let addCommon = intToAdd.commonDen(commonDenominator)
-        if(intCommon.right.num + 1 !== addCommon.left.num){
-            throw new IntervalRangeError(`The given interval, ${intToAdd.str}, is not sequrntial to this interval, ${this.str}.`)
-        }
-
-        return new Interval(intCommon.left, addCommon.right)
+    equals(interval) {
+        return(this.left.equals(interval.left) && this.right.equals(interval.right))
     }
 }
 

@@ -1,5 +1,5 @@
 import { lcm, type, checkArrContents } from '../shared/utils'
-import { FracError } from '../shared/errors'
+import { ValueError, FracError } from '../shared/errors'
 
 class Fraction {
     #numerator = 1
@@ -12,22 +12,21 @@ class Fraction {
             ||( arguments.length === 1
                 && type(numeratorArg) === 'Array'
                 && numeratorArg.length === 0 )
-            )
-        {
+        ){
             this.#numerator = 1
             this.#denominator = 1
             return this
         } else if (arguments.length === 1
             && type(numeratorArg) === 'Array'
             && numeratorArg.length === 2
-            && checkArrContents(numeratorArg, 'number'))
-        {
+            && checkArrContents(numeratorArg, 'number')
+        ){
             numerator = numeratorArg[0]
             denominator = numeratorArg[1]
         } else if (arguments.length === 2
             && type(numeratorArg) === 'number'
-            && type(denominatorArg === 'number'))
-        {
+            && type(denominatorArg === 'number')
+        ){
             numerator = numeratorArg
             denominator = denominatorArg
         } else {
@@ -60,7 +59,7 @@ class Fraction {
 
     commonDen(otherFrac){
         if (type(otherFrac) !== 'Fraction'){
-            throw new TypeError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
+            throw new ValueError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
         }
         const common = lcm([this.den, otherFrac.den])
         let numA = (this.num * (common/this.den))
@@ -89,7 +88,7 @@ class Fraction {
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
         if (type(rhs) !== 'Fraction'){
-            throw new TypeError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
+            throw new ValueError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
         }
         let [ leftHS, rightHS ] = this.commonDen(rhs)
         let numerator = leftHS.num - rightHS.num

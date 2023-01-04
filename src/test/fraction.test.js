@@ -1,5 +1,5 @@
 import Fraction from '../models/fraction'
-import { FracError } from '../shared/errors'
+import { ValueError, FracError } from '../shared/errors'
 
 describe('Fractions', function() {
 
@@ -147,6 +147,20 @@ describe('Fractions', function() {
                 expect(sum.den).toEqual(5)
             })
 
+            describe('addition with a scalar', function(){
+                it('it increases the numerator by that much', function(){
+                    expect( new Fraction(1,6).add(1).equals( new Fraction(2, 6) )).toBe(true)
+                })
+
+                it('does not modify the original Fraction', function(){
+                    let frac = new Fraction(1,6)
+                    frac.add(new Fraction(1,2))
+                    expect(new Fraction(1,6).equals(frac)).toBe(true)
+                })
+            })
+
+
+
         })
 
         describe('subtraction', function(){
@@ -188,6 +202,10 @@ describe('Fractions', function() {
 
                 expect(diff.num).toEqual(0)
                 expect(diff.den).toEqual(5)
+            })
+
+            it('fails if passed an argument other than Fraction', function(){
+                expect( () => new Fraction(1,2).subtract(4) ).toThrow(ValueError)
             })
         })
 
@@ -296,6 +314,10 @@ describe('Fractions', function() {
                 expect(firstTest.den).toEqual(common)
                 expect(secondTest.den).toEqual(common)
             })
+        })
+
+        it('throws if something other than Fraction is passed', function(){
+            expect( () => new Fraction(1,2).commonDen(4) ).toThrow(ValueError)
         })
     })
 })

@@ -43,6 +43,10 @@ describe('Shared Utilities', function(){
         it('does not compute LCM when zero is included', function() {
             expect(() => lcm([5,34,17,0])).toThrow(ValueError)
         })
+
+        it('errors if anything other than a number is passed in', function(){
+            expect( () => lcm([3,7,12, null, 34]) ).toThrow(TypeError)
+        })
     })
 
     describe('type', function(){
@@ -73,6 +77,10 @@ describe('Shared Utilities', function(){
                 let result = checkArrContents(arr, desiredType)
                 expect(result).toBeTruthy()
             })
+        })
+
+        it('fails if passed something other than an array', function() {
+            expect( () => checkArrContents(new Fraction(1,2), 'Fraction') ).toThrow(TypeError)
         })
 
         it('fails if array has incongruous items', function() {

@@ -39,33 +39,38 @@ function type(value) {
     // Symbol.toStringTag often specifies the "display name" of the
     // object's class. It's used in Object.prototype.toString().
     const tag = value[Symbol.toStringTag]
+    /* istanbul ignore if */
     if (typeof tag === 'string') {
         return tag
     }
 
     // If it's a function whose source code starts with the "class" keyword
+    /* istanbul ignore if */
     if (
         baseType === 'function' &&
         Function.prototype.toString.call(value).startsWith('class')
-    ) {
+    ){
         return 'class'
     }
 
     // The name of the constructor; for example `Array`, `GeneratorFunction`,
     // `Number`, `String`, `Boolean` or `MyCustomClass`
+
     const className = value.constructor.name
+    /* istanbul ignore if */
     if (typeof className === 'string' && className !== '') {
         return className
     }
 
     // At this point there's no robust way to get the type of value,
     // so we use the base implementation.
+    /* istanbul ignore next */
     return baseType
 }
 
 function checkArrContents(arr, typeStr){
     if( !Array.isArray(arr) ){
-        throw new TypeError(`Must pass an Array of type ${typeStr}`)
+        throw new TypeError(`Must pass an Array of type ${typeStr}: you passed ${type(arr)} with value ${arr}`)
     }
     let not_intervals = arr.filter( item => !(type(item) === typeStr))
     if(not_intervals.length !== 0){
@@ -74,6 +79,7 @@ function checkArrContents(arr, typeStr){
     return true
 }
 
+/* istanbul ignore if */
 if (process.env['NODE_ENV'] === 'test') {
     exports.gcd = gcd
 }

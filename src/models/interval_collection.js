@@ -1,6 +1,6 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import { IntervalRangeError } from '../shared/errors'
+import { IntervalRangeError, ValueError } from '../shared/errors'
 import { lcm, type, checkArrContents } from '../shared/utils'
 
 class IntervalArr {
@@ -20,8 +20,9 @@ class IntervalArr {
     }
 
     push_(interval){
-        if(!type(interval) === 'Interval'){
-            throw new TypeError(`Can only add Intervals, you passed a ${type(interval)}.`)
+        if(type(interval) !== 'Interval'){
+            debugger
+            throw new ValueError(`Can only add Intervals, you passed a ${type(interval)}.`)
         } else if ( this.collection.length > 0 && interval.left.lessThan(this.collection[this.collection.length - 1].right) ) {
             throw new IntervalRangeError(`intervals must appear in order from left to right, starting at a minimum 0/1 and ending at a maximum of 1/1. The last endpoint of the interval collection is ${this.collection[this.collection.length - 1].right.str} and you attempted to append an interval starting at ${interval.left.str}, which is not allowed.`)
         }
@@ -67,11 +68,7 @@ class IntervalCollection {
 
     // pass the gaps or intervals arr (or any arr of intervals)
     constructor( intervalsArrArg ){
-        try {
-            checkArrContents(intervalsArrArg, 'Interval')
-        } catch(e) {
-            throw e
-        }
+        checkArrContents(intervalsArrArg, 'Interval')
 
         this.#myIntervals = new IntervalArr(intervalsArrArg)
         // count of intervals in the collection
@@ -114,6 +111,7 @@ class IntervalCollection {
 
 export default IntervalCollection
 
+/* istanbul ignore if */
 if(process.env['NODE_ENV'] === 'test') {
     exports.IntervalArr = IntervalArr
 }
