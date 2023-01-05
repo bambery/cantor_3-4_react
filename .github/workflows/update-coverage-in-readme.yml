@@ -15,12 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: run coverage report
+        run: npm run test:coverage | tee ./coverage.txt
+
       - name: Jest Coverage Comment
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
           hide-comment: true
-          coverage-summary-path: ./coverage/coverage-summary.json
+          coverage-path: ./coverage.txt
 
       - name: Check the output coverage
         run: |
@@ -35,7 +38,7 @@ jobs:
           auth: ${{ secrets.JEST_COVERAGE_COMMENT }}
           gistID: 5e90d640f8c212ab7bbac38f72323f80
           filename: jest-coverage-comment__main.json
-          label: Coverage
+          label: coverage
           message: ${{ steps.coverageComment.outputs.coverage }}%
           color: ${{ steps.coverageComment.outputs.color }}
           namedLogo: javascript
