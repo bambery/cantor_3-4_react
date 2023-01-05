@@ -1,9 +1,11 @@
 import IntervalCollection from '../models/interval_collection'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
-import { IntervalArr } from '../models/interval_collection'
+import { checkSequence } from '../models/interval_collection'
 import { type, checkArrContents } from '../shared/utils'
-import { IntervalRangeError, ValueError } from '../shared/errors'
+import { IntervalRangeError, ValueError, IntervalSequenceError } from '../shared/errors'
+
+window.type = type
 
 let sampleIntervals = describe.each`
     index   | interval1                | interval2                  | interval1Common                       | interval2Common
@@ -15,85 +17,18 @@ let sampleIntervals = describe.each`
 let sampleInterval1 = new Interval([ [0, 4], [1, 8] ])
 let sampleInterval2 = new Interval([ [2, 8], [3, 7] ])
 
-describe('IntervalArr', function() {
-
-    describe('creating private class IntervalArr', function() {
-
-        it('succeeds when passed an array of intervals', function(){
-            let intervalArr = new IntervalArr([sampleInterval1, sampleInterval2])
-            expect( type(intervalArr) ).toEqual('IntervalArr')
-            expect(intervalArr.all.length).toEqual(2)
-            expect(intervalArr.all[0].len.equals(new Fraction(1,8))).toBeTruthy()
-        })
-
-        it('succeeds when passed an empty array', function(){
-            let newint = new IntervalArr([])
-            expect(type(newint)).toEqual('IntervalArr')
-            expect(newint.collection.length).toEqual(0)
-        })
-
-        it('fails when passed an array of invalid data types', function(){
-            expect( () => new IntervalArr([sampleInterval1, 0]) ).toThrow(TypeError)
-        })
+describe('Ensure that all intervals to be added to the collection are sequential', function(){
+    it('Succeeds when passed an array of Intervals ordered by magnitude ascending', function(){
+        let intArr = [sampleInterval1, sampleInterval2]
+        expect(checkSequence(intArr)).toBeUndefined()
     })
 
-    describe('modifying IntervalArrs', function(){
-        it('push_ allows adding one new interval', function(){
-            let newint = new IntervalArr([])
-            expect(newint.collection.length).toEqual(0)
-            newint.push_(sampleInterval1)
-            expect(newint.collection.length).toEqual(1)
-            expect(newint.collection[0].left.equals(sampleInterval1.left)).toBeTruthy()
-            expect(newint.collection[0].right.equals(sampleInterval1.right)).toBeTruthy()
-        })
-
-        it('push_ does not allow adding a new interval which does not appear sequentially after the existing intervals', function(){
-            let newint = new IntervalArr([sampleInterval2])
-            expect( () => newint.push_(sampleInterval1) ).toThrow(IntervalRangeError)
-        })
-
-        it('push_ does not accept non-Interval arguments', function(){
-            let newint = new IntervalArr([sampleInterval2])
-            expect( () => newint.push_( new Fraction(1,2) )).toThrow(ValueError)
-        })
-
-        it('concat_ allows adding multiple new intervals', function(){
-            let newint = new IntervalArr([])
-
-            newint.concat_([sampleInterval1, sampleInterval2])
-
-            expect(newint.collection.length).toEqual(2)
-
-            expect(newint.collection[0].left.equals(sampleInterval1.left)).toBeTruthy()
-            expect(newint.collection[0].right.equals(sampleInterval1.right)).toBeTruthy()
-
-            expect(newint.collection[1].left.equals(sampleInterval2.left)).toBeTruthy()
-            expect(newint.collection[1].right.equals(sampleInterval2.right)).toBeTruthy()
-        })
-
-        it('concat_ does not allow adding multiple new intervals which do not appear sequentially after the existing intervals', function(){
-
-            let int0 = new Interval([ [0, 6], [1, 6] ])
-            let int1 = new Interval([ [3, 6], [4, 5] ])
-            let int2 = new Interval([ [4, 6], [5, 6] ])
-
-            let intarr = new IntervalArr([int2])
-            expect( () => intarr.concat_([int0, int1])).toThrow(IntervalRangeError)
-        })
+    it('Fails when passed an array of Intervals which are not in ascending order', function(){
+        let intArr = [sampleInterval2, sampleInterval1]
+        expect( () => checkSequence(intArr)).toThrow(IntervalSequenceError)
     })
 
-    sampleIntervals('converting all endpoints to a common denominator', function({ interval1, interval2, interval1Common, interval2Common }){
 
-        it('it converts all endpoints to a common denominator', () => {
-            let testArr = new IntervalArr([ new Interval(interval1), new Interval(interval2) ]).commonDen()
-            let correctArr = new IntervalArr([ new Interval(interval1Common), new Interval(interval2Common) ])
-
-            expect( testArr[0].left.equals(correctArr.all[0].left) ).toBeTruthy()
-            expect( testArr[0].right.equals(correctArr.all[0].right) ).toBeTruthy()
-            expect( testArr[1].left.equals(correctArr.all[1].left) ).toBeTruthy()
-            expect( testArr[1].right.equals(correctArr.all[1].right) ).toBeTruthy()
-        })
-    })
 })
 
 describe('IntervalCollection', function() {
@@ -111,15 +46,23 @@ describe('IntervalCollection', function() {
         new Fraction(7214, 14877)
     ]
 
-    describe('creating IntervalCollections', function() {
-        it('succeeds when passed an empty array', function(){
-            let newint = new IntervalCollection([])
-            expect(type(newint)).toEqual('IntervalCollection')
-            expect(newint.intervals.all.length).toEqual(0)
+    describe('Creating IntervalCollections', function() {
+        it('Succeeds when passed an empty array', function(){
+            let newColl = new IntervalCollection([])
+            expect(type(newColl)).toEqual('IntervalCollection')
+            expect(newColl.intervals.length).toEqual(0)
+            expect(newColl.intervals).toEqual([])
+        })
+
+        it('With no args passed to new, it initializes an empty set of Intervals', function(){
+            let newColl = new IntervalCollection()
+            expect(type(newColl)).toEqual('IntervalCollection')
+            expect(newColl.intervals.length).toEqual(0)
+            expect(newColl.intervals).toEqual([])
         })
     })
 
-    it('iterating through an IntervalCollections intervals with forEach', function(){
+    it('Iterating through an IntervalCollection\'s intervals with forEach', function(){
         let correct = [sampleInterval1, sampleInterval2]
         let intcol = new IntervalCollection([sampleInterval1, sampleInterval2])
         intcol.forEach( (interval, idx) => {
@@ -128,26 +71,7 @@ describe('IntervalCollection', function() {
         })
     })
 
-    it('concat_ two IntervalCollection', function(){
-        let newint = new IntervalCollection([])
-        let collection = [sampleInterval1, sampleInterval2]
-
-        newint.concat_(collection)
-
-        expect(newint.count).toEqual(2)
-
-        newint.forEach( (int, index) => {
-            expect(int.equals(collection[index]))
-        })
-
-        expect(newint.collection[0].left.equals(sampleInterval1.left)).toBeTruthy()
-        expect(newint.collection[0].right.equals(sampleInterval1.right)).toBeTruthy()
-
-        expect(newint.collection[1].left.equals(sampleInterval2.left)).toBeTruthy()
-        expect(newint.collection[1].right.equals(sampleInterval2.right)).toBeTruthy()
-    })
-
-    sampleIntervals('line segment and gap intervals', function({ index, interval1, interval2 }){
+    sampleIntervals('Line segment and gap intervals', function({ index, interval1, interval2 }){
         let int1 = new Interval(interval1)
         let int2 = new Interval(interval2)
 
@@ -158,11 +82,11 @@ describe('IntervalCollection', function() {
         })
 
         it('returns the set of line segment intervals', () => {
-            expect(checkArrContents(newint.intervals.all, 'Interval' )).toBeTruthy()
-            expect(newint.intervals.all.length).toEqual(2)
+            expect(checkArrContents(newint.intervals, 'Interval' )).toBeTruthy()
+            expect(newint.intervals.length).toEqual(2)
 
-            let test1Interval = newint.intervals.all[0]
-            let test2Interval = newint.intervals.all[1]
+            let test1Interval = newint.intervals[0]
+            let test2Interval = newint.intervals[1]
 
             expect(test1Interval.left.equals(int1.left)).toBeTruthy()
             expect(test1Interval.right.equals(int1.right)).toBeTruthy()
@@ -175,12 +99,25 @@ describe('IntervalCollection', function() {
         })
 
         it('returns the set of gap intervals', () => {
-            expect(checkArrContents(newint.gaps.all, 'Interval')).toBeTruthy()
-            expect(newint.gaps.all.length).toEqual(1)
-            let gap = newint.gaps.all[0]
+            expect(checkArrContents(newint.gaps, 'Interval')).toBeTruthy()
+            expect(newint.gaps.length).toEqual(1)
+            let gap = newint.gaps[0]
 
             expect(gap.left.equals(int1.right)).toBeTruthy()
             expect(gap.right.equals(int2.left)).toBeTruthy()
+        })
+    })
+
+    sampleIntervals('converting all endpoints to a common denominator', function({ interval1, interval2, interval1Common, interval2Common }){
+
+        it('it converts all endpoints to a common denominator', () => {
+            let testArr = new IntervalCollection([ new Interval(interval1), new Interval(interval2) ]).commonDen()
+            let correctColl = new IntervalCollection([ new Interval(interval1Common), new Interval(interval2Common) ])
+
+            expect( testArr[0].left.equals(correctColl.intervals[0].left) ).toBeTruthy()
+            expect( testArr[0].right.equals(correctColl.intervals[0].right) ).toBeTruthy()
+            expect( testArr[1].left.equals(correctColl.intervals[1].left) ).toBeTruthy()
+            expect( testArr[1].right.equals(correctColl.intervals[1].right) ).toBeTruthy()
         })
     })
 })

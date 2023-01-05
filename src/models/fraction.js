@@ -99,9 +99,7 @@ class Fraction {
     }
 
     add(rhs) {
-        if(type(rhs) === 'number'){
-            return new Fraction(this.num + rhs, this.den)
-        } else if(type(rhs) === 'Fraction'){
+        if(type(rhs) === 'Fraction'){
             let [ leftHS, rightHS ] = this.commonDen(rhs)
             let numerator = leftHS.num + rightHS.num
             if (numerator > leftHS.den){

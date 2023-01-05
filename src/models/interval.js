@@ -84,6 +84,10 @@ class Interval {
     equals(interval) {
         return(this.left.equals(interval.left) && this.right.equals(interval.right))
     }
+
+    lessThan(interval){
+        return(this.right.lessThan(interval.left))
+    }
 }
 
 Interval.unit = new Interval( new Fraction(0, 1), new Fraction(1, 1) )

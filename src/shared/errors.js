@@ -58,6 +58,18 @@ export class ValueError extends Error {
     }
 }
 
+export class IntervalSequenceError extends Error{
+    constructor(message, options) {
+        super(message, options)
+
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, ValueError)
+        }
+        this.name = 'IntervalSequenceError'
+        this.message = message ? message : 'An invalid action was performed with Intervals.'
+    }
+}
+
 export const FracError = {
     ZeroDenominator,
     NoNegativeFractions,
