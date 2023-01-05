@@ -3,9 +3,9 @@ class ZeroDenominator extends Error {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ZeroDenominator)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'ZeroDenominator'
+        this.name = this.constructor.name
         this.message = message ? message : 'Cannot have fractions with zero in the denominator'
     }
 }
@@ -15,9 +15,9 @@ class NoNegativeFractions extends Error {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, NoNegativeFractions)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'NoNegativeFractions'
+        this.name = this.constructor.name
         this.message = message ? message : 'Cannot support negative fractions'
     }
 }
@@ -27,9 +27,9 @@ class FractionTooLarge extends Error {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, FractionTooLarge)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'FractionTooLarge'
+        this.name = this.constructor.name
         this.message = message ? message : 'Cannot support fractions greater than 1'
     }
 }
@@ -39,9 +39,9 @@ export class IntervalRangeError extends Error {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, IntervalRangeError)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'IntervalRangeError'
+        this.name = this.constructor.name
         this.message = message ? message : 'An invalid value was passed'
     }
 }
@@ -51,9 +51,9 @@ export class ValueError extends Error {
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ValueError)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'ValueError'
+        this.name = this.constructor.name
         this.message = message ? message : 'An invalid value was passed as an argument'
     }
 }
@@ -63,9 +63,21 @@ export class IntervalSequenceError extends Error{
         super(message, options)
 
         if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, ValueError)
+            Error.captureStackTrace(this, this.constructor.name)
         }
-        this.name = 'IntervalSequenceError'
+        this.name = this.constructor.name
+        this.message = message ? message : 'An invalid action was performed with Intervals.'
+    }
+}
+
+export class ArgumentError extends Error {
+    constructor(message, options) {
+        super(message, options)
+
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor.name)
+        }
+        this.name = this.constructor.name
         this.message = message ? message : 'An invalid action was performed with Intervals.'
     }
 }

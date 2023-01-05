@@ -1,6 +1,6 @@
 import { removeIntervals, convertSegmentsToIntervals } from '../models/cantor'
 import Cantor from '../models/cantor'
-import { ValueError } from '../shared/errors'
+import { ArgumentError, ValueError } from '../shared/errors'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
 
@@ -167,6 +167,21 @@ describe('Cantor Library', function() {
 
 
     describe('Cantor iterations', function(){
+        it('New fails when asked to remove the first segment in a divided interval', function(){
+            expect( () => new Cantor(3, [1, 2], 1) ).toThrow(ValueError)
+        })
+
+        it('New fails when asked to remove the last segment in a divided interval', function(){
+            expect( () => new Cantor(4, [2, 4], 1) ).toThrow(ValueError)
+        })
+
+        it('New fails if passed incorrect parameters', function(){
+            expect( () => new Cantor([4], [2], 1) ).toThrow(ArgumentError)
+            expect( () => new Cantor(4, 2, 1) ).toThrow(ArgumentError)
+            expect( () => new Cantor(4, [2], null) ).toThrow(ArgumentError)
+
+        })
+
         describe('Standard Cantor: split into 3, remove middle', function(){
             describe('Performs 1 iteration of standard Cantor', function() {
                 let res = new Cantor(3, [2], 1)

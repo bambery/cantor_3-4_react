@@ -1,6 +1,6 @@
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
-import { ValueError, IntervalRangeError } from '../shared/errors'
+import { ArgumentError, ValueError, IntervalRangeError } from '../shared/errors'
 
 describe('Interval', function() {
     describe('creating intervals', function(){
@@ -39,11 +39,11 @@ describe('Interval', function() {
         })
 
         it('fails if one argument is not Fraction', function() {
-            expect( () => { new Interval(new Fraction(0,2), 0) }).toThrow(TypeError)
+            expect( () => { new Interval(new Fraction(0,2), 0) }).toThrow(ArgumentError)
         })
 
         it('fails if passed no arguments with new', function(){
-            expect( () => new Interval ).toThrow(TypeError)
+            expect( () => new Interval ).toThrow(ArgumentError)
         })
     })
 
@@ -58,7 +58,7 @@ describe('Interval', function() {
         ${[[0,2],[2,2]]}    | ${[[0,7],[7,7]]}  | ${true}
         ${[[1,3],[2,3]]}    | ${[[3,9],[6,9]]}  | ${true}
         ${[[1,3],[2,3]]}    | ${[[4,12],[7,9]]} | ${false}
-    `('Interval equality', ({interval1, interval2, equal}) => {
+    `('Interval equality', ({ interval1, interval2, equal }) => {
         expect(new Interval(interval1).equals(new Interval(interval2))).toBe(equal)
     })
 

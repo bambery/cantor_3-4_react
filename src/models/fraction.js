@@ -1,5 +1,5 @@
 import { lcm, type, checkArrContents } from '../shared/utils'
-import { ValueError, FracError } from '../shared/errors'
+import { FracError, ArgumentError } from '../shared/errors'
 
 class Fraction {
     #numerator = 1
@@ -59,7 +59,7 @@ class Fraction {
 
     commonDen(otherFrac){
         if (type(otherFrac) !== 'Fraction'){
-            throw new ValueError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
+            throw new ArgumentError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
         }
         const common = lcm([this.den, otherFrac.den])
         let numA = (this.num * (common/this.den))
@@ -88,7 +88,7 @@ class Fraction {
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
         if (type(rhs) !== 'Fraction'){
-            throw new ValueError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
+            throw new ArgumentError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
         }
         let [ leftHS, rightHS ] = this.commonDen(rhs)
         let numerator = leftHS.num - rightHS.num
@@ -107,7 +107,7 @@ class Fraction {
             }
             return new Fraction(numerator, leftHS.den)
         } else {
-            throw new TypeError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
+            throw new ArgumentError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
         }
     }
 
@@ -132,7 +132,7 @@ class Fraction {
         } else if (type(rhs) === 'Fraction'){
             return new Fraction(this.num * rhs.num, this.den * rhs.den)
         } else {
-            throw new TypeError('Can only multiply fractions by a scalar or another fraction.')
+            throw new ArgumentError('Can only multiply fractions by a scalar or another fraction.')
         }
     }
 }

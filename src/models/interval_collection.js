@@ -1,7 +1,7 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import { IntervalRangeError, ValueError, IntervalSequenceError } from '../shared/errors'
-import { lcm, type, checkArrContents } from '../shared/utils'
+import { IntervalSequenceError } from '../shared/errors'
+import { lcm, checkArrContents } from '../shared/utils'
 
 function checkSequence(intervalsArr){
     intervalsArr.forEach((interval, idx, arr) => {

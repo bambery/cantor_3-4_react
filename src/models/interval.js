@@ -1,5 +1,5 @@
 import { type, lcm, checkArrContents } from '../shared/utils'
-import { IntervalRangeError, ValueError } from '../shared/errors'
+import { IntervalRangeError, ArgumentError, ValueError } from '../shared/errors'
 import Fraction from './fraction'
 
 class Interval {
@@ -22,7 +22,7 @@ class Interval {
             tempLeft = leftEndpointArg
             tempRight = rightEndpointArg
         } else {
-            throw new TypeError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
+            throw new ArgumentError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
         }
 
         if (tempRight.lessThan(tempLeft)) {

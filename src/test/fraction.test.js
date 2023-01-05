@@ -1,5 +1,5 @@
 import Fraction from '../models/fraction'
-import { ValueError, FracError } from '../shared/errors'
+import { FracError, ArgumentError } from '../shared/errors'
 
 describe('Fractions', function() {
 
@@ -102,7 +102,7 @@ describe('Fractions', function() {
             let frac_4_5 = new Fraction(4, 5)
 
             it('does not modify the original fractions', function() {
-                let sum = frac_2_5.add(frac_1_5)
+                let sum = frac_2_5.add(frac_1_5) //eslint-disable-line
                 expect(frac_2_5.num).toEqual(2)
                 expect(frac_2_5.den).toEqual(5)
 
@@ -147,20 +147,9 @@ describe('Fractions', function() {
                 expect(sum.den).toEqual(5)
             })
 
-            describe('addition with a scalar', function(){
-                it('it increases the numerator by that much', function(){
-                    expect( new Fraction(1,6).add(1).equals( new Fraction(2, 6) )).toBe(true)
-                })
-
-                it('does not modify the original Fraction', function(){
-                    let frac = new Fraction(1,6)
-                    frac.add(new Fraction(1,2))
-                    expect(new Fraction(1,6).equals(frac)).toBe(true)
-                })
+            it('Throws if passed anything except a Fraction', function(){
+                expect( () => new Fraction(1,6).add(1)).toThrow(ArgumentError)
             })
-
-
-
         })
 
         describe('subtraction', function(){
@@ -169,7 +158,7 @@ describe('Fractions', function() {
             let frac_2_5 = new Fraction(2, 5)
 
             it('does not modify the original fractions', function(){
-                let diff = frac_5_7.subtract(frac_2_5)
+                let diff = frac_5_7.subtract(frac_2_5) //eslint-disable-line
 
                 expect(frac_5_7.num).toEqual(5)
                 expect(frac_5_7.den).toEqual(7)
@@ -205,7 +194,7 @@ describe('Fractions', function() {
             })
 
             it('fails if passed an argument other than Fraction', function(){
-                expect( () => new Fraction(1,2).subtract(4) ).toThrow(ValueError)
+                expect( () => new Fraction(1,2).subtract(4) ).toThrow(ArgumentError)
             })
         })
 
@@ -215,7 +204,7 @@ describe('Fractions', function() {
             ${[1, 2]}   | ${[1, 4]}     | ${[1, 8]}
             ${[0, 2]}   | ${[1, 4]}     | ${[0, 8]}
             ${[15, 20]} | ${[1, 7]}     | ${[15, 140]}
-            `('multiplying a fraction by another fraction', ({first, second, result}) => {
+            `('multiplying a fraction by another fraction', ({ first, second, result }) => {
                 [first, second, result] = [first, second, result].map( frac => new Fraction(frac) )
 
                 it(`multiply ${first.str} by ${second.str} to get ${result.str}`, () => {
@@ -229,12 +218,17 @@ describe('Fractions', function() {
             ${[2, 18]}  | ${3}      | ${[6, 18]}
             ${[5, 7]}   | ${0}      | ${[0, 7]}
             ${[5, 7]}   | ${1}      | ${[5, 7]}
-            `('multiplying a fraction by a scalar', ({frac, scalar, result}) => {
+            `('multiplying a fraction by a scalar', ({ frac, scalar, result }) => {
                 [frac, result] = [frac, result].map( arr => new Fraction(arr) )
 
                 it(`multiply ${frac.str} by ${scalar} to get ${result}`, () => {
                     expect(frac.mult(scalar).equals(result)).toBeTruthy()
                 })
+            })
+
+            it('Fails if passed something other than a scalar or a Fraction', function(){
+                let frac = new Fraction(1, 2)
+                expect( () => frac.mult([2]) ).toThrow(ArgumentError)
             })
         })
     }) // fraction arithmetic
@@ -283,7 +277,7 @@ describe('Fractions', function() {
             ${[60, 92]} | ${[15, 23]}
             ${[56, 86]} | ${[28, 43]}
             ${[56, 63]} | ${[8, 9]}
-        `('properly reduces fractions', ({original, result}) => {
+        `('properly reduces fractions', ({ original, result }) => {
             [original, result] = [original, result].map( frac => new Fraction(frac) )
             it(`reduce ${original.str} to ${result.str}`, () => {
                 expect(original.reduce().equals(result)).toBeTruthy()
@@ -300,7 +294,7 @@ describe('Fractions', function() {
             ${[1, 86]}  | ${[0, 2]}     | ${[1, 86]}    | ${[0, 86]}
             ${[6, 16]}  | ${[8, 24]}    | ${[18, 48]}   | ${[16, 48]}
             ${[4, 16]}  | ${[2, 8]}     | ${[4, 16]}    | ${[4, 16]}
-        `('given a second fraction, converts itself and the passed in fraction to a common denominator', ({first, second, firstCommon, secondCommon}) => {
+        `('given a second fraction, converts itself and the passed in fraction to a common denominator', ({ first, second, firstCommon, secondCommon }) => {
             [first, second, firstCommon, secondCommon] = [first, second, firstCommon, secondCommon].map( frac => new Fraction(frac) )
 
             it(`convert ${first.str} => ${firstCommon.str} and ${second.str} => ${secondCommon.str}`, () => {
@@ -317,7 +311,7 @@ describe('Fractions', function() {
         })
 
         it('throws if something other than Fraction is passed', function(){
-            expect( () => new Fraction(1,2).commonDen(4) ).toThrow(ValueError)
+            expect( () => new Fraction(1,2).commonDen(4) ).toThrow(ArgumentError)
         })
     })
 })
