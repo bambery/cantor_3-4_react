@@ -1,8 +1,8 @@
 name: Update Coverage in README
 on:
   push:
-#    branches:
-#      - main
+    branches:
+      - main
     paths-ignore:
       - '**/*.md'
       - '**/*.yml'
