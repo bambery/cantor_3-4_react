@@ -1,27 +1,43 @@
 import Fraction from '../models/fraction'
-import { FracError } from '../shared/errors'
+import { FracError, ArgumentError } from '../shared/errors'
 
 describe('Fractions', function() {
 
     describe('creating fractions', function() {
-        it('default creates a 1/1 fraction', function() {
+        it('default creates a 1/1 fraction if no arguments passed', function() {
             let frac = new Fraction
             expect(frac.num).toEqual(1)
             expect(frac.den).toEqual(1)
             expect( frac.num / frac.den).toEqual(1)
         })
-        it('creates a fraction for 1/2', function(){
+
+        it('creates a fraction for 1/2 passing in 1, 2', function(){
             let frac = new Fraction(1, 2)
             expect(frac.num).toEqual(1)
             expect(frac.den).toEqual(2)
             expect( frac.num / frac.den).toEqual(0.5)
         })
 
-        it('fails to create a fraction when only one number is passed in', function(){
-            expect( () => new Fraction(1) ).toThrow(TypeError)
+        it('creates a fraction for 1/2 passing in an Array [1, 2]', function(){
+            let frac = new Fraction([1, 2])
+            expect(frac.num).toEqual(1)
+            expect(frac.den).toEqual(2)
+            expect( frac.num / frac.den).toEqual(0.5)
         })
 
-        it('fails to create a fraction for 2/1', function(){
+        it('fails to create a fraction when only one number is passed in', function(){
+            expect( () => new Fraction(1) ).toThrow(ArgumentError)
+        })
+
+        it('fails to create when non-numbers are passed', function(){
+            expect( () => new Fraction(new Fraction(1,2), 2 )).toThrow(ArgumentError)
+        })
+
+        it('fails to create a fraction with zero in the denominator', function(){
+            expect( () => new Fraction(1,0)).toThrow(FracError.ZeroDenominator)
+        })
+
+        it('fails to create a fraction if it would be larger in magnitude than 1', function(){
             expect( () => new Fraction(2,1)).toThrow(FracError.FractionTooLarge)
         })
 
@@ -49,8 +65,20 @@ describe('Fractions', function() {
             [ new Fraction(0,2), new Fraction(1,2), true ],
             [ new Fraction(2,2), new Fraction(4,4), false ],
             [ new Fraction(2,3), new Fraction(1,8), false ],
-            [ new Fraction(1,3), new Fraction(3,4), true]])('lessThan', (lhs, rhs, answer) => {
+            [ new Fraction(1,3), new Fraction(3,4), true]
+        ])('lessThan', (lhs, rhs, answer) => {
             expect(lhs.lessThan(rhs)).toEqual(answer)
+        })
+
+        describe.each([
+            [ new Fraction(1,2), new Fraction(1,2), false ],
+            [ new Fraction(0,2), new Fraction(1,2), false ],
+            [ new Fraction(2,2), new Fraction(1,2), true ],
+            [ new Fraction(2,2), new Fraction(4,4), false ],
+            [ new Fraction(2,3), new Fraction(1,8), true ],
+            [ new Fraction(1,3), new Fraction(3,4), false]
+        ])('greaterThan', (lhs, rhs, answer) => {
+            expect(lhs.greaterThan(rhs)).toEqual(answer)
         })
 
         describe.each([
@@ -74,7 +102,7 @@ describe('Fractions', function() {
             let frac_4_5 = new Fraction(4, 5)
 
             it('does not modify the original fractions', function() {
-                let sum = frac_2_5.add(frac_1_5) // eslint-disable-line
+                let sum = frac_2_5.add(frac_1_5) //eslint-disable-line
                 expect(frac_2_5.num).toEqual(2)
                 expect(frac_2_5.den).toEqual(5)
 
@@ -119,6 +147,9 @@ describe('Fractions', function() {
                 expect(sum.den).toEqual(5)
             })
 
+            it('Throws if passed anything except a Fraction', function(){
+                expect( () => new Fraction(1,6).add(1)).toThrow(ArgumentError)
+            })
         })
 
         describe('subtraction', function(){
@@ -127,7 +158,7 @@ describe('Fractions', function() {
             let frac_2_5 = new Fraction(2, 5)
 
             it('does not modify the original fractions', function(){
-                let diff = frac_5_7.subtract(frac_2_5) // eslint-disable-line
+                let diff = frac_5_7.subtract(frac_2_5) //eslint-disable-line
 
                 expect(frac_5_7.num).toEqual(5)
                 expect(frac_5_7.den).toEqual(7)
@@ -161,80 +192,126 @@ describe('Fractions', function() {
                 expect(diff.num).toEqual(0)
                 expect(diff.den).toEqual(5)
             })
+
+            it('fails if passed an argument other than Fraction', function(){
+                expect( () => new Fraction(1,2).subtract(4) ).toThrow(ArgumentError)
+            })
         })
 
-        describe('reducing a fraction', function(){
-            describe.each([
-                [new Fraction(0,4)],
-                [new Fraction(0, 94)],
-                [new Fraction(0, 1)],
-                [new Fraction(0, 86)]
-            ])('does not reduce fractions with zero in the numerator', (orig) => {
-                it(`do not reduce ${orig.str}`, () => {
-                    expect(orig.reduce().num).toEqual(orig.num)
-                    expect(orig.reduce().den).toEqual(orig.den)
+        describe('multiplication', function(){
+            describe.each`
+            first       | second        | result
+            ${[1, 2]}   | ${[1, 4]}     | ${[1, 8]}
+            ${[0, 2]}   | ${[1, 4]}     | ${[0, 8]}
+            ${[15, 20]} | ${[1, 7]}     | ${[15, 140]}
+            `('multiplying a fraction by another fraction', ({ first, second, result }) => {
+                [first, second, result] = [first, second, result].map( frac => new Fraction(frac) )
+
+                it(`multiply ${first.str} by ${second.str} to get ${result.str}`, () => {
+                    expect(first.mult(second).equals(result)).toBeTruthy()
                 })
             })
 
-            describe.each([
-                [new Fraction(4,4)],
-                [new Fraction(94, 94)],
-                [new Fraction(1, 1)],
-                [new Fraction(86, 86)]
-            ])('does not reduce fractions with the same numerator and denominator', (orig) => {
-                it(`do not reduce ${orig.str}`, () => {
-                    expect(orig.reduce().num).toEqual(orig.num)
-                    expect(orig.reduce().den).toEqual(orig.den)
+            describe.each`
+            frac        | scalar    | result
+            ${[1, 2]}   | ${2}      | ${[1, 1]}
+            ${[2, 18]}  | ${3}      | ${[6, 18]}
+            ${[5, 7]}   | ${0}      | ${[0, 7]}
+            ${[5, 7]}   | ${1}      | ${[5, 7]}
+            `('multiplying a fraction by a scalar', ({ frac, scalar, result }) => {
+                [frac, result] = [frac, result].map( arr => new Fraction(arr) )
+
+                it(`multiply ${frac.str} by ${scalar} to get ${result}`, () => {
+                    expect(frac.mult(scalar).equals(result)).toBeTruthy()
                 })
             })
 
-            describe.each([
-                [new Fraction(1,4)],
-                [new Fraction(13, 94)],
-                [new Fraction(27, 35)],
-                [new Fraction(3, 86)]
-            ])('does not reduce fractions that cannot be reduced', (orig) => {
-                it(`do not reduce ${orig.str}`, () => {
-                    expect(orig.reduce().num).toEqual(orig.num)
-                    expect(orig.reduce().den).toEqual(orig.den)
-                })
+            it('Fails if passed something other than a scalar or a Fraction', function(){
+                let frac = new Fraction(1, 2)
+                expect( () => frac.mult([2]) ).toThrow(ArgumentError)
             })
+        })
+    }) // fraction arithmetic
 
-            describe.each([
-                [new Fraction(2,4), new Fraction(1,2)],
-                [new Fraction(60, 94), new Fraction(30, 47)],
-                [new Fraction(60, 92), new Fraction(15, 23)],
-                [new Fraction(56, 86), new Fraction(28, 43)],
-                [new Fraction(56, 63), new Fraction(8, 9)]
-            ])('properly reduces fractions', (orig, result) => {
-                it(`reduce ${orig.str} to ${result.str}`, () => {
-                    expect(orig.reduce().num).toEqual(result.num)
-                    expect(orig.reduce().den).toEqual(result.den)
-                })
+    describe('reducing a fraction', function(){
+        describe.each([
+            [new Fraction(0,4)],
+            [new Fraction(0, 94)],
+            [new Fraction(0, 1)],
+            [new Fraction(0, 86)]
+        ])('does not reduce fractions with zero in the numerator', (orig) => {
+            it(`do not reduce ${orig.str}`, () => {
+                expect(orig.reduce().num).toEqual(orig.num)
+                expect(orig.reduce().den).toEqual(orig.den)
+            })
+        })
+
+        describe.each([
+            [new Fraction(4,4)],
+            [new Fraction(94, 94)],
+            [new Fraction(1, 1)],
+            [new Fraction(86, 86)]
+        ])('does not reduce fractions with the same numerator and denominator', (orig) => {
+            it(`do not reduce ${orig.str}`, () => {
+                expect(orig.reduce().num).toEqual(orig.num)
+                expect(orig.reduce().den).toEqual(orig.den)
+            })
+        })
+
+        describe.each([
+            [new Fraction(1,4)],
+            [new Fraction(13, 94)],
+            [new Fraction(27, 35)],
+            [new Fraction(3, 86)]
+        ])('does not reduce fractions that cannot be reduced', (orig) => {
+            it(`do not reduce ${orig.str}`, () => {
+                expect(orig.reduce().num).toEqual(orig.num)
+                expect(orig.reduce().den).toEqual(orig.den)
+            })
+        })
+
+        describe.each`
+            original    | result
+            ${[2,4]}    | ${[1,2]}
+            ${[60, 94]} | ${[30, 47]}
+            ${[60, 92]} | ${[15, 23]}
+            ${[56, 86]} | ${[28, 43]}
+            ${[56, 63]} | ${[8, 9]}
+        `('properly reduces fractions', ({ original, result }) => {
+            [original, result] = [original, result].map( frac => new Fraction(frac) )
+            it(`reduce ${original.str} to ${result.str}`, () => {
+                expect(original.reduce().equals(result)).toBeTruthy()
             })
         })
     })
 
-    describe('static class method: Fraction.commonDen', function() {
-        describe.each([
-            [new Fraction(5, 7), new Fraction(1, 6), new Fraction(30, 42), new Fraction(7, 42)],
-            [new Fraction(5, 7), new Fraction(30, 47), new Fraction(235, 329), new Fraction(210, 329)],
-            [new Fraction(3, 4), new Fraction(7, 12), new Fraction(9, 12), new Fraction(7, 12)],
-            [new Fraction(1, 86), new Fraction(0, 2), new Fraction(1, 86), new Fraction(0, 86)],
-            [new Fraction(6, 16), new Fraction(8, 24), new Fraction(18, 48), new Fraction(16, 48)],
-            [new Fraction(4, 16), new Fraction(2, 8), new Fraction(4, 16), new Fraction(4, 16)]
-        ])('converts itself and the passed in fraction to a common denominator', (first, second, firstResult, secondResult) => {
-            it(`convert ${first.str} => ${firstResult.str} and ${second.str} => ${secondResult.str}`, () => {
-                let [firstTest, secondTest] = Fraction.commonDen(first, second)
+    describe('finding a common denominator', function() {
+        describe.each`
+            first       | second        | firstCommon   | secondCommon
+            ${[5, 7]}   | ${[1, 6]}     | ${[30, 42]}   | ${[7, 42]}
+            ${[5, 7]}   | ${[30, 47]}   | ${[235, 329]} | ${[210, 329]}
+            ${[3, 4]}   | ${[7, 12]}    | ${[9, 12]}    | ${[7, 12]}
+            ${[1, 86]}  | ${[0, 2]}     | ${[1, 86]}    | ${[0, 86]}
+            ${[6, 16]}  | ${[8, 24]}    | ${[18, 48]}   | ${[16, 48]}
+            ${[4, 16]}  | ${[2, 8]}     | ${[4, 16]}    | ${[4, 16]}
+        `('given a second fraction, converts itself and the passed in fraction to a common denominator', ({ first, second, firstCommon, secondCommon }) => {
+            [first, second, firstCommon, secondCommon] = [first, second, firstCommon, secondCommon].map( frac => new Fraction(frac) )
 
-                expect(firstTest.num).toEqual(firstResult.num)
-                expect(firstTest.den).toEqual(firstResult.den)
+            it(`convert ${first.str} => ${firstCommon.str} and ${second.str} => ${secondCommon.str}`, () => {
+                let [firstTest, secondTest] = first.commonDen(second)
+                let common = firstCommon.den
 
-                expect(secondTest.num).toEqual(secondResult.num)
-                expect(secondTest.den).toEqual(secondResult.den)
+                expect(firstTest.equals(firstCommon)).toBeTruthy()
+                expect(secondTest.equals(secondCommon)).toBeTruthy()
 
-                expect(firstResult.den).toEqual(secondResult.den)
+                expect(firstTest.den).toEqual(secondTest.den)
+                expect(firstTest.den).toEqual(common)
+                expect(secondTest.den).toEqual(common)
             })
+        })
+
+        it('throws if something other than Fraction is passed', function(){
+            expect( () => new Fraction(1,2).commonDen(4) ).toThrow(ArgumentError)
         })
     })
 })

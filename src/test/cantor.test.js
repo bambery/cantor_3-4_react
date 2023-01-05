@@ -1,13 +1,99 @@
-import { removeIntervals } from '../models/cantor'
+import { removeIntervals, convertSegmentsToIntervals } from '../models/cantor'
 import Cantor from '../models/cantor'
-import { ValueError } from '../shared/errors'
+import { ArgumentError, ValueError } from '../shared/errors'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
 
 describe('Cantor Library', function() {
-    describe('removeIntervals', function() {
+    describe('Convert segment numbers to intervals', function(){
+        // standard Cantor first iter
+        it('Given the unit Interval, segment length of 1/3, and segment [2], return the interval [1/3, 2/3]', function(){
+            let gaps = convertSegmentsToIntervals(Interval.unit, new Fraction(1, 3), [2])
+            let correct = new Interval([[1, 3], [2, 3]])
+            expect(gaps[0].equals(correct)).toBeTruthy()
+        })
 
-        describe('one centered gap of size 1/5, taking [2] from a 5-segment line', function() {
+        // Cantor-like with 5 segments, removing center, first iter
+        it('given the unit interval, segment length 1/5, and segment [3], return one interval [2/5, 3/5]', function(){
+            let gaps = convertSegmentsToIntervals(
+                Interval.unit,
+                new Fraction(1, 5),
+                [3]
+            )
+            let correct = new Interval([[2,5],[3,5]])
+
+            expect(gaps[0].equals(correct)).toBeTruthy()
+        })
+
+        // still symmetrical, starting with Unit, removing 2nd and 4th segments out of 5, first iter
+        it('given the unit Interval, segment length of 1/5, and segments [2, 4], return two intervals [1/5, 2/5], [3/5, 4/5]', function() {
+            let gaps = convertSegmentsToIntervals(
+                Interval.unit,
+                new Fraction(1, 5),
+                [2, 4])
+            let correct = [
+                new Interval([[1,5], [2,5]]),
+                new Interval([[3,5], [4,5]])
+            ]
+
+            gaps.forEach( (gap, idx) => {
+                expect(gap.equals(correct[idx])).toBeTruthy()
+            })
+        })
+
+        // still symmetrical, starting with a first iteration interval, removing 2nd and 4th segments out of 5, second iter
+        it('given the Interval [2/5, 3/5], segment length 1/25, and segments [2, 4], return two intervals of [11/25, 12/25], [13/25, 14/25]', function(){
+            let gaps = convertSegmentsToIntervals(
+                new Interval([[2,5],[3,5]]),
+                new Fraction(1, 25),
+                [2, 4]
+            )
+            let correct = [
+                new Interval([[11,25], [12,25]]),
+                new Interval([[13,25], [14,25]])
+            ]
+
+            gaps.forEach( (gap, idx) => {
+                expect(gap.equals(correct[idx])).toBeTruthy()
+            })
+        })
+
+        // asymmetrical with gap of size greater than 1 segment, 5-segmented line removing [2, 3] to produce one interval
+        it('given the unit Interval, segment length 1/5, and segments [2, 3], return the interval [1/5, 3/5]', function(){
+            let gaps = convertSegmentsToIntervals(
+                Interval.unit,
+                new Fraction(1, 5),
+                [2, 3]
+            )
+            let correct = [
+                new Interval([[1,5], [3,5]])
+            ]
+
+            expect(gaps[0].equals(correct[0])).toBeTruthy()
+        })
+
+        // asymmetrical removing gaps of different sizes from 7-segment line
+        it('given Interval [3/7, 4/7], remove gaps [3, 5, 6] from a 7-segmented interval to return 2 intervals', function(){
+
+            let gaps = convertSegmentsToIntervals(
+                new Interval([[3,7],[4,7]]),
+                new Fraction(1, 49),
+                [3, 5, 6]
+            )
+            let correct = [
+                new Interval([[23,49], [24,49]]),
+                new Interval([[25,49], [27,49]])
+            ]
+
+            gaps.forEach( (gap, idx) => {
+                expect(gap.equals(correct[idx])).toBeTruthy()
+            })
+        })
+
+    })
+
+    describe('removeIntervals', function() {
+        describe('one uncentered gap of size 1/5, taking [2] from a 5-segment line', function() {
             let res = removeIntervals(Interval.unit, 5, [2])
 
             it('produces 2 intervals', function(){
@@ -79,7 +165,23 @@ describe('Cantor Library', function() {
         })
     })
 
+
     describe('Cantor iterations', function(){
+        it('New fails when asked to remove the first segment in a divided interval', function(){
+            expect( () => new Cantor(3, [1, 2], 1) ).toThrow(ValueError)
+        })
+
+        it('New fails when asked to remove the last segment in a divided interval', function(){
+            expect( () => new Cantor(4, [2, 4], 1) ).toThrow(ValueError)
+        })
+
+        it('New fails if passed incorrect parameters', function(){
+            expect( () => new Cantor([4], [2], 1) ).toThrow(ArgumentError)
+            expect( () => new Cantor(4, 2, 1) ).toThrow(ArgumentError)
+            expect( () => new Cantor(4, [2], null) ).toThrow(ArgumentError)
+
+        })
+
         describe('Standard Cantor: split into 3, remove middle', function(){
             describe('Performs 1 iteration of standard Cantor', function() {
                 let res = new Cantor(3, [2], 1)
@@ -95,7 +197,7 @@ describe('Cantor Library', function() {
                     ${0}        | ${1}  | ${[2, 3]}     | ${[3, 3]}
                 `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -121,7 +223,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${3}  | ${[8, 9]}     | ${[9, 9]}
                 `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -155,7 +257,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${8}  | ${[24, 25]}   | ${[25, 25]}
                 `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -181,7 +283,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${3}  | ${[21, 25]}   | ${[25, 25]}
                 `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -200,7 +302,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${3}  | ${[16, 18]}   | ${[18, 18]}
                     `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -225,7 +327,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${8}  | ${[45, 49]}   | ${[49, 49]}
                     `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -250,7 +352,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${8}  | ${[48, 49]}   | ${[49, 49]}
                     `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })
@@ -275,7 +377,7 @@ describe('Cantor Library', function() {
                     ${1}        | ${8}  | ${[63, 64]}   | ${[64, 64]}
                     `('performs 2 iterations', ({ iteration, index, left, right }) => {
                     it(`iteration ${iteration}[${index}] has interval [${left[0]}/${left[1]}, ${right[0]}/${right[1]}]`, () => {
-                        let interval = res.iterations[iteration].intervals.all[index]
+                        let interval = res.iterations[iteration].intervals[index]
                         expect(interval.left.equals( new Fraction(left) )).toBeTruthy()
                         expect(interval.right.equals( new Fraction(right) )).toBeTruthy()
                     })

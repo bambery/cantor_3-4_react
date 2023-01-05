@@ -1,5 +1,5 @@
 import { type, lcm, checkArrContents } from '../shared/utils'
-import { IntervalRangeError, ValueError } from '../shared/errors'
+import { IntervalRangeError, ArgumentError, ValueError } from '../shared/errors'
 import Fraction from './fraction'
 
 class Interval {
@@ -22,7 +22,7 @@ class Interval {
             tempLeft = leftEndpointArg
             tempRight = rightEndpointArg
         } else {
-            throw new TypeError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
+            throw new ArgumentError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
         }
 
         if (tempRight.lessThan(tempLeft)) {
@@ -81,16 +81,12 @@ class Interval {
         return remainingSegments
     }
 
-    // returns a new interval representing the sum of the two sequential intervals
-    add(intToAdd) {
-        let commonDenominator = lcm([this.left.den, this.right.den, intToAdd.left.den, intToAdd.right.den])
-        let intCommon = this.commonDen(commonDenominator)
-        let addCommon = intToAdd.commonDen(commonDenominator)
-        if(intCommon.right.num + 1 !== addCommon.left.num){
-            throw new IntervalRangeError(`The given interval, ${intToAdd.str}, is not sequrntial to this interval, ${this.str}.`)
-        }
+    equals(interval) {
+        return(this.left.equals(interval.left) && this.right.equals(interval.right))
+    }
 
-        return new Interval(intCommon.left, addCommon.right)
+    lessThan(interval){
+        return(this.right.lessThan(interval.left))
     }
 }
 

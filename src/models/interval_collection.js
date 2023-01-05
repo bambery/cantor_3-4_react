@@ -1,54 +1,72 @@
 import Fraction from './fraction'
 import Interval from './interval'
-import { IntervalRangeError } from '../shared/errors'
-import { lcm, type, checkArrContents } from '../shared/utils'
+import { IntervalSequenceError } from '../shared/errors'
+import { lcm, checkArrContents } from '../shared/utils'
 
-class IntervalArr {
+function checkSequence(intervalsArr){
+    intervalsArr.forEach((interval, idx, arr) => {
+        if( (idx !== arr.length - 1) && !(interval.lessThan(arr[idx + 1])) ){
+            throw new IntervalSequenceError(`When building an IntervalCollection, the interval ${interval.str} cannot be followed by ${arr[idx+1].str}`)
+        }
+    })
+}
 
-    constructor( intervalArrArg ) {
-        try {
-            checkArrContents(intervalArrArg, 'Interval')
-        } catch (e) {
-            throw e
+// input: array of one or more Line Segments
+class IntervalCollection {
+    #myIntervals = []
+
+    // pass the gaps or intervals arr (or any arr of intervals)
+    constructor( intervalsArr ){
+        if(intervalsArr !== undefined){
+            checkArrContents(intervalsArr, 'Interval')
+            checkSequence(intervalsArr)
+            this.#myIntervals = intervalsArr
         }
 
-        this.collection = intervalArrArg
+        this.count = this.#myIntervals.length
+        this.str = `{IntervalCollection - count: ${this.count}, tot len: ${this.len.str} collection: ${this.#myIntervals.map(interval => interval.str)}}`
     }
 
-    get all() {
-        return this.collection
+    get intervals() {
+        return [...this.#myIntervals]
     }
 
-    push_(interval){
-        if(!type(interval) === 'Interval'){
-            throw new TypeError(`Can only add Intervals, you passed a ${type(interval)}.`)
-        } else if ( this.collection.length > 0 && interval.left.lessThan(this.collection[this.collection.length - 1].right) ) {
-            throw new IntervalRangeError(`intervals must appear in order from left to right, starting at a minimum 0/1 and ending at a maximum of 1/1. The last endpoint of the interval collection is ${this.collection[this.collection.length - 1].right.str} and you attempted to append an interval starting at ${interval.left.str}, which is not allowed.`)
+    // total length of all intervals in collection
+    get len() {
+        return this.intervals.reduce((acc, curr) => acc.add(curr.len), new Fraction(0,1))
+    }
+
+    // total length of all gaps in this collection
+    get gapLen() {
+        return (Fraction.unit).subtract(this.len)
+    }
+
+    get gaps() {
+        const g = []
+        for ( let i = 0; i < this.count - 1; i++) {
+            g.push(new Interval( this.intervals[i].right, this.intervals[i+1].left))
         }
-        this.collection.push(interval)
+        return g
     }
 
-    concat_(intervalArr) {
-        checkArrContents(intervalArr, 'Interval')
-        try {
-            intervalArr.forEach( inter => this.push_(inter) )
-        } catch(e) {
-            throw e
+    forEach(cb) {
+        for(let i = 0; i < this.count; i+=1){
+            cb(this.#myIntervals[i], i, this)
         }
     }
 
-    // convert all fractions to use a common denominator - used for display purposes
+    // convert all endpoints in the interval to a common denominator - used for display
     commonDen() {
         let denominators = []
 
-        this.collection.forEach( interval => {
+        this.intervals.forEach( interval => {
             denominators.push(interval.left.den)
             denominators.push(interval.right.den)
         })
 
         let smallestDen = lcm(denominators)
 
-        let common = this.collection.map( interval => {
+        let common = this.intervals.map( interval => {
             const Lmultiple     = smallestDen / interval.left.den
             const Rmultiple     = smallestDen / interval.right.den
             const tempSeg = new Interval(
@@ -61,59 +79,11 @@ class IntervalArr {
     }
 }
 
-// input: array of one or more Line Segments
-class IntervalCollection {
-    #myIntervals
-
-    // pass the gaps or intervals arr (or any arr of intervals)
-    constructor( intervalsArrArg ){
-        try {
-            checkArrContents(intervalsArrArg, 'Interval')
-        } catch(e) {
-            throw e
-        }
-
-        this.#myIntervals = new IntervalArr(intervalsArrArg)
-        // count of intervals in the collection
-        this.count = this.#myIntervals.collection.length
-        this.str = `{IntervalCollection - count: ${this.count}, collection: ${this.intervals.all.map(interval => interval.str)}}`
-    }
-
-    get intervals() {
-        return this.#myIntervals
-    }
-
-    // total length of all intervals in collection
-    get len() {
-        return this.intervals.all.reduce((acc, curr) => acc.add(curr.len), new Fraction(0,1))
-    }
-
-    // total length of all gaps in this collection
-    get gapLen() {
-        return (Fraction.unit).subtract(this.len)
-    }
-
-    get gaps() {
-        const g = new IntervalArr([])
-        for ( let i = 0; i < this.count - 1; i++) {
-            g.push_(new Interval( this.intervals.all[i].right, this.intervals.all[i+1].left))
-        }
-        return g
-    }
-
-    concat_(intervalArr) {
-        this.#myIntervals.all.concat_(intervalArr)
-    }
-
-    forEach(cb) {
-        for(let i = 0; i < this.count; i+=1){
-            cb(this.#myIntervals.all[i], i, this)
-        }
-    }
-}
+IntervalCollection.prototype.toString = function icToString() { return this.str }
 
 export default IntervalCollection
 
+/* istanbul ignore next */
 if(process.env['NODE_ENV'] === 'test') {
-    exports.IntervalArr = IntervalArr
+    exports.checkSequence = checkSequence
 }

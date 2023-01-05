@@ -47,7 +47,8 @@
   "jest": {
       "coveragePathIgnorePatterns" : [
           "./src/App.js",
-          "./src/index.js"
+          "./src/index.js",
+          "./src/shared/errors.js"
       ]
   }
 }

@@ -1,5 +1,5 @@
 import { lcm, type, checkArrContents, gcd } from '../shared/utils'
-import { ValueError } from '../shared/errors'
+import { ValueError, ArgumentError } from '../shared/errors'
 import Fraction from '../models/fraction'
 
 describe('Shared Utilities', function(){
@@ -43,6 +43,10 @@ describe('Shared Utilities', function(){
         it('does not compute LCM when zero is included', function() {
             expect(() => lcm([5,34,17,0])).toThrow(ValueError)
         })
+
+        it('errors if anything other than a number is passed in', function(){
+            expect( () => lcm([3,7,12, null, 34]) ).toThrow(ArgumentError)
+        })
     })
 
     describe('type', function(){
@@ -75,9 +79,13 @@ describe('Shared Utilities', function(){
             })
         })
 
+        it('fails if passed something other than an array', function() {
+            expect( () => checkArrContents(new Fraction(1,2), 'Fraction') ).toThrow(ArgumentError)
+        })
+
         it('fails if array has incongruous items', function() {
-            expect( () => checkArrContents([ 1, 2, 4, '5', 6], 'number')).toThrow(TypeError)
-            expect( () => checkArrContents([ new Fraction(1,2), new Fraction(1,3), undefined, new Fraction(1, 6)], 'Fraction')).toThrow(TypeError)
+            expect( () => checkArrContents([ 1, 2, 4, '5', 6], 'number')).toThrow(ArgumentError)
+            expect( () => checkArrContents([ new Fraction(1,2), new Fraction(1,3), undefined, new Fraction(1, 6)], 'Fraction')).toThrow(ArgumentError)
         })
     })
 })

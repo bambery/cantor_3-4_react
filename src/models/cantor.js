@@ -1,16 +1,24 @@
 import Fraction from './fraction'
 import Interval from './interval'
 import IntervalCollection from './interval_collection'
-import { ValueError } from '../shared/errors'
+import { ValueError, ArgumentError } from '../shared/errors'
+import { type, checkArrContents } from '../shared/utils'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
 
 // returns an array of IntervalCollections, where each IntervalCollection is one iteration of Cantor
 export default class Cantor {
-    constructor( numSegments = 3, toRemove = [2], numIter = 1 ){
-        if(toRemove.includes(1) || toRemove.includes(numSegments)){
+    constructor(numSegments, toRemove, numIter){
+        if(
+            type(numSegments) !== 'number'
+            || !( type(toRemove) === 'Array' && checkArrContents(toRemove, 'number') )
+            || type(numIter) !== 'number'
+        ){
+            throw new ArgumentError('For new Cantor, must pass the number of segments to divide the interval, an array of the segment numbers to be removed, and the number of Cantor iterations to perform.')
+        } else if(toRemove.includes(1) || toRemove.includes(numSegments)){
             throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
         }
+
         toRemove = toRemove.sort( (a,b) => a-b )
 
         this.numSegments = numSegments
@@ -97,6 +105,8 @@ function convertSegmentsToIntervals(interval, segmentLength, segNum){
     return intervals
 }
 
+/* istanbul ignore next */
 if(process.env['NODE_ENV'] === 'test') {
     exports.removeIntervals = removeIntervals
+    exports.convertSegmentsToIntervals = convertSegmentsToIntervals
 }
