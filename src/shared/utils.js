@@ -1,4 +1,4 @@
-import { ValueError } from './errors'
+import { ValueError, ArgumentError } from './errors'
 
 function gcd(a, b){
     return b === 0 ? a : gcd(b, a % b)
@@ -70,11 +70,11 @@ function type(value) {
 
 function checkArrContents(arr, typeStr){
     if( !Array.isArray(arr) ){
-        throw new TypeError(`Must pass an Array of type ${typeStr}: you passed ${type(arr)} with value ${arr}`)
+        throw new ArgumentError(`Must pass an Array of type ${typeStr}: you passed ${type(arr)} with value ${arr}`)
     }
     let not_intervals = arr.filter( item => !(type(item) === typeStr))
     if(not_intervals.length !== 0){
-        throw new TypeError(`Must pass an Array of ${typeStr}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
+        throw new ArgumentError(`Must pass an Array of ${typeStr}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
     }
     return true
 }

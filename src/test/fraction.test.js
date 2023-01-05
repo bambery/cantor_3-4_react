@@ -26,11 +26,11 @@ describe('Fractions', function() {
         })
 
         it('fails to create a fraction when only one number is passed in', function(){
-            expect( () => new Fraction(1) ).toThrow(TypeError)
+            expect( () => new Fraction(1) ).toThrow(ArgumentError)
         })
 
         it('fails to create when non-numbers are passed', function(){
-            expect( () => new Fraction(new Fraction(1,2), 2 )).toThrow(TypeError)
+            expect( () => new Fraction(new Fraction(1,2), 2 )).toThrow(ArgumentError)
         })
 
         it('fails to create a fraction with zero in the denominator', function(){

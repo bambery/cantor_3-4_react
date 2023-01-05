@@ -30,7 +30,7 @@ class Fraction {
             numerator = numeratorArg
             denominator = denominatorArg
         } else {
-            throw new TypeError(`Must send either an Array of two numbers, or two numbers to new Fraction: you passed ${numeratorArg}, ${denominatorArg}`)
+            throw new ArgumentError(`Must send either an Array of two numbers, or two numbers to new Fraction: you passed ${numeratorArg}, ${denominatorArg}`)
         }
 
         if(denominator === 0){
