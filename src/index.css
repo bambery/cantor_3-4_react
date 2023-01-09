@@ -1,13 +1,100 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    width: 95%;
+    margin: 2em auto;
+    font-family: actor, sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+a {
+    color: #006ec5;
+}
+
+.setup-cantor-container {
+    display: flex;
+    justify-content: center;
+}
+
+.setup-cantor {
+    max-width: 1500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    column-gap: 20px;
+}
+
+.setup-step {
+    min-width: 200px;
+    min-height: 150px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #c9f1fd;
+    flex: 1 1 0;
+    border: 2px solid #c0c0c0;
+}
+
+.title {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.instruction-box {
+    width: 95%;
+    min-height: 50px;
+    background-color: white;
+    flex-grow: 1;
+    padding: 10px;
+    text-align: left;
+}
+
+.instruction {
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.page-header {
+    display: flex;
+    height: 75px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#page-title {
+    font-family: 'Bakbak One', sans-serif;
+    font-size: 2.5em;
+    color: black;
+    margin: 0;
+}
+
+#credit-and-github {
+    padding: 10px;
+    margin-right: 50px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    font-size: 1em;
+    align-items: center;
+}
+
+#github-logo {
+    width: 50px;
+    height: 50px;
+    overflow: auto;
+    grid-column: 1;
+    grid-row: 1 / -1;
+    background-image: url("./shared/assets/github-mark.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#author {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#github-link {
+    grid-column: 2;
+    grid-row: 2;
 }
