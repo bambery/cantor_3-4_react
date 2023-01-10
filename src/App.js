@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react'
-import { strToNumArr } from './shared/utils'
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import Cantor from './models/cantor'
@@ -8,12 +7,14 @@ import Cantor from './models/cantor'
 //import logo from './logo.svg';
 //import './App.css'
 
-window.strToNumArr = strToNumArr
-
 function App() {
     const [numSegments, setNumSegments] = useState(4)
-    const [toRemove, setToRemove] = useState([2, 3])
+    const [numSegmentsStr, setNumSegmentsStr] = useState("4")
+    const [toRemove, setToRemove] = useState([3])
+    const [toRemoveStr, setToRemoveStr] = useState("3")
     const [numIter, setNumIter] = useState(1)
+    const [numIterStr, setNumIterStr] = useState("1")
+
     const [formErrors, setFormErrors] = useState({
         'numSegments':  null,
         'toRemove':     null,
@@ -25,39 +26,67 @@ function App() {
     const maxIter = 50
 
     const inputErrors = {
-        'numSegments': `Please enter a number greater than 1 and less then ${maxSegments}.`,
-        'toRemove': `Cannot remove the first or last segment in an interval. Please enter a list of numbers between 2 and ${maxSegments - 1}.`,
+        'numSegments': `Please enter a number greater than 1 and less than ${maxSegments + 1}.`,
+        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${numSegments - 1}. The first and last intervals may not be removed.`,
         'numIter': `Please enter a number between 1 and ${maxIter}.`
     }
 
     const handleNumSegmentsChange = (event) => {
-        setNumSegments(event.target.value)
+        setNumSegmentsStr(event.target.value)
     }
 
     const handleToRemoveChange = (event) => {
-        setToRemove(strToNumArr(event.target.value))
+        setToRemoveStr(event.target.value)
     }
 
     const handleNumIterChange = (event) => {
-        setNumIter(event.target.value)
+        setNumIterStr(event.target.value)
     }
 
     const handleLoseFocus = (event) => {
         const elementName = event.target.name
         let newVal = event.target.value
-        let hasError = null
+        let hasError = false
 
-        switch(elementName) {
-            case 'numSegments':
-                setToRemove([])
-                hasError = !(newVal === 'undefined' || (newVal > 2 && newVal < maxSegments))
-                break
-            case 'toRemove':
-                newVal = newVal.split(',')
-                hasError = !newVal.every( (val) => val > 1 && val <= numSegments )
-                break
-            case 'numIter':
-                hasError = !(newVal > 0 && newVal <= maxIter)
+        if(elementName == 'numSegments') {
+            // regex is for ALLOWED
+            let legal = /^\s*\d\s*$/
+            if(
+                !numSegmentsStr.match(legal) ||
+                !(newVal > 2 && newVal <= maxSegments)
+            ){
+                hasError = true
+                setNumSegments(undefined)
+            } else {
+                setNumSegments(parseInt(newVal))
+            }
+        } else if (elementName === 'toRemove') {
+            // regex is for NOT ALLOWED
+            let illegal = /[^\d,\s]/
+            if(toRemoveStr.match(illegal)){
+                hasError = true
+                setToRemove(undefined)
+            } else {
+                // if string was valid, convert to array of numbers
+                let arr = event.target.value.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
+                // check that all numbers are greater than 1 and less than the number of segments
+                hasError = !arr.every( (val) => val > 1 && val < numSegments )
+                if(!hasError){
+                    setToRemove(arr)
+                }
+            }
+        } else if (elementName === 'numIter'){
+            // regex is for ALLOWED
+            let legal = /^\s*\d\s*$/
+            if(
+                !numIterStr.match(legal) ||
+                !(newVal > 0 && newVal <= maxIter)
+            ){
+                hasError = true
+                setNumIter(undefined)
+            } else {
+                setNumIter(parseInt(newVal))
+            }
         }
 
         if(hasError){
@@ -77,9 +106,9 @@ function App() {
         <div>
             <Header/>
             <SetupCantor
-                numSegments={numSegments}
-                toRemove={toRemove}
-                numIter={numIter}
+                numSegmentsStr={numSegmentsStr}
+                toRemoveStr={toRemoveStr}
+                numIterStr={numIterStr}
                 handleNumSegmentsChange={handleNumSegmentsChange}
                 handleToRemoveChange={handleToRemoveChange}
                 handleNumIterChange={handleNumIterChange}

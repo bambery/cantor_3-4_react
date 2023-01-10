@@ -1,14 +1,13 @@
 import React from 'react'
-import SetupStep from './SetupStep'
 import PropTypes from 'prop-types'
-import { formInputValidation } from '../shared/utils'
+import SetupStep from './SetupStep'
 
-const SetupCantor = ({ numSegments, toRemove, numIter, handleNumSegmentsChange, handleToRemoveChange, handleNumIterChange, handleLoseFocus, formErrors }) => {
+const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegmentsChange, handleToRemoveChange, handleNumIterChange, handleLoseFocus, formErrors }) => {
 
     /* eslint-disable */
     const allInstructions = {
         'numSegments': 'How many segments should the line be divided into?',
-        'toRemove': 'Enter the numbers of the segments you would like to remove',
+        'toRemove': 'Enter the numbers of the segments you would like to remove, comma-separated:',
         'numIter': 'How many iterations would you like to run?\n(Numberline will be be hidden when too cluttered)'
     }
     /* eslint-enable */
@@ -21,7 +20,7 @@ const SetupCantor = ({ numSegments, toRemove, numIter, handleNumSegmentsChange, 
                     instructions={allInstructions['numSegments']}
                     stepName="Step 1"
                     name={'numSegments'}
-                    inputState={numSegments}
+                    inputState={numSegmentsStr}
                     handleInputChange={handleNumSegmentsChange}
                     handleLoseFocus={handleLoseFocus}
                 />
@@ -29,7 +28,7 @@ const SetupCantor = ({ numSegments, toRemove, numIter, handleNumSegmentsChange, 
                     instructions={allInstructions['toRemove']}
                     stepName="Step 2"
                     name={'toRemove'}
-                    inputState={toRemove}
+                    inputState={toRemoveStr}
                     handleInputChange={handleToRemoveChange}
                     handleLoseFocus={handleLoseFocus}
                 />
@@ -37,7 +36,7 @@ const SetupCantor = ({ numSegments, toRemove, numIter, handleNumSegmentsChange, 
                     instructions={allInstructions['numIter']}
                     stepName="Step 3"
                     name={'numIter'}
-                    inputState={numIter}
+                    inputState={numIterStr}
                     handleInputChange={handleNumIterChange}
                     handleLoseFocus={handleLoseFocus}
                 />
@@ -47,9 +46,9 @@ const SetupCantor = ({ numSegments, toRemove, numIter, handleNumSegmentsChange, 
 }
 
 SetupCantor.propTypes = {
-    numSegments: formInputValidation,
-    toRemove: formInputValidation,
-    numIter: formInputValidation,
+    numSegmentsStr: PropTypes.string,
+    toRemoveStr: PropTypes.string,
+    numIterStr: PropTypes.string,
     handleNumSegmentsChange: PropTypes.func.isRequired,
     handleToRemoveChange: PropTypes.func.isRequired,
     handleNumIterChange: PropTypes.func.isRequired,

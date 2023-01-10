@@ -1,5 +1,4 @@
 import React from 'react'
-import { formInputValidation } from '../shared/utils'
 import PropTypes from 'prop-types'
 
 const SetupStep = (props) => {
@@ -20,7 +19,6 @@ const SetupStep = (props) => {
                         name={name}
                         onChange={handleInputChange}
                         onBlur={handleLoseFocus}
-
                     />
                 </div>
             </div>
@@ -32,7 +30,10 @@ SetupStep.propTypes = {
     instructions: PropTypes.string.isRequired,
     stepName: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    inputState: formInputValidation,
+    inputState: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     handleInputChange: PropTypes.func.isRequired,
     handleLoseFocus: PropTypes.func.isRequired
 
