@@ -1,3 +1,4 @@
+/****************/
 body {
     width: 95%;
     margin: 2em auto;
@@ -8,30 +9,27 @@ a {
     color: #006ec5;
 }
 
-.setup-cantor-container {
-    display: flex;
-    justify-content: center;
-}
-
+/****************/
 .setup-cantor {
-    max-width: 1500px;
+    width: 80%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-top: 10px;
+    margin: 10px auto;
     column-gap: 20px;
+    text-align: left;
 }
 
 .setup-step {
+    /* self */
     min-width: 200px;
     min-height: 150px;
     padding: 12px;
+    flex: 1 1 0;
+    background-color: #c9f1fd;
+    border: 2px solid #c0c0c0;
+    /* children */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    background-color: #c9f1fd;
-    flex: 1 1 0;
-    border: 2px solid #c0c0c0;
 }
 
 .title {
@@ -47,22 +45,33 @@ a {
     display: flex;
     flex-direction: column;
     padding: 10px;
-    text-align: left;
 }
 
 .instruction {
     text-align: center;
     white-space: pre-wrap;
+    flex: 2 1 0;
 }
 
 .step-input {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    flex-grow: 1;
+    margin-top: 10px;
+    flex: 1 1 0;
 }
 
+.step-error {
+    font-size: .65em;
+    color: #cb4818;
+    text-align: center;
+    margin-top: 5px;
+    flex: 1 1 0;
+}
+
+/******************/
+/* css for header */
+/******************/
 .page-header {
     display: flex;
     height: 75px;

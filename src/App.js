@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { maxIter, maxSegments } from './shared/constants'
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import Cantor from './models/cantor'
@@ -20,10 +21,6 @@ function App() {
         'toRemove':     null,
         'numIter':      null
     })
-
-    // this is arbitrary - should determine a sensible limit
-    const maxSegments = 50
-    const maxIter = 50
 
     const inputErrors = {
         'numSegments': `Please enter a number greater than 1 and less than ${maxSegments + 1}.`,
@@ -63,7 +60,7 @@ function App() {
         } else if (elementName === 'toRemove') {
             // regex is for NOT ALLOWED
             let illegal = /[^\d,\s]/
-            if(toRemoveStr.match(illegal)){
+            if(toRemoveStr.match(illegal) || !toRemoveStr){
                 hasError = true
                 setToRemove(undefined)
             } else {

@@ -2,7 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const SetupStep = (props) => {
-    const { instructions, stepName, name, inputState, handleInputChange, handleLoseFocus } = props
+    const { stepName, name, inputState, handleInputChange, handleLoseFocus, formError } = props
+
+    const allInstructions = {
+        'numSegments': 'How many segments should the line be divided into?',
+        'toRemove': 'Which segments should be removed?',
+        'numIter': 'How many iterations would you like to run?'
+    }
 
     return(
         <div className='setup-step'>
@@ -11,7 +17,7 @@ const SetupStep = (props) => {
             </div>
             <div className='instruction-box'>
                 <div className='instruction'>
-                    { instructions }
+                    { allInstructions[name] }
                 </div>
                 <div className='step-input'>
                     <input
@@ -21,13 +27,15 @@ const SetupStep = (props) => {
                         onBlur={handleLoseFocus}
                     />
                 </div>
+                <div className='step-error'>
+                    {formError}
+                </div>
             </div>
         </div>
     )
 }
 
 SetupStep.propTypes = {
-    instructions: PropTypes.string.isRequired,
     stepName: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     inputState: PropTypes.oneOfType([
@@ -35,8 +43,8 @@ SetupStep.propTypes = {
         PropTypes.number
     ]),
     handleInputChange: PropTypes.func.isRequired,
-    handleLoseFocus: PropTypes.func.isRequired
-
+    handleLoseFocus: PropTypes.func.isRequired,
+    formError: PropTypes.string
 }
 
 export default SetupStep
