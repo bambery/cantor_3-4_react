@@ -1,7 +1,7 @@
 body {
     width: 95%;
     margin: 2em auto;
-    font-family: actor, sans-serif;
+    font-family: 'ABeeZee', sans-serif;
 }
 
 a {
@@ -44,6 +44,8 @@ a {
     min-height: 50px;
     background-color: white;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
     text-align: left;
 }
@@ -51,6 +53,14 @@ a {
 .instruction {
     text-align: center;
     white-space: pre-wrap;
+}
+
+.step-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .page-header {

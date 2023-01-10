@@ -79,6 +79,34 @@ function checkArrContents(arr, typeStr){
     return true
 }
 
+const formInputValidation = function(props, propName, componentName) {
+    const newVal = props[propName]
+    if(type(newVal) === 'undefined'){
+        return null
+    } else if(type(newVal) === 'number'){
+        return null
+    } else if (type(newVal) === 'Array'){
+        try {
+            checkArrContents(newVal, 'number')
+        } catch(err) {
+            err.message = `Invalid prop of ${propName} was supplied to ${componentName} with value ${newVal} # ` + err.message
+            throw err
+        }
+        return null
+    } else if(type(newVal === 'string')){
+        if(!(String(newVal).trim() === '')){
+            throw new Error(`STRING TYPE Please enter only numeric digits as values: Invalid Prop of ${propName} was supplied to ${componentName} of ${props['name']} was passsed.`)
+        }
+    } else {
+        throw new Error(`ALL OTHER Please enter only numeric digits as values: Invalid Prop of ${propName} was supplied to ${componentName} of ${props['name']} was passed.`)
+    }
+    return null
+}
+
+const strToNumArr = function(arrStr) {
+    return arrStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
+}
+
 /* istanbul ignore if */
 if (process.env['NODE_ENV'] === 'test') {
     exports.gcd = gcd
@@ -87,5 +115,7 @@ if (process.env['NODE_ENV'] === 'test') {
 export {
     lcm,
     type,
-    checkArrContents
+    checkArrContents,
+    formInputValidation,
+    strToNumArr
 }
