@@ -4,6 +4,7 @@ import { maxIter, maxSegments } from './shared/constants'
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import Cantor from './models/cantor'
+import SetupButtons from './components/SetupButtons'
 
 //import logo from './logo.svg';
 //import './App.css'
@@ -59,6 +60,7 @@ function App() {
             }
         } else if (elementName === 'toRemove') {
             // regex is for NOT ALLOWED
+            // TODO: flip to allowed, ie any combination of digits, commas, and whitespace
             let illegal = /[^\d,\s]/
             if(toRemoveStr.match(illegal) || !toRemoveStr){
                 hasError = true
@@ -99,19 +101,47 @@ function App() {
         }
     }
 
+    const anyErrors = () => {
+        return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
+    }
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault()
+        if(anyErrors){
+            return
+        }
+    }
+
+    const handleCantorizeClick = (event) => {
+        event.preventDefault()
+    }
+
+    const setupButtonConfig = {
+        'cantorize': {
+            'text':     'Cantor-ize!',
+            'color':    'button-blue',
+            'onClick':  handleCantorizeClick,
+            'type':     'submit',
+            'disabled':    anyErrors()
+        }
+    }
+
     return (
         <div>
             <Header/>
-            <SetupCantor
-                numSegmentsStr={numSegmentsStr}
-                toRemoveStr={toRemoveStr}
-                numIterStr={numIterStr}
-                handleNumSegmentsChange={handleNumSegmentsChange}
-                handleToRemoveChange={handleToRemoveChange}
-                handleNumIterChange={handleNumIterChange}
-                handleLoseFocus={handleLoseFocus}
-                formErrors={formErrors}
-            />
+            <form onSubmit={handleFormSubmit}>
+                <SetupCantor
+                    numSegmentsStr={numSegmentsStr}
+                    toRemoveStr={toRemoveStr}
+                    numIterStr={numIterStr}
+                    handleNumSegmentsChange={handleNumSegmentsChange}
+                    handleToRemoveChange={handleToRemoveChange}
+                    handleNumIterChange={handleNumIterChange}
+                    handleLoseFocus={handleLoseFocus}
+                    formErrors={formErrors}
+                />
+                <SetupButtons buttonSetConfig={setupButtonConfig}/>
+            </form>
         </div>
     )
 }

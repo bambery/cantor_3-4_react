@@ -3,11 +3,50 @@ body {
     width: 95%;
     margin: 2em auto;
     font-family: 'ABeeZee', sans-serif;
+    /* colors */
+    --color-bluish: #00a4d3;
+    --color-bluish-hover: #007da1;
+    --color-link: #006ec5;
+    --color-light-bluish: #c9f1fd;
+    --color-error-text: #cb4818;
 }
 
 a {
-    color: #006ec5;
+    color: var(--color-link);
 }
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    row-gap: 10px;
+}
+
+.button {
+    width: 250px;
+    padding: 5px 15px;
+    color: white;
+    border-radius:10px;
+    outline: 0;
+    text-transform: uppercase;
+    margin: 10px 0px;
+    box-shadow: 0px 2px 2px lightgray;
+    border-bottom: 2px solid transparent;
+    transition: ease background-color 250ms;
+    font-size: 1.2rem;
+}
+
+.button-blue {
+    background-color: var(--color-bluish);
+}
+
+.button-blue:hover {
+    background-color: var(--color-bluish-hover);
+}
+
+.button:disabled {
+    background-color: gray;
+}
+
 
 /****************/
 .setup-cantor {
@@ -21,11 +60,11 @@ a {
 
 .setup-step {
     /* self */
+    background-color: var(--color-light-bluish);
     min-width: 200px;
     min-height: 150px;
     padding: 12px;
     flex: 1 1 0;
-    background-color: #c9f1fd;
     border: 2px solid #c0c0c0;
     /* children */
     display: flex;
@@ -63,7 +102,7 @@ a {
 
 .step-error {
     font-size: .65em;
-    color: #cb4818;
+    color: var(--color-error-text);
     text-align: center;
     margin-top: 5px;
     flex: 1 1 0;
