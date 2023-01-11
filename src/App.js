@@ -27,12 +27,11 @@ function App() {
     const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
-    const[blah, setBlah] = useState(false)
 
     useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
-//            setCantor( new Cantor(numSegments, toRemove, numIter) )
+            setCantor( new Cantor(numSegments, toRemove, numIter) )
         } else {
             setDisableCanvas(true)
         }
@@ -55,23 +54,6 @@ function App() {
 
     const handleNumIterChange = (event) => {
         setNumIterStr(event.target.value)
-    }
-
-    const adjustErrorState = (name, hasError) => {
-        setBlah(!blah)
-        if(hasError){
-            debugger
-            setFormErrors({
-                ...formErrors,
-                [name]: inputErrors[name]
-            })
-        } else {
-            debugger
-            setFormErrors({
-                ...formErrors,
-                [name]: null
-            })
-        }
     }
 
     const validateFields = () => {
@@ -184,7 +166,7 @@ function App() {
                 />
                 {!displayResults && showSetupButtons()}
                 <div className={`display-results ${disableCanvas ? 'disable-item': ''}`}>
-                    <Numberline intCol={cantor} isDemo={true}/>
+                    <Numberline cantor={cantor} isDemo={true}/>
                 </div>
             </form>
         </div>

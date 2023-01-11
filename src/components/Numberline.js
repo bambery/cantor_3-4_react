@@ -3,17 +3,16 @@ import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 
-const Numberline = ({ intCol, isDemo }) => {
+const Numberline = ({ cantor, isDemo }) => {
 //////////////////////////////////////////////
 // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
 //////////////////////////////////////////////
-    intCol = intCol.iterations[0]
+    let intCol = cantor.iterations[0]
 
     const canvasRef = useRef()
 
     useEffect( () => {
         const ctx = drawCanvas(canvasRef)
-
         const margin = 30
         const fontSize = 15
         const width = ctx.canvas.offsetWidth
@@ -21,7 +20,7 @@ const Numberline = ({ intCol, isDemo }) => {
         const midH = Math.floor(height/2)
         drawNumberline(ctx, margin, width, height, midH)
         drawIntervals(ctx, intCol, width, margin, midH)
-    }, [])
+    }, [cantor])
 
     const drawCanvas = (canvasRef) => {
         const canvas = canvasRef.current
@@ -145,7 +144,7 @@ const Numberline = ({ intCol, isDemo }) => {
 
 Numberline.propTypes = {
 //    intCol: PropTypes.instanceOf(IntervalCollection),
-    intCol: PropTypes.any,
+    cantor: PropTypes.any,
     isDemo: PropTypes.bool.isRequired
 }
 export default Numberline
