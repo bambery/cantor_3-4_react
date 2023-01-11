@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const SetupStep = (props) => {
-    const { stepName, name, inputState, handleInputChange, handleLoseFocus, formError } = props
+    const { stepName, name, inputState, handleInputChange, handleLoseFocus, formError, anyErrors } = props
 
     const allInstructions = {
         'numSegments': 'How many segments should the line be divided into?',
@@ -11,7 +11,7 @@ const SetupStep = (props) => {
     }
 
     return(
-        <div className='setup-step'>
+        <div className={`setup-step ${name==='toRemove' && anyErrors('numSegments')? 'disable-item' : ''}`}>
             <div className='title'>
                 {stepName}
             </div>
@@ -44,7 +44,8 @@ SetupStep.propTypes = {
     ]),
     handleInputChange: PropTypes.func.isRequired,
     handleLoseFocus: PropTypes.func.isRequired,
-    formError: PropTypes.string
+    formError: PropTypes.string,
+    anyErrors: PropTypes.func
 }
 
 export default SetupStep

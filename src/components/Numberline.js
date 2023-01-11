@@ -3,10 +3,11 @@ import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 
-const Numberline = ({ intCol }) => {
+const Numberline = ({ intCol, isDemo }) => {
 //////////////////////////////////////////////
 // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
 //////////////////////////////////////////////
+    intCol = intCol.iterations[0]
 
     const canvasRef = useRef()
 
@@ -95,7 +96,7 @@ const Numberline = ({ intCol }) => {
         ctx.font = oldFont
     }
 
-    const drawIntervals = (ctx, intCol, width, margin, midH) => {
+    const drawIntervals = (ctx, intCol, width, margin, midH, isDemo) => {
         const [intColCommon, commonD] = intCol.commonDen()
         const segmentLen = ( width - (margin * 2) ) / commonD
         const start = margin
@@ -121,7 +122,7 @@ const Numberline = ({ intCol }) => {
             // draw fractions
 
             ctx.font = `30px Verdana`
-            // label endpoints of segment
+            // label fractional endpoints of segment
             drawFraction(ctx, interval.left, startPix, midH)
             drawFraction(ctx, interval.right, endPix, midH)
 
@@ -143,6 +144,8 @@ const Numberline = ({ intCol }) => {
 }
 
 Numberline.propTypes = {
-    intCol: PropTypes.instanceOf(IntervalCollection)
+//    intCol: PropTypes.instanceOf(IntervalCollection),
+    intCol: PropTypes.any,
+    isDemo: PropTypes.bool.isRequired
 }
 export default Numberline

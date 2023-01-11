@@ -1,9 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Cantor from './models/cantor'
 
-import { maxIter, maxSegments } from './shared/constants'
+import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
@@ -13,22 +13,34 @@ import Numberline from './components/Numberline'
 //import './App.css'
 
 function App() {
-    const [numSegments, setNumSegments] = useState(4)
-    const [numSegmentsStr, setNumSegmentsStr] = useState("4")
-    const [toRemove, setToRemove] = useState([3])
-    const [toRemoveStr, setToRemoveStr] = useState("3")
-    const [numIter, setNumIter] = useState(1)
-    const [numIterStr, setNumIterStr] = useState("1")
+    const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
+    const [numSegmentsStr, setNumSegmentsStr] = useState(stateDefaults['numSegments'].toString())
+    const [toRemove, setToRemove] = useState(stateDefaults['toRemove'])
+    const [toRemoveStr, setToRemoveStr] = useState(stateDefaults['toRemove'].toString())
+    const [numIter, setNumIter] = useState(stateDefaults['numIter'])
+    const [numIterStr, setNumIterStr] = useState(stateDefaults['numIter'].toString())
     const [formErrors, setFormErrors] = useState({
         'numSegments':  null,
         'toRemove':     null,
         'numIter':      null
     })
-    const[cantor, setCantor] = useState({})
+    const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
     const[displayResults, setDisplayResults] = useState(false)
+    const[disableCanvas, setDisableCanvas] = useState(false)
+    const[blah, setBlah] = useState(false)
+
+    useEffect( () => {
+        if(!anyErrors()) {
+            setDisableCanvas(false)
+//            setCantor( new Cantor(numSegments, toRemove, numIter) )
+        } else {
+            setDisableCanvas(true)
+        }
+    }, [numSegments, toRemove, numIter])
+
 
     const inputErrors = {
-        'numSegments': `Please enter a number greater than 1 and less than ${maxSegments + 1}.`,
+        'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
         'toRemove': `Please enter a comma-separated list of numbers between 2 and ${numSegments - 1}. The first and last intervals may not be removed.`,
         'numIter': `Please enter a number between 1 and ${maxIter}.`
     }
@@ -45,68 +57,91 @@ function App() {
         setNumIterStr(event.target.value)
     }
 
-    const handleLoseFocus = (event) => {
-        const elementName = event.target.name
-        let newVal = event.target.value
-        let hasError = false
-
-        if(elementName == 'numSegments') {
-            // regex is for ALLOWED
-            let legal = /^\s*\d\s*$/
-            if(
-                !numSegmentsStr.match(legal) ||
-                !(newVal > 2 && newVal <= maxSegments)
-            ){
-                hasError = true
-                setNumSegments(undefined)
-            } else {
-                setNumSegments(parseInt(newVal))
-            }
-        } else if (elementName === 'toRemove') {
-            // regex is for NOT ALLOWED
-            // TODO: flip to allowed, ie any combination of digits, commas, and whitespace
-            let illegal = /[^\d,\s]/
-            if(toRemoveStr.match(illegal) || !toRemoveStr){
-                hasError = true
-                setToRemove(undefined)
-            } else {
-                // if string was valid, convert to array of numbers
-                let arr = event.target.value.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
-                // check that all numbers are greater than 1 and less than the number of segments
-                hasError = !arr.every( (val) => val > 1 && val < numSegments )
-                if(!hasError){
-                    setToRemove(arr)
-                }
-            }
-        } else if (elementName === 'numIter'){
-            // regex is for ALLOWED
-            let legal = /^\s*\d\s*$/
-            if(
-                !numIterStr.match(legal) ||
-                !(newVal > 0 && newVal <= maxIter)
-            ){
-                hasError = true
-                setNumIter(undefined)
-            } else {
-                setNumIter(parseInt(newVal))
-            }
-        }
-
+    const adjustErrorState = (name, hasError) => {
+        setBlah(!blah)
         if(hasError){
+            debugger
             setFormErrors({
                 ...formErrors,
-                [elementName]: inputErrors[elementName],
+                [name]: inputErrors[name]
             })
         } else {
+            debugger
             setFormErrors({
                 ...formErrors,
-                [elementName]: null,
+                [name]: null
             })
         }
     }
 
-    const anyErrors = () => {
-        return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
+    const validateFields = () => {
+        let errorState = {...formErrors}
+
+        //validate numSegments
+        let legalNumSeg = /^\s*\d+\s*$/
+        let checkToRemove = true
+
+        if( !numSegmentsStr.match(legalNumSeg) ||
+            !(numSegmentsStr > 2 && numSegmentsStr <= maxSegments)
+        ){
+            setNumSegments(null)
+            errorState['numSegments'] = inputErrors['numSegments']
+            errorState['toRemove'] = null
+            checkToRemove = false
+        } else {
+            errorState['numSegments'] = null
+            setNumSegments( parseInt(numSegmentsStr) )
+        }
+
+        // toRemove's validation depends on a legal value of numSegments
+        if(checkToRemove){
+            let legalToRem = /[\s,\d]+/
+            if( !toRemoveStr ||
+                !toRemoveStr.match(legalToRem)
+            ){
+                errorState['toRemove'] = inputErrors['toRemove']
+                setToRemove(null)
+            } else {
+                // string was valid, convert to arr of numbers
+                let arr = toRemoveStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
+                // check that all numbers are greater than 1 and less than the number of segments
+                let hasError = !arr.every( (val) => val > 1 && val < parseInt(numSegmentsStr) )
+                if(!hasError){
+                    setToRemove(arr)
+                    errorState['toRemove'] = null
+                } else {
+                    setToRemove(null)
+                    errorState['toRemove'] = inputErrors['toRemove']
+                }
+            }
+        }
+        let legalNumIter = /^\s*\d\s*$/
+        if(
+            !numIterStr.match(legalNumIter) ||
+            !( parseInt(numIterStr) > 0 && parseInt(numIterStr) <= maxIter)
+        ){
+
+            errorState['numIter'] = inputErrors['numIter']
+            setNumIter(undefined)
+        } else {
+            errorState['numIter'] = null
+            setNumIter(parseInt(numIterStr))
+        }
+
+        setFormErrors(errorState)
+    }
+
+    const handleLoseFocus = (event) => {
+        const elementName = event.target.name
+        validateFields()
+    }
+
+    const anyErrors = (specific=null) => {
+        if(specific){
+            return !!formErrors[specific]
+        } else {
+            return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
+        }
     }
 
     const handleCantorizeClick = (event) => {
@@ -119,16 +154,18 @@ function App() {
         setDisplayResults(true)
     }
 
-    const setupButtonConfig = {
-        'cantorize': {
-            'text':     'Cantor-ize!',
-            'color':    'button-blue',
-            'type':     'submit',
-            'disabled':    anyErrors()
+    const showSetupButtons = () => {
+        const setupButtonConfig = {
+            'cantorize': {
+                'text':     'Cantor-ize!',
+                'color':    'button-blue',
+                'type':     'submit',
+                'disabled':    anyErrors()
+            }
         }
-    }
 
-    const numberlines = (intCol) => <Numberline intCol={intCol}/>
+        return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
+    }
 
     return (
         <div>
@@ -143,10 +180,11 @@ function App() {
                     handleNumIterChange={handleNumIterChange}
                     handleLoseFocus={handleLoseFocus}
                     formErrors={formErrors}
+                    anyErrors={anyErrors}
                 />
-                <ButtonSet buttonSetConfig={setupButtonConfig}/>
-                <div className='display-results'>
-                    {displayResults && numberlines(cantor.iterations[0])}
+                {!displayResults && showSetupButtons()}
+                <div className={`display-results ${disableCanvas ? 'disable-item': ''}`}>
+                    <Numberline intCol={cantor} isDemo={true}/>
                 </div>
             </form>
         </div>

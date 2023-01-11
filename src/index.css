@@ -51,6 +51,14 @@ a {
 .numberline {
     height: 200px;
 }
+
+.disable-item {
+    background-color: grey;
+    opacity: 0.3;
+    height:100%;
+    width:100%;
+    background-repeat:no-repeat;
+}
 /****************/
 .setup-cantor {
     width: 80%;

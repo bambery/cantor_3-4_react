@@ -14,7 +14,7 @@ export default class Cantor {
             || !( type(toRemove) === 'Array' && checkArrContents(toRemove, 'number') )
             || type(numIter) !== 'number'
         ){
-            throw new ArgumentError('For new Cantor, must pass the number of segments to divide the interval, an array of the segment numbers to be removed, and the number of Cantor iterations to perform.')
+            throw new ArgumentError(`Invalid arguments passed to new - numSegments: ${numSegments}, toRemove: ${toRemove}, numIter: ${numIter}`)
         } else if(toRemove.includes(1) || toRemove.includes(numSegments)){
             throw new ValueError(`Cannot remove the first or last segment in an interval: you asked to remove ${toRemove}`)
         }

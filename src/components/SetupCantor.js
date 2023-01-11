@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SetupStep from './SetupStep'
 
-const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegmentsChange, handleToRemoveChange, handleNumIterChange, handleLoseFocus, formErrors }) => {
+const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegmentsChange, handleToRemoveChange, handleNumIterChange, handleLoseFocus, formErrors, anyErrors }) => {
 
     return(
         <div className='setup-cantor'>
@@ -13,6 +13,7 @@ const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegment
                 handleInputChange={handleNumSegmentsChange}
                 handleLoseFocus={handleLoseFocus}
                 formError={formErrors['numSegments']}
+                anyErrors={anyErrors}
             />
             <SetupStep
                 stepName="Step 2"
@@ -21,6 +22,8 @@ const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegment
                 handleInputChange={handleToRemoveChange}
                 handleLoseFocus={handleLoseFocus}
                 formError={formErrors['toRemove']}
+
+                anyErrors={anyErrors}
             />
             <SetupStep
                 stepName="Step 3"
@@ -29,6 +32,7 @@ const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegment
                 handleInputChange={handleNumIterChange}
                 handleLoseFocus={handleLoseFocus}
                 formError={formErrors['numIter']}
+                anyErrors={anyErrors}
             />
         </div>
     )
@@ -42,7 +46,8 @@ SetupCantor.propTypes = {
     handleToRemoveChange: PropTypes.func.isRequired,
     handleNumIterChange: PropTypes.func.isRequired,
     handleLoseFocus: PropTypes.func.isRequired,
-    formErrors: PropTypes.object.isRequired
+    formErrors: PropTypes.object.isRequired,
+    anyErrors: PropTypes.func.isRequired
 }
 
 export default SetupCantor
