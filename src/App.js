@@ -8,6 +8,7 @@ import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
+import Demo from './components/Demo'
 
 //import logo from './logo.svg';
 //import './App.css'
@@ -149,6 +150,7 @@ function App() {
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
 
+                    //<Numberline cantor={cantor} isDemo={true}/>
     return (
         <div>
             <Header/>
@@ -166,7 +168,7 @@ function App() {
                 />
                 {!displayResults && showSetupButtons()}
                 <div className={`display-results ${disableCanvas ? 'disable-item': ''}`}>
-                    <Numberline cantor={cantor} isDemo={true}/>
+                    <Demo cantor={cantor}/>
                 </div>
             </form>
         </div>

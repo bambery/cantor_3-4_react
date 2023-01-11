@@ -2,12 +2,12 @@ import React from 'react'
 import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
+import Fraction from '../models/fraction'
 
-const Numberline = ({ cantor, isDemo }) => {
+const Numberline = ({ intCol, isDemo }) => {
 //////////////////////////////////////////////
 // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
 //////////////////////////////////////////////
-    let intCol = cantor.iterations[0]
 
     const canvasRef = useRef()
 
@@ -20,7 +20,7 @@ const Numberline = ({ cantor, isDemo }) => {
         const midH = Math.floor(height/2)
         drawNumberline(ctx, margin, width, height, midH)
         drawIntervals(ctx, intCol, width, margin, midH)
-    }, [cantor])
+    }, [intCol, isDemo])
 
     const drawCanvas = (canvasRef) => {
         const canvas = canvasRef.current
@@ -95,7 +95,7 @@ const Numberline = ({ cantor, isDemo }) => {
         ctx.font = oldFont
     }
 
-    const drawIntervals = (ctx, intCol, width, margin, midH, isDemo) => {
+    const drawIntervals = (ctx, intCol, width, margin, midH) => {
         const [intColCommon, commonD] = intCol.commonDen()
         const segmentLen = ( width - (margin * 2) ) / commonD
         const start = margin
@@ -107,6 +107,7 @@ const Numberline = ({ cantor, isDemo }) => {
             const segDrawLen = interval.len.num * segmentLen
             const endPix = startPix + segDrawLen
             const midPoint = (segDrawLen/2) + startPix
+            const numBottomMargin = 15
             // draw red intervals
             ctx.lineWidth = intervalLineWidth
             ctx.strokeStyle = 'red'
@@ -114,23 +115,44 @@ const Numberline = ({ cantor, isDemo }) => {
             ctx.moveTo(startPix, midH)
             ctx.lineTo(endPix, midH)
             ctx.stroke()
-            // draw white points on line
-            ctx.fillStyle = 'white'
-            fillCircle(ctx, startPix, midH, dotSize)
-            fillCircle(ctx, endPix, midH, dotSize)
-            // draw fractions
+            if(!isDemo){
+                // draw white points on line
+                ctx.fillStyle = 'white'
+                fillCircle(ctx, startPix, midH, dotSize)
+                fillCircle(ctx, endPix, midH, dotSize)
+                // draw fractions
 
-            ctx.font = `30px Verdana`
-            // label fractional endpoints of segment
-            drawFraction(ctx, interval.left, startPix, midH)
-            drawFraction(ctx, interval.right, endPix, midH)
+                ctx.font = `30px Verdana`
+                // label fractional endpoints of segment
+                drawFraction(ctx, interval.left, startPix, midH)
+                drawFraction(ctx, interval.right, endPix, midH)
 
-            //label the segments numerically from left to right
-            ctx.fillStyle = '#e5b513'
-            ctx.textBaseline = 'bottom'
-            const numBottomMargin = 15
-            ctx.fillText(idx + 1, midPoint, midH - numBottomMargin)
+                //label the segments numerically from left to right
+                ctx.fillStyle = '#e5b513'
+                ctx.textBaseline = 'bottom'
+                ctx.fillText(idx + 1, midPoint, midH - numBottomMargin)
+            }
         })
+
+        if(isDemo){
+            for(let i = 0; i <= commonD; i++){
+                // put a point over all segments
+                const dotPix = start + (i * segmentLen)
+                ctx.fillStyle = 'white'
+                fillCircle(ctx, dotPix, midH, dotSize)
+                // label the points with their fractional value
+                ctx.font = `30px Verdana`
+                drawFraction(ctx, new Fraction(i, commonD), dotPix, midH)
+                // label the segments left to right numerically
+                if(i < commonD){
+                    const segMid = (segmentLen * i) + segmentLen/2
+                    ctx.fillStyle = '#e5b513'
+                    ctx.textBaseline = 'bottom'
+                    const numBottomMargin = 15
+                    ctx.fillText(i + 1, segMid, midH - numBottomMargin)
+                }
+            }
+        }
     }
 
     return(
@@ -143,8 +165,7 @@ const Numberline = ({ cantor, isDemo }) => {
 }
 
 Numberline.propTypes = {
-//    intCol: PropTypes.instanceOf(IntervalCollection),
-    cantor: PropTypes.any,
+    intCol: PropTypes.instanceOf(IntervalCollection),
     isDemo: PropTypes.bool.isRequired
 }
 export default Numberline
