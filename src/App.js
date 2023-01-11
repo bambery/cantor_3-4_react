@@ -25,6 +25,7 @@ function App() {
         'numIter':      null
     })
     const[cantor, setCantor] = useState({})
+    const[displayResults, setDisplayResults] = useState(false)
 
     const inputErrors = {
         'numSegments': `Please enter a number greater than 1 and less than ${maxSegments + 1}.`,
@@ -115,6 +116,7 @@ function App() {
         }
 
         setCantor(new Cantor(numSegments, toRemove, numIter))
+        setDisplayResults(true)
     }
 
     const setupButtonConfig = {
@@ -125,6 +127,8 @@ function App() {
             'disabled':    anyErrors()
         }
     }
+
+    const numberlines = (intCol) => <Numberline intCol={intCol}/>
 
     return (
         <div>
@@ -142,7 +146,7 @@ function App() {
                 />
                 <ButtonSet buttonSetConfig={setupButtonConfig}/>
                 <div className='display-results'>
-                    <Numberline />
+                    {displayResults && numberlines(cantor.iterations[0])}
                 </div>
             </form>
         </div>
