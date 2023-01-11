@@ -15,7 +15,7 @@ a {
     color: var(--color-link);
 }
 
-.button-group {
+.button-set {
     display: flex;
     justify-content: center;
     row-gap: 10px;
@@ -47,7 +47,10 @@ a {
     background-color: gray;
 }
 
-
+/****************/
+.numberline {
+    height: 200px;
+}
 /****************/
 .setup-cantor {
     width: 80%;

@@ -1,10 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
+
+import Cantor from './models/cantor'
+
 import { maxIter, maxSegments } from './shared/constants'
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
-import Cantor from './models/cantor'
-import SetupButtons from './components/SetupButtons'
+import ButtonSet from './components/ButtonSet'
+import Numberline from './components/Numberline'
 
 //import logo from './logo.svg';
 //import './App.css'
@@ -16,12 +19,12 @@ function App() {
     const [toRemoveStr, setToRemoveStr] = useState("3")
     const [numIter, setNumIter] = useState(1)
     const [numIterStr, setNumIterStr] = useState("1")
-
     const [formErrors, setFormErrors] = useState({
         'numSegments':  null,
         'toRemove':     null,
         'numIter':      null
     })
+    const[cantor, setCantor] = useState({})
 
     const inputErrors = {
         'numSegments': `Please enter a number greater than 1 and less than ${maxSegments + 1}.`,
@@ -105,22 +108,19 @@ function App() {
         return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
     }
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault()
-        if(anyErrors){
-            return
-        }
-    }
-
     const handleCantorizeClick = (event) => {
         event.preventDefault()
+        if(anyErrors()){
+            return
+        }
+
+        setCantor(new Cantor(numSegments, toRemove, numIter))
     }
 
     const setupButtonConfig = {
         'cantorize': {
             'text':     'Cantor-ize!',
             'color':    'button-blue',
-            'onClick':  handleCantorizeClick,
             'type':     'submit',
             'disabled':    anyErrors()
         }
@@ -129,7 +129,7 @@ function App() {
     return (
         <div>
             <Header/>
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleCantorizeClick}>
                 <SetupCantor
                     numSegmentsStr={numSegmentsStr}
                     toRemoveStr={toRemoveStr}
@@ -140,7 +140,10 @@ function App() {
                     handleLoseFocus={handleLoseFocus}
                     formErrors={formErrors}
                 />
-                <SetupButtons buttonSetConfig={setupButtonConfig}/>
+                <ButtonSet buttonSetConfig={setupButtonConfig}/>
+                <div className='display-results'>
+                    <Numberline />
+                </div>
             </form>
         </div>
     )

@@ -1,26 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const SetupButtons = ({ buttonSetConfig }) => {
+const ButtonSet = ({ buttonSetConfig }) => {
     return(
-        <div className='button-group'>
+        <div className='button-set'>
             { Object.values(buttonSetConfig).map((config, i) =>
-                <button
+                <input
                     key={i}
                     className={`button ${config['color']}`}
                     onClick={config['onClick']}
                     type={config['type']}
                     disabled={config['disabled']}
-                >
-                    {config['text']}
-                </button>
+                    value={config['text']}
+                />
             )}
         </div>
     )
 }
 
-SetupButtons.propTypes = {
+ButtonSet.propTypes = {
     buttonSetConfig: PropTypes.object.isRequired
 }
 
-export default SetupButtons
+export default ButtonSet
