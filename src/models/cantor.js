@@ -2,7 +2,7 @@ import Fraction from './fraction'
 import Interval from './interval'
 import IntervalCollection from './interval_collection'
 import { ValueError, ArgumentError } from '../shared/errors'
-import { type, checkArrContents } from '../shared/utils'
+import { type, checkArrContents, checkUnsafe } from '../shared/utils'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
 
@@ -35,7 +35,7 @@ export default class Cantor {
                 iterResults = iterResults.concat(res)
             })
             this.iterations.push(new IntervalCollection(iterResults))
-            //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
+            console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
             iterResults = []
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1
@@ -56,7 +56,20 @@ function removeIntervals(interval, numSegments, toRemove){
     // sort asc
     toRemove.sort( (a,b) => a-b )
 
+    try {
+        interval.commonDen()
+    } catch(e){
+        e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${interval}`
+        throw e
+    }
+
     let commonInt = interval.commonDen()
+    try {
+        commonInt.commonDen(commonInt.left.den * numSegments)
+    } catch(e){
+        e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${commonInt} with ${commonInt.left.den} and ${numSegments}`
+        throw e
+    }
     commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
     let segmentLength = commonInt.len.equals(Fraction.unit)
         ? new Fraction(1, numSegments)

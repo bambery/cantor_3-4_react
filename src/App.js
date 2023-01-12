@@ -8,6 +8,7 @@ import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
+import CantorResults from './components/CantorResults'
 
 //import logo from './logo.svg';
 //import './App.css'
@@ -37,7 +38,9 @@ function App() {
     useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
-           // console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
+            console.log('#######################')
+            console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
+            console.log('#######################')
             setCantor( new Cantor(numSegments, toRemove, numIter) )
         } else {
             setDisableCanvas(true)
@@ -165,6 +168,10 @@ function App() {
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
 
+    const showCantor = () => {
+        return(<CantorResults cantorSet={cantor}/>)
+    }
+
     return (
         <div>
             <Header/>
@@ -182,6 +189,8 @@ function App() {
                 />
                 {!displayResults && showDemo()}
                 {!displayResults && showSetupButtons()}
+
+                {displayResults && showCantor()}
             </form>
         </div>
     )
