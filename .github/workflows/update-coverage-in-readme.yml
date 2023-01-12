@@ -11,6 +11,7 @@ on:
 jobs:
   update-coverage-in-readme:
     name: Update Coverage in README
+    needs: [run-coverage-report]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
