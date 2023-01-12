@@ -8,7 +8,6 @@ import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
-import Demo from './components/Demo'
 
 //import logo from './logo.svg';
 //import './App.css'
@@ -137,6 +136,15 @@ function App() {
         setDisplayResults(true)
     }
 
+
+    const showDemo = () => {
+        return(
+            <div className={`${disableCanvas ? 'disable-item': ''}`}>
+                <Numberline intCol={cantor.iterations[0]} isDemo={true}/>
+            </div>
+        )
+    }
+
     const showSetupButtons = () => {
         const setupButtonConfig = {
             'cantorize': {
@@ -150,7 +158,6 @@ function App() {
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
 
-                    //<Numberline cantor={cantor} isDemo={true}/>
     return (
         <div>
             <Header/>
@@ -166,10 +173,8 @@ function App() {
                     formErrors={formErrors}
                     anyErrors={anyErrors}
                 />
+                {!displayResults && showDemo()}
                 {!displayResults && showSetupButtons()}
-                <div className={`display-results ${disableCanvas ? 'disable-item': ''}`}>
-                    <Demo cantor={cantor}/>
-                </div>
             </form>
         </div>
     )

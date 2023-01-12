@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRef, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 import Fraction from '../models/fraction'
@@ -8,6 +8,7 @@ const Numberline = ({ intCol, isDemo }) => {
 //////////////////////////////////////////////
 // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
 //////////////////////////////////////////////
+    const [segmentPixels, setSegmentPixels] = useState()
 
     const canvasRef = useRef()
 
@@ -21,6 +22,14 @@ const Numberline = ({ intCol, isDemo }) => {
         drawNumberline(ctx, margin, width, height, midH)
         drawIntervals(ctx, intCol, width, margin, midH)
     }, [intCol, isDemo])
+
+    const determineFontSize = (numSeg) => {
+        if(numSeg <= 25){
+            return 30
+        } else {
+            return 18
+        }
+    }
 
     const drawCanvas = (canvasRef) => {
         const canvas = canvasRef.current
@@ -122,7 +131,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 fillCircle(ctx, endPix, midH, dotSize)
                 // draw fractions
 
-                ctx.font = `30px Verdana`
+                ctx.font = `px Verdana`
                 // label fractional endpoints of segment
                 drawFraction(ctx, interval.left, startPix, midH)
                 drawFraction(ctx, interval.right, endPix, midH)
@@ -135,23 +144,26 @@ const Numberline = ({ intCol, isDemo }) => {
         })
 
         if(isDemo){
+            let segPix = []
             for(let i = 0; i <= commonD; i++){
                 // put a point over all segments
                 const dotPix = start + (i * segmentLen)
                 ctx.fillStyle = 'white'
                 fillCircle(ctx, dotPix, midH, dotSize)
                 // label the points with their fractional value
-                ctx.font = `30px Verdana`
                 drawFraction(ctx, new Fraction(i, commonD), dotPix, midH)
                 // label the segments left to right numerically
                 if(i < commonD){
-                    const segMid = (segmentLen * i) + segmentLen/2
+                    ctx.font = `${determineFontSize(commonD)}px Verdana`
+                    const segMid = start + (segmentLen * i) + segmentLen/2
+                    segPix.push(segMid)
                     ctx.fillStyle = '#e5b513'
                     ctx.textBaseline = 'bottom'
                     const numBottomMargin = 15
                     ctx.fillText(i + 1, segMid, midH - numBottomMargin)
                 }
             }
+            setSegmentPixels(segPix)
         }
     }
 
