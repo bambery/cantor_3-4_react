@@ -37,7 +37,7 @@ function App() {
     useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
-            console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
+           // console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
             setCantor( new Cantor(numSegments, toRemove, numIter) )
         } else {
             setDisableCanvas(true)

@@ -1,5 +1,4 @@
 import React from 'react'
-import ocotocat from '../shared/assets/github-mark.svg'
 
 const Header = () => {
     return(

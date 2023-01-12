@@ -75,7 +75,7 @@ class IntervalCollection {
             )
             return tempSeg
         })
-        return [common, smallestDen]
+        return common
     }
 }
 

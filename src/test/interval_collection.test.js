@@ -123,6 +123,7 @@ describe('IntervalCollection', function() {
         it('it converts all endpoints to a common denominator', () => {
             let testArr = new IntervalCollection([ new Interval(interval1), new Interval(interval2) ]).commonDen()
             let correctColl = new IntervalCollection([ interval1Common[index], interval2Common[index] ])
+            debugger
 
             expect( testArr[0].left.equals(correctColl.intervals[0].left) ).toBeTruthy()
             expect( testArr[0].right.equals(correctColl.intervals[0].right) ).toBeTruthy()

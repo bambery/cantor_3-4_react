@@ -35,7 +35,7 @@ export default class Cantor {
                 iterResults = iterResults.concat(res)
             })
             this.iterations.push(new IntervalCollection(iterResults))
-            console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
+            //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
             iterResults = []
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1

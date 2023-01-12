@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 import Fraction from '../models/fraction'
@@ -8,14 +8,12 @@ const Numberline = ({ intCol, isDemo }) => {
 //////////////////////////////////////////////
 // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
 //////////////////////////////////////////////
-    const [segmentPixels, setSegmentPixels] = useState()
-
     const canvasRef = useRef()
 
     useEffect( () => {
         const ctx = drawCanvas(canvasRef)
         const margin = 30
-        const fontSize = 15
+        //const fontSize = 15
         const width = ctx.canvas.offsetWidth
         const height = ctx.canvas.offsetHeight
         const midH = Math.floor(height/2)
@@ -67,13 +65,12 @@ const Numberline = ({ intCol, isDemo }) => {
         const oldStyle = ctx.strokeStyle
         const oldLineWidth = ctx.lineWidth
         const oldFont = ctx.font
-        const endpointFontBaseline = "top"
+        const endpointFontBaseline = 'top'
         const fracBarWidth = 1.0
         const fracBarPad = 2
         const endpointFontTop = 15
         const fracFontSize = 15
         ctx.font = `${fracFontSize}px Verdana`
-        const displayFrac = frac.reduce()
         ctx.lineWidth = fracBarWidth
         ctx.textBaseline = endpointFontBaseline
         ctx.fillStyle = 'white'
@@ -131,7 +128,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 fillCircle(ctx, endPix, midH, dotSize)
                 // draw fractions
 
-                ctx.font = `px Verdana`
+                ctx.font = `${determineFontSize(commonD)}px Verdana`
                 // label fractional endpoints of segment
                 drawFraction(ctx, interval.left, startPix, midH)
                 drawFraction(ctx, interval.right, endPix, midH)
@@ -163,7 +160,6 @@ const Numberline = ({ intCol, isDemo }) => {
                     ctx.fillText(i + 1, segMid, midH - numBottomMargin)
                 }
             }
-            setSegmentPixels(segPix)
         }
     }
 
