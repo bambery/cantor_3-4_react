@@ -12,6 +12,11 @@ import Numberline from './components/Numberline'
 //import logo from './logo.svg';
 //import './App.css'
 
+BigInt.prototype.toJSON = function() {
+    return this.toString()
+}
+
+
 function App() {
     const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
     const [numSegmentsStr, setNumSegmentsStr] = useState(stateDefaults['numSegments'].toString())
@@ -27,10 +32,12 @@ function App() {
     const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
+    const[notification, setNotification] = useState({'notifications': []})
 
     useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
+            console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
             setCantor( new Cantor(numSegments, toRemove, numIter) )
         } else {
             setDisableCanvas(true)
@@ -97,7 +104,7 @@ function App() {
                 }
             }
         }
-        let legalNumIter = /^\s*\d\s*$/
+        let legalNumIter = /^\s*\d+\s*$/
         if(
             !numIterStr.match(legalNumIter) ||
             !( parseInt(numIterStr) > 0 && parseInt(numIterStr) <= maxIter)

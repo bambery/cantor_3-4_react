@@ -1,4 +1,4 @@
-import { ValueError, ArgumentError } from './errors'
+import { ValueError, ArgumentError, UnsafeIntegerError } from './errors'
 
 function gcd(a, b){
     return b === 0 ? a : gcd(b, a % b)
@@ -16,10 +16,27 @@ function lcm(arr) {
     for ( let i = 1; i < arr.length; i++ ) {
         if (arr[i] === 0){
             throw new ValueError(`Cannot compute lcm of 0: zero value passed in at index ${i}`)
+        } else if (arr[i] !== ans){
+            try {
+                checkUnsafe(arr[i] * ans)
+            } catch(e) {
+                e.message = `While trying to compute the LCM for the common denominator, ${arr[i]} * ${ans} exceded max integer size.`
+                throw e
+            }
+            console.log(`computing lcm for ${arr[i]} and ${ans}`)
+            ans = (( arr[i] * ans ) / ( gcd(arr[i], ans) ))
+            console.log(`lcm is ${ans}`)
+            console.log("******")
         }
-        ans = (( arr[i] * ans ) / ( gcd(arr[i], ans) ))
     }
+
     return ans
+}
+
+function checkUnsafe(num) {
+    if(!Number.isSafeInteger(num)) {
+        throw new UnsafeIntegerError()
+    }
 }
 
 // modified to include NaN from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof

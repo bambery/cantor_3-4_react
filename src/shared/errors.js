@@ -78,7 +78,19 @@ export class ArgumentError extends Error {
             Error.captureStackTrace(this, this.constructor.name)
         }
         this.name = this.constructor.name
-        this.message = message ? message : 'An invalid action was performed with Intervals.'
+        this.message = message ? message : 'An invalid argument was passed to this function.'
+    }
+}
+
+export class UnsafeIntegerError extends Error {
+    constructor(message, options) {
+        super(message, options)
+
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor.name)
+        }
+        this.name = this.constructor.name
+        this.message = message ? message : 'The common denominator for this interval was larger than the max interval size.'
     }
 }
 
