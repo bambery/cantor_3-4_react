@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Cantor from '../models/cantor'
+//import Cantor from '../models/cantor'
 import IntervalCollection from '../models/interval_collection'
 import Numberline from './Numberline'
 
