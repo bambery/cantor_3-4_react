@@ -23,10 +23,7 @@ function lcm(arr) {
                 e.message = `While trying to compute the LCM for the common denominator, ${arr[i]} * ${ans} exceded max integer size.`
                 throw e
             }
-            console.log(`computing lcm for ${arr[i]} and ${ans}`)
             ans = (( arr[i] * ans ) / ( gcd(arr[i], ans) ))
-            console.log(`lcm is ${ans}`)
-            console.log('******')
         }
     }
 

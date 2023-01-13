@@ -52,7 +52,6 @@ class Interval {
 
     commonDen(desiredDen = null) {
         var common = null
-        console.log('entering lcm getting common den of an interval')
         if(!desiredDen){
             common = lcm([this.left.den, this.right.den])
         } else if (desiredDen % this.left.den > 0 || desiredDen % this.right.den > 0){
