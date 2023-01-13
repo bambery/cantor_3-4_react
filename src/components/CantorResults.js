@@ -8,9 +8,9 @@ const CantorResults = ({ cantorSet }) => {
         <div className='cantor-results'>
             <div className='cantor-results-description'>
                 Cantor-like Set of {cantorSet.numSegments} Segmented Intervals, Removing Segment{cantorSet.toRemove.length > 1 ? 's' : ''} {cantorSet.toRemove.join(', ')}
-                <div className='cantor-results'>
-                    {cantorSet.iterations.map( (iter, idx) => <CantorIteration key={idx} intCol={iter} index={idx}/>)}
-                </div>
+            </div>
+            <div className='cantor-results'>
+                {cantorSet.iterations.map( (iter, idx) => <CantorIteration key={idx} intCol={iter} index={idx}/>)}
             </div>
         </div>
     )
