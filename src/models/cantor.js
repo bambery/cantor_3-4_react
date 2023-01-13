@@ -2,7 +2,7 @@ import Fraction from './fraction'
 import Interval from './interval'
 import IntervalCollection from './interval_collection'
 import { ValueError, ArgumentError } from '../shared/errors'
-import { type, checkArrContents, checkUnsafe } from '../shared/utils'
+import { type, checkArrContents } from '../shared/utils'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
 
@@ -35,7 +35,7 @@ export default class Cantor {
                 iterResults = iterResults.concat(res)
             })
             this.iterations.push(new IntervalCollection(iterResults))
-            console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
+            //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
             iterResults = []
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1
