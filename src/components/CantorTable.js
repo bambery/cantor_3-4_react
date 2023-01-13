@@ -4,31 +4,31 @@ import Fraction from '../models/fraction'
 
 const CantorTable = ({ intervalArr, kind, totLen }) => {
     return(
-        <div>
-            <div className='interval-table-count'>
+        <div className={`cantor-result-${kind}s`}>
+            <div className='cantor-table-count'>
                 {`${kind}s: ${intervalArr.length}`}
             </div>
-            <table>
+            <table className='cantor-table'>
                 <thead>
-                    <tr>
-                        <th>{kind} ID</th>
-                        <th>{kind} Intervals</th>
-                        <th>{kind} Size</th>
+                    <tr className='cantor-table-header'>
+                        <th className="cantor-table-row">{kind} ID</th>
+                        <th className="cantor-table-row">{kind} Intervals</th>
+                        <th className="cantor-table-row">{kind} Size</th>
                     </tr>
                 </thead>
                 <tbody>
                     {intervalArr.map( (interval, index) => {
                         return(
-                            <tr key={index}>
-                                <td>{index}</td>
-                                <td>{interval.str}</td>
-                                <td>{interval.len.str}</td>
+                            <tr key={index} >
+                                <td className="cantor-table-row">{index + 1}</td>
+                                <td className="cantor-table-row">{interval.strMinimal}</td>
+                                <td className="cantor-table-row">{interval.len.str}</td>
                             </tr>
                         )
                     }) }
                 </tbody>
             </table>
-            <div className='interval-table-tot-len'>
+            <div className='cantor-table-tot-len'>
                 Total {kind} Length: {totLen.str}
             </div>
         </div>

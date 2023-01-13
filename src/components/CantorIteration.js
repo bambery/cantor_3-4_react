@@ -7,19 +7,15 @@ import CantorTable from './CantorTable'
 
 const CantorIteration = ({ intCol, index }) => {
     return(
-        <div className='cantor-results-iteration'>
+        <div className='cantor-result-iteration'>
             <div className='cantor-result-numberline'>
                 <Numberline intCol={intCol} isDemo={false}/>
             </div>
             <div className='cantor-result-iteration-name'>
                 Iteration {index + 1}
             </div>
-            <div className='cantor-result-segments'>
-                <CantorTable intervalArr={intCol.intervals} kind='Segment' totLen={intCol.len}/>
-            </div>
-            <div className='cantor-result-gaps'>
-                <CantorTable intervalArr={intCol.gaps} kind='Gap' totLen={intCol.gapLen}/>
-            </div>
+            <CantorTable intervalArr={intCol.intervals} kind='segment' totLen={intCol.len}/>
+            <CantorTable intervalArr={intCol.gaps} kind='gap' totLen={intCol.gapLen}/>
         </div>
     )
 }
