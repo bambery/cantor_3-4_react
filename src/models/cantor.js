@@ -56,8 +56,24 @@ function removeIntervals(interval, numSegments, toRemove){
     // sort asc
     toRemove.sort( (a,b) => a-b )
 
+    try {
+        interval.commonDen()
+    } catch(e){
+        e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${interval}`
+        throw e
+    }
+
     let commonInt = interval.commonDen()
-    commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
+    if(commonInt.left.den % numSegments !== 0){
+
+        try {
+            commonInt.commonDen(commonInt.left.den * numSegments)
+        } catch(e){
+            e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${commonInt} with ${commonInt.left.den} and ${numSegments}`
+            throw e
+        }
+        commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
+    }
     let segmentLength = commonInt.len.equals(Fraction.unit)
         ? new Fraction(1, numSegments)
         : new Fraction(commonInt.len.num, commonInt.len.den * numSegments)

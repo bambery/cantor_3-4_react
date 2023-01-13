@@ -60,6 +60,8 @@ class Fraction {
     commonDen(otherFrac){
         if (type(otherFrac) !== 'Fraction'){
             throw new ArgumentError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
+        } else if (this.den === otherFrac.den){
+            return([this, otherFrac])
         }
         const common = lcm([this.den, otherFrac.den])
         let numA = (this.num * (common/this.den))

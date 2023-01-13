@@ -2,20 +2,13 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 import Cantor from './models/cantor'
-
 import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
+
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
-
-//import logo from './logo.svg';
-//import './App.css'
-
-BigInt.prototype.toJSON = function() {
-    return this.toString()
-}
-
+import CantorResults from './components/CantorResults'
 
 function App() {
     const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
@@ -29,21 +22,24 @@ function App() {
         'toRemove':     null,
         'numIter':      null
     })
-    const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
+    const [cantor, setCantor] = useState(null)
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
     const[notification, setNotification] = useState({'notifications': []})
 
     useEffect( () => {
+        let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
+        setCantor(defaultCantor)
+    }, [])
+
+    useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
-           // console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
-            setCantor( new Cantor(numSegments, toRemove, numIter) )
+            setCantor( new Cantor(numSegments, toRemove, 1) )
         } else {
             setDisableCanvas(true)
         }
-    }, [numSegments, toRemove, numIter])
-
+    }, [numSegments, toRemove])
 
     const inputErrors = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
@@ -96,7 +92,9 @@ function App() {
                 // check that all numbers are greater than 1 and less than the number of segments
                 let hasError = !arr.every( (val) => val > 1 && val < parseInt(numSegmentsStr) )
                 if(!hasError){
-                    setToRemove(arr)
+                    if(JSON.stringify(arr) !== JSON.stringify(toRemove)){
+                        setToRemove(arr)
+                    }
                     errorState['toRemove'] = null
                 } else {
                     setToRemove(null)
@@ -165,6 +163,10 @@ function App() {
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
 
+    const showCantor = () => {
+        return(<CantorResults cantorSet={cantor}/>)
+    }
+
     return (
         <div>
             <Header/>
@@ -180,8 +182,10 @@ function App() {
                     formErrors={formErrors}
                     anyErrors={anyErrors}
                 />
-                {!displayResults && showDemo()}
-                {!displayResults && showSetupButtons()}
+                {!displayResults && cantor && showDemo()}
+                {!displayResults && cantor && showSetupButtons()}
+
+                {displayResults && cantor && showCantor()}
             </form>
         </div>
     )
