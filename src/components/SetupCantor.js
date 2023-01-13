@@ -22,7 +22,6 @@ const SetupCantor = ({ numSegmentsStr, toRemoveStr, numIterStr, handleNumSegment
                 handleInputChange={handleToRemoveChange}
                 handleLoseFocus={handleLoseFocus}
                 formError={formErrors['toRemove']}
-
                 anyErrors={anyErrors}
             />
             <SetupStep

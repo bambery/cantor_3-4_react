@@ -2,21 +2,13 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 import Cantor from './models/cantor'
-
 import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
+
 import Header from './components/Header'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
 import CantorResults from './components/CantorResults'
-
-//import logo from './logo.svg';
-//import './App.css'
-
-BigInt.prototype.toJSON = function() {
-    return this.toString()
-}
-
 
 function App() {
     const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
@@ -30,23 +22,25 @@ function App() {
         'toRemove':     null,
         'numIter':      null
     })
-    const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
+    const [cantor, setCantor] = useState(null)
+    //const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
     const[notification, setNotification] = useState({'notifications': []})
 
     useEffect( () => {
+        let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
+        setCantor(defaultCantor)
+    }, [])
+
+    useEffect( () => {
         if(!anyErrors()) {
             setDisableCanvas(false)
-            console.log('#######################')
-            console.log(`new cantor for ${numSegments}, ${toRemove}, ${numIter}**********`)
-            console.log('#######################')
-            setCantor( new Cantor(numSegments, toRemove, numIter) )
+            setCantor( new Cantor(numSegments, toRemove, 1) )
         } else {
             setDisableCanvas(true)
         }
-    }, [numSegments, toRemove, numIter])
-
+    }, [numSegments, toRemove])
 
     const inputErrors = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
@@ -187,10 +181,10 @@ function App() {
                     formErrors={formErrors}
                     anyErrors={anyErrors}
                 />
-                {!displayResults && showDemo()}
-                {!displayResults && showSetupButtons()}
+                {!displayResults && cantor && showDemo()}
+                {!displayResults && cantor && showSetupButtons()}
 
-                {displayResults && showCantor()}
+                {displayResults && cantor && showCantor()}
             </form>
         </div>
     )
