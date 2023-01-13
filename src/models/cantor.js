@@ -57,6 +57,7 @@ function removeIntervals(interval, numSegments, toRemove){
     toRemove.sort( (a,b) => a-b )
 
     try {
+        console.log('entering interval.commonDen from cantor removeIntervals')
         interval.commonDen()
     } catch(e){
         e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${interval}`
@@ -65,6 +66,7 @@ function removeIntervals(interval, numSegments, toRemove){
 
     let commonInt = interval.commonDen()
     try {
+        console.log('entering interval.commonDen from the second call to commonDen in remove int')
         commonInt.commonDen(commonInt.left.den * numSegments)
     } catch(e){
         e.message = `Integer overflow: inside removeIntervals, trying to compute the common den of the interval ${commonInt} with ${commonInt.left.den} and ${numSegments}`

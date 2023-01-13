@@ -23,7 +23,6 @@ function App() {
         'numIter':      null
     })
     const [cantor, setCantor] = useState(null)
-    //const[cantor, setCantor] = useState( new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter']) )
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
     const[notification, setNotification] = useState({'notifications': []})
@@ -93,7 +92,9 @@ function App() {
                 // check that all numbers are greater than 1 and less than the number of segments
                 let hasError = !arr.every( (val) => val > 1 && val < parseInt(numSegmentsStr) )
                 if(!hasError){
-                    setToRemove(arr)
+                    if(JSON.stringify(arr) !== JSON.stringify(toRemove)){
+                        setToRemove(arr)
+                    }
                     errorState['toRemove'] = null
                 } else {
                     setToRemove(null)
