@@ -36,6 +36,7 @@ class Interval {
         // do not move into getter - makes console debugging easier
         this.str = `{Interval: [${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}], Length: ${this.len.reduce().str}}`
         this.strMinimal = `[${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}]`
+        this.strPrint = `${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}`
     }
 
     get len() {

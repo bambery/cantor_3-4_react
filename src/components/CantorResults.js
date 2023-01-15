@@ -6,6 +6,7 @@ import CantorIteration from './CantorIteration'
 const CantorResults = ({ cantorSet }) => {
     return(
         <div className='cantor-results'>
+            <hr className='horizontal-line'></hr>
             <div className='cantor-results-description'>
                 Cantor-like Set of {cantorSet.numSegments} Segmented Intervals, Removing Segment{cantorSet.toRemove.length > 1 ? 's' : ''} {cantorSet.toRemove.join(', ')}
             </div>

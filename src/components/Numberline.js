@@ -144,8 +144,6 @@ const Numberline = ({ intCol, isDemo }) => {
 
         // the pre-submission "demo" labels all segments
         if(isDemo){
-            // if I wanted to make the labels clickable, or position different labels above them
-            //let segPix = []
             for(let i = 0; i <= commonD; i++){
                 // put a point over all segments
                 const dotPix = start + (i * segmentLen)
@@ -157,7 +155,6 @@ const Numberline = ({ intCol, isDemo }) => {
                 if(i < commonD){
                     ctx.font = `${determineFontSize(commonD)}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
-                    //segPix.push(segMid)
                     ctx.fillStyle = '#e5b513'
                     ctx.textBaseline = 'bottom'
                     const numBottomMargin = 15
