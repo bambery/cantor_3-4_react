@@ -5,7 +5,7 @@ export default class Report {
         let eol = '\n'
 
         this.output = this.output.concat(`sep=${sep}${eol}`)
-        this.output = this.output.concat(`Cantor Set of ${cantorSet.numSegments} Segments, Removing Intervals from [${cantorSet.toRemove.join(", ")}] in ${cantorSet.numIter} Iterations${eol}`)
+        this.output = this.output.concat(`Cantor Set of ${cantorSet.numSegments} Segments, Removing Intervals from [${cantorSet.toRemove.join(', ')}] in ${cantorSet.numIter} Iterations${eol}`)
         this.output = this.output.concat(`Iteration${sep}Number of Segments${sep}Number of Gaps${eol}`)
 
         cantorSet.iterations.forEach( (intCol, index) => {

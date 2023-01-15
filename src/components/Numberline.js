@@ -166,17 +166,15 @@ const Numberline = ({ intCol, isDemo }) => {
         // label the gaps alphabetically from left to right
         if(!isDemo){
             intCol.gaps.forEach( (interval, index) => {
-            const startPix = start + (interval.left.num * segmentLen)
-            const segDrawLen = interval.len.num * segmentLen
-            const endPix = startPix + segDrawLen
-            const midPoint = (segDrawLen/2) + startPix
-            ctx.fillStyle = '#609ab8'
-            ctx.textBaseline = 'bottom'
-            const numBottomMargin = 15
-            ctx.fillText( String.fromCharCode(index + 65), midPoint, midH - numBottomMargin )
+                const startPix = start + (interval.left.num * segmentLen)
+                const segDrawLen = interval.len.num * segmentLen
+                const midPoint = (segDrawLen/2) + startPix
+                ctx.fillStyle = '#609ab8'
+                ctx.textBaseline = 'bottom'
+                const numBottomMargin = 15
+                ctx.fillText( String.fromCharCode(index + 65), midPoint, midH - numBottomMargin )
             })
         }
-
     }
 
     return(

@@ -26,19 +26,10 @@ export default class Cantor {
         this.iterations = []
 
         // calculate the Cantor iterations
-        //let iterResults = []
         let myCollection = new IntervalCollection([Interval.unit])
 
         while(numIter > 0){
             this.performOneIteration(myCollection)
-            /*
-            myCollection.forEach( interval => {
-                let res = removeIntervals(interval, this.numSegments, this.toRemove)
-                iterResults = iterResults.concat(res)
-            })
-            this.iterations.push(new IntervalCollection(iterResults))
-            */
-            //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1
         }
@@ -78,7 +69,6 @@ function removeIntervals(interval, numSegments, toRemove){
     }
 
     let commonInt = interval.commonDen()
-
     if(commonInt.left.den % numSegments !== 0){
 
         try {
@@ -89,11 +79,11 @@ function removeIntervals(interval, numSegments, toRemove){
         }
         commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
     }
-    let segmentLength = commonInt.len.equals(Fraction.unit)
+    const segmentLength = commonInt.len.equals(Fraction.unit)
         ? new Fraction(1, numSegments)
         : new Fraction(commonInt.len.num, commonInt.len.den * numSegments)
 
-    let toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
+    const toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
     let result = [commonInt]
 
     while(toRemoveInt.length > 0){
