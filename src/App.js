@@ -1,7 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineArrowUp } from 'react-icons/ai'
+import { BsBorderStyle } from 'react-icons/bs'
 
 import Cantor from './models/cantor'
+import Report from './models/report'
 import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
 
 import Header from './components/Header'
@@ -43,7 +46,7 @@ function App() {
 
     const inputErrors = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
-        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${numSegments - 1}. The first and last intervals may not be removed.`,
+        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${parseInt(numSegmentsStr) - 1}. The first and last intervals may not be removed.`,
         'numIter': `Please enter a number between 1 and ${maxIter}.`
     }
 
@@ -156,12 +159,97 @@ function App() {
                 'text':     'Cantor-ize!',
                 'color':    'button-blue',
                 'type':     'submit',
-                'disabled':    anyErrors()
+                'disabled': anyErrors(),
+                'icon':     BsBorderStyle,
+                'onClick':  handleCantorizeClick,
             }
         }
 
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
+
+    const handleOneMore = () => {
+        const lastIntervalCol = cantor.iterations[cantor.numIter - 1]
+        setCantor(cantor.performOneIteration(lastIntervalCol))
+    }
+
+    const showResultsTopButtons = (cantor) => {
+        const resultsTopButtonConfig = {
+            'download': {
+                'text':     'Download Data',
+                'color':    'button-blue',
+                'type':     'button',
+                'disabled': false,
+                'onClick':  handleDownloadReport,
+                'icon':     AiOutlineDownload
+            },
+            'clear': {
+                'text':     'Clear & Start Over',
+                'color':    'button-gray',
+                'type':     'button',
+                'disabled': false,
+                'onClick':  handleClearForm,
+                'icon':     AiOutlineCloseCircle
+            }
+        }
+        return(<ButtonSet buttonSetConfig={resultsTopButtonConfig}/>)
+    }
+
+    const showResultsBottomButtons = (cantor) => {
+        const resultsBottomButtonsConfig = {
+            'oneMore': {
+                'text':     'One More Iteration!',
+                'color':    'button-green',
+                'type':     'buttton',
+                'disabled': false,
+                'onClick':  handleOneMore,
+                'icon':     AiOutlinePlusCircle
+            },
+            'download': {
+                'text':     'Download Data',
+                'color':    'button-blue',
+                'type':     'button',
+                'disabled': false,
+                'onClick':  handleDownloadReport,
+                'icon':     AiOutlineDownload
+            },
+            'backToTop': {
+                'text':     'Back to Top',
+                'color':    'button-gray',
+                'type':     'button',
+                'disabled': false,
+                'onClick':  (e) => { e.preventDefault(); window.location.href='#top' },
+                'icon':     AiOutlineArrowUp
+            }
+        }
+        return(<ButtonSet buttonSetConfig={resultsBottomButtonsConfig}/>)
+    }
+
+    const handleClearForm = () => {
+        setNumSegmentsStr('')
+        setToRemoveStr('')
+        setNumIterStr('')
+        setDisplayResults(false)
+        setNumSegments(1)
+        setToRemove([])
+    }
+
+    const tempHandler = () => {
+        typeof Function.prototype === "function"
+    }
+
+    const handleDownloadReport = () => {
+        const report = new Report(cantor)
+        const blob = new Blob([report.output], { type: 'text/csv;charset=utf-8,' })
+        const objUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.setAttribute('download', `cantorSet-${cantor.numSegments}Seg-${cantor.toRemove.join('_')}Removed-${cantor.numIter}Iter.csv`)
+        link.setAttribute('href', objUrl)
+        link.setAttribute('visibility', 'hidden')
+        link.setAttribute('display', 'none')
+        link.click()
+    }
+
 
     const showCantor = () => {
         return(<CantorResults cantorSet={cantor}/>)
@@ -182,10 +270,12 @@ function App() {
                     formErrors={formErrors}
                     anyErrors={anyErrors}
                 />
+                {displayResults && cantor && showResultsTopButtons()}
                 {!displayResults && cantor && showDemo()}
                 {!displayResults && cantor && showSetupButtons()}
 
                 {displayResults && cantor && showCantor()}
+                {displayResults && cantor && showResultsBottomButtons()}
             </form>
         </div>
     )

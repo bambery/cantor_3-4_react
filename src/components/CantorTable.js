@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Fraction from '../models/fraction'
 
 const CantorTable = ({ intervalArr, kind, totLen }) => {
+    const numOrLetter = (kind, idx) => kind === 'segment' ? idx + 1 : String.fromCharCode(idx + 65)
+
     return(
         <div className={`cantor-result-${kind}s`}>
             <div className='cantor-table-count'>
@@ -20,7 +22,7 @@ const CantorTable = ({ intervalArr, kind, totLen }) => {
                     {intervalArr.map( (interval, index) => {
                         return(
                             <tr key={index} >
-                                <td className="cantor-table-row">{index + 1}</td>
+                                <td className="cantor-table-row">{numOrLetter(kind, index)}</td>
                                 <td className="cantor-table-row">{interval.strMinimal}</td>
                                 <td className="cantor-table-row">{interval.len.str}</td>
                             </tr>

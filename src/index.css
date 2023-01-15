@@ -6,10 +6,14 @@ body {
     /* colors */
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
     --color-bluish: #00a4d3;
-    --color-bluish-hover: #007da1;
+    --color-dark-bluish: #007da1;
     --color-link: #006ec5;
     --color-light-bluish: #c9f1fd;
     --color-error-text: #cb4818;
+    --color-gray: gray;
+    --color-green: #72bb53;
+    --color-dark-green: #629c44;
+    --color-dark-gray: #696969; /*nice*/
 }
 
 a {
@@ -24,16 +28,17 @@ a {
 
 .button {
     width: 250px;
-    padding: 5px 15px;
+    padding: 5px;
     color: white;
     border-radius:10px;
     outline: 0;
-    text-transform: uppercase;
-    margin: 10px 0px;
+    text-transform: capitalize;
+    margin: 10px 10px;
     box-shadow: 0px 2px 2px lightgray;
     border-bottom: 2px solid transparent;
     transition: ease background-color 250ms;
-    font-size: 1.2rem;
+    font-size: 1.2em;
+    text-align: center;
 }
 
 .button-blue {
@@ -41,13 +46,35 @@ a {
 }
 
 .button-blue:hover {
-    background-color: var(--color-bluish-hover);
+    background-color: var(--color-dark-bluish);
+}
+
+.button-gray {
+    background-color: var(--color-gray);
+}
+
+.button-gray:hover {
+    background-color: var(--color-dark-gray);
 }
 
 .button:disabled {
     background-color: gray;
 }
 
+.button-green {
+    background-color: var(--color-green)
+}
+
+.button-green:hover {
+    background-color: var(--color-dark-green)
+}
+
+.icon {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: bottom;
+    padding: 0 2px 0 0;
+}
 /****************/
 .numberline {
     height: 200px;
@@ -61,6 +88,15 @@ a {
     background-repeat:no-repeat;
 }
 /****************/
+
+.horizontal-line {
+    width: 30%;
+    margin: 15px auto;
+    height: 3px;
+    background-color: var(--color-dark-bluish);
+    border: 0 none;
+}
+
 .cantor-result-iteration {
     display: grid;
     grid-template-columns: repeat(8, 1fr);

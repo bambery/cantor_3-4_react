@@ -144,8 +144,6 @@ const Numberline = ({ intCol, isDemo }) => {
 
         // the pre-submission "demo" labels all segments
         if(isDemo){
-            // if I wanted to make the labels clickable, or position different labels above them
-            //let segPix = []
             for(let i = 0; i <= commonD; i++){
                 // put a point over all segments
                 const dotPix = start + (i * segmentLen)
@@ -157,7 +155,6 @@ const Numberline = ({ intCol, isDemo }) => {
                 if(i < commonD){
                     ctx.font = `${determineFontSize(commonD)}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
-                    //segPix.push(segMid)
                     ctx.fillStyle = '#e5b513'
                     ctx.textBaseline = 'bottom'
                     const numBottomMargin = 15
@@ -169,17 +166,15 @@ const Numberline = ({ intCol, isDemo }) => {
         // label the gaps alphabetically from left to right
         if(!isDemo){
             intCol.gaps.forEach( (interval, index) => {
-            const startPix = start + (interval.left.num * segmentLen)
-            const segDrawLen = interval.len.num * segmentLen
-            const endPix = startPix + segDrawLen
-            const midPoint = (segDrawLen/2) + startPix
-            ctx.fillStyle = '#609ab8'
-            ctx.textBaseline = 'bottom'
-            const numBottomMargin = 15
-            ctx.fillText( String.fromCharCode(index + 65), midPoint, midH - numBottomMargin )
+                const startPix = start + (interval.left.num * segmentLen)
+                const segDrawLen = interval.len.num * segmentLen
+                const midPoint = (segDrawLen/2) + startPix
+                ctx.fillStyle = '#609ab8'
+                ctx.textBaseline = 'bottom'
+                const numBottomMargin = 15
+                ctx.fillText( String.fromCharCode(index + 65), midPoint, midH - numBottomMargin )
             })
         }
-
     }
 
     return(

@@ -6,6 +6,7 @@ class Interval {
     #leftEndpoint = null
     #rightEndpoint = null
 
+    // will accept an array of 2 fractions, or 2 fraction args
     constructor ( leftEndpointArg, rightEndpointArg ){
         let tempLeft, tempRight
         if(arguments.length === 1
@@ -36,6 +37,7 @@ class Interval {
         // do not move into getter - makes console debugging easier
         this.str = `{Interval: [${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}], Length: ${this.len.reduce().str}}`
         this.strMinimal = `[${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}]`
+        this.strPrint = `${this.#leftEndpoint.reduce().str}, ${this.#rightEndpoint.reduce().str}`
     }
 
     get len() {

@@ -26,17 +26,10 @@ export default class Cantor {
         this.iterations = []
 
         // calculate the Cantor iterations
-        let iterResults = []
         let myCollection = new IntervalCollection([Interval.unit])
 
         while(numIter > 0){
-            myCollection.forEach( interval => {
-                let res = removeIntervals(interval, numSegments, toRemove)
-                iterResults = iterResults.concat(res)
-            })
-            this.iterations.push(new IntervalCollection(iterResults))
-            //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
-            iterResults = []
+            this.performOneIteration(myCollection)
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1
         }
@@ -46,7 +39,19 @@ export default class Cantor {
         return this.iterations.length
     }
 
+    performOneIteration(intCol) {
+        if(type(intCol) !== 'IntervalCollection'){
+            throw new Error('huh')
+        }
+        let iterResults = []
+        intCol.forEach( interval => {
+            let res = removeIntervals(interval, this.numSegments, this.toRemove)
+            iterResults = iterResults.concat(res)
+        })
+        this.iterations.push(new IntervalCollection(iterResults))
+    }
 }
+
 
 function removeIntervals(interval, numSegments, toRemove){
     if(toRemove.includes(1) || toRemove.includes(numSegments)){
@@ -74,11 +79,11 @@ function removeIntervals(interval, numSegments, toRemove){
         }
         commonInt = commonInt.commonDen(commonInt.left.den * numSegments)
     }
-    let segmentLength = commonInt.len.equals(Fraction.unit)
+    const segmentLength = commonInt.len.equals(Fraction.unit)
         ? new Fraction(1, numSegments)
         : new Fraction(commonInt.len.num, commonInt.len.den * numSegments)
 
-    let toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
+    const toRemoveInt = convertSegmentsToIntervals(commonInt, segmentLength, toRemove)
     let result = [commonInt]
 
     while(toRemoveInt.length > 0){
