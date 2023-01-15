@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineArrowUp } from 'react-icons/ai'
+import { BsBorderStyle } from 'react-icons/bs'
 
 import Cantor from './models/cantor'
 import Report from './models/report'
@@ -159,11 +160,17 @@ function App() {
                 'color':    'button-blue',
                 'type':     'submit',
                 'disabled': anyErrors(),
+                'icon':     BsBorderStyle,
                 'onClick':  handleCantorizeClick,
             }
         }
 
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
+    }
+
+    const handleOneMore = () => {
+        const lastIntervalCol = cantor.iterations[cantor.numIter - 1]
+        setCantor(cantor.performOneIteration(lastIntervalCol))
     }
 
     const showResultsTopButtons = (cantor) => {
@@ -195,7 +202,7 @@ function App() {
                 'color':    'button-green',
                 'type':     'buttton',
                 'disabled': false,
-                'onClick':  tempHandler,
+                'onClick':  handleOneMore,
                 'icon':     AiOutlinePlusCircle
             },
             'download': {
@@ -211,7 +218,7 @@ function App() {
                 'color':    'button-gray',
                 'type':     'button',
                 'disabled': false,
-                'onClick':  tempHandler,
+                'onClick':  (e) => { e.preventDefault(); window.location.href='#top' },
                 'icon':     AiOutlineArrowUp
             }
         }

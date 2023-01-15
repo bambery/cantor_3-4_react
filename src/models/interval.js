@@ -6,6 +6,7 @@ class Interval {
     #leftEndpoint = null
     #rightEndpoint = null
 
+    // will accept an array of 2 fractions, or 2 fraction args
     constructor ( leftEndpointArg, rightEndpointArg ){
         let tempLeft, tempRight
         if(arguments.length === 1

@@ -26,17 +26,19 @@ export default class Cantor {
         this.iterations = []
 
         // calculate the Cantor iterations
-        let iterResults = []
+        //let iterResults = []
         let myCollection = new IntervalCollection([Interval.unit])
 
         while(numIter > 0){
+            this.performOneIteration(myCollection)
+            /*
             myCollection.forEach( interval => {
-                let res = removeIntervals(interval, numSegments, toRemove)
+                let res = removeIntervals(interval, this.numSegments, this.toRemove)
                 iterResults = iterResults.concat(res)
             })
             this.iterations.push(new IntervalCollection(iterResults))
+            */
             //console.log(`iterResults for ${numIter} iteration: ${iterResults}`)
-            iterResults = []
             myCollection = this.iterations[this.iterations.length - 1]
             numIter -= 1
         }
@@ -46,7 +48,19 @@ export default class Cantor {
         return this.iterations.length
     }
 
+    performOneIteration(intCol) {
+        if(type(intCol) !== 'IntervalCollection'){
+            throw new Error('huh')
+        }
+        let iterResults = []
+        intCol.forEach( interval => {
+            let res = removeIntervals(interval, this.numSegments, this.toRemove)
+            iterResults = iterResults.concat(res)
+        })
+        this.iterations.push(new IntervalCollection(iterResults))
+    }
 }
+
 
 function removeIntervals(interval, numSegments, toRemove){
     if(toRemove.includes(1) || toRemove.includes(numSegments)){
@@ -64,6 +78,7 @@ function removeIntervals(interval, numSegments, toRemove){
     }
 
     let commonInt = interval.commonDen()
+
     if(commonInt.left.den % numSegments !== 0){
 
         try {
