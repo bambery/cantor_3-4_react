@@ -88,8 +88,9 @@ function App() {
             if (numSegmentsStr === '3' && toRemoveStr !== '2'){
                 errorState['toRemove'] = inputErrors['toRemove3Seg']
                 setToRemove(null)
-            } else if( !toRemoveStr || !toRemoveStr.match(legalToRem)
-            ){
+            } else if( !toRemoveStr ){
+                setToRemove([])
+            } else if( !toRemoveStr.match(legalToRem) ){
                 errorState['toRemove'] = inputErrors['toRemove']
                 setToRemove(null)
             }else {
@@ -275,6 +276,7 @@ function App() {
                     handleLoseFocus={handleLoseFocus}
                     formErrors={formErrors}
                     anyErrors={anyErrors}
+                    showResults={displayResults}
                 />
                 {displayResults && cantor && showResultsTopButtons()}
                 {!displayResults && cantor && showDemo()}
