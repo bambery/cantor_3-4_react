@@ -25,6 +25,7 @@ const SetupStep = (props) => {
                         name={name}
                         onChange={handleInputChange}
                         onBlur={handleLoseFocus}
+                        disabled={ name==='toRemove' && anyErrors('numSegments') }
                     />
                 </div>
                 <div className='step-error'>

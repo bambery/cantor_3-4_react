@@ -47,6 +47,7 @@ function App() {
     const inputErrors = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
         'toRemove': `Please enter a comma-separated list of numbers between 2 and ${parseInt(numSegmentsStr) - 1}. The first and last intervals may not be removed.`,
+        'toRemove3Seg': 'You have chosen to form the Cantor Set. Your only choice in this field is 2 :)',
         'numIter': `Please enter a number between 1 and ${maxIter}.`
     }
 
@@ -84,12 +85,14 @@ function App() {
         // toRemove's validation depends on a legal value of numSegments
         if(checkToRemove){
             let legalToRem = /[\s,\d]+/
-            if( !toRemoveStr ||
-                !toRemoveStr.match(legalToRem)
+            if (numSegmentsStr === '3' && toRemoveStr !== '2'){
+                errorState['toRemove'] = inputErrors['toRemove3Seg']
+                setToRemove(null)
+            } else if( !toRemoveStr || !toRemoveStr.match(legalToRem)
             ){
                 errorState['toRemove'] = inputErrors['toRemove']
                 setToRemove(null)
-            } else {
+            }else {
                 // string was valid, convert to arr of numbers
                 let arr = toRemoveStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
                 // check that all numbers are greater than 1 and less than the number of segments
@@ -167,12 +170,12 @@ function App() {
 
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
-
+/*
     const handleOneMore = () => {
         const lastIntervalCol = cantor.iterations[cantor.numIter - 1]
         setCantor(cantor.performOneIteration(lastIntervalCol))
     }
-
+*/
     const showResultsTopButtons = (cantor) => {
         const resultsTopButtonConfig = {
             'download': {
@@ -197,6 +200,7 @@ function App() {
 
     const showResultsBottomButtons = (cantor) => {
         const resultsBottomButtonsConfig = {
+            /*
             'oneMore': {
                 'text':     'One More Iteration!',
                 'color':    'button-green',
@@ -205,6 +209,7 @@ function App() {
                 'onClick':  handleOneMore,
                 'icon':     AiOutlinePlusCircle
             },
+            */
             'download': {
                 'text':     'Download Data',
                 'color':    'button-blue',
@@ -226,11 +231,12 @@ function App() {
     }
 
     const handleClearForm = () => {
-        setNumSegmentsStr('')
+        setNumSegmentsStr('1')
         setToRemoveStr('')
-        setNumIterStr('')
+        setNumIterStr('1')
         setDisplayResults(false)
         setNumSegments(1)
+        setNumIter(1)
         setToRemove([])
     }
 
