@@ -167,12 +167,12 @@ function App() {
 
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
-
+/*
     const handleOneMore = () => {
         const lastIntervalCol = cantor.iterations[cantor.numIter - 1]
         setCantor(cantor.performOneIteration(lastIntervalCol))
     }
-
+*/
     const showResultsTopButtons = (cantor) => {
         const resultsTopButtonConfig = {
             'download': {
@@ -197,6 +197,7 @@ function App() {
 
     const showResultsBottomButtons = (cantor) => {
         const resultsBottomButtonsConfig = {
+            /*
             'oneMore': {
                 'text':     'One More Iteration!',
                 'color':    'button-green',
@@ -205,6 +206,7 @@ function App() {
                 'onClick':  handleOneMore,
                 'icon':     AiOutlinePlusCircle
             },
+            */
             'download': {
                 'text':     'Download Data',
                 'color':    'button-blue',
