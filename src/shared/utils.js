@@ -37,6 +37,7 @@ function checkUnsafe(num) {
 }
 
 // modified to include NaN from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
+// this now is used to ONLY return the "name" of an object. Cannot be used to check type due to minification
 function type(value) {
     if (value === null) {
         return 'null'
@@ -82,13 +83,21 @@ function type(value) {
     return baseType
 }
 
-function checkArrContents(arr, typeStr){
+function checkArrContents(arr, typeClass){
     if( !Array.isArray(arr) ){
-        throw new ArgumentError(`Must pass an Array of type ${typeStr}: you passed ${type(arr)} with value ${arr}`)
-    }
-    let not_intervals = arr.filter( item => !(type(item) === typeStr))
-    if(not_intervals.length !== 0){
-        throw new ArgumentError(`Must pass an Array of ${typeStr}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
+        throw new ArgumentError(`Must pass an Array of type ${type(typeClass)}: you passed ${type(arr)} with value ${arr}`)
+    } else if( typeof(typeClass) === 'string' ){
+        let not_intervals = arr.filter( item => type(item) !== typeClass)
+        if(not_intervals.length !== 0){
+            throw new ArgumentError(`Must pass an Array of ${type(typeClass)}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
+        }
+    } else if (typeof(typeClass) === 'function') {
+        let not_intervals = arr.filter( item => !(item instanceof typeClass) )
+        if(not_intervals.length !== 0){
+            throw new ArgumentError(`Must pass an Array of ${type(typeClass)}: inside the Array, you passed ${JSON.stringify(not_intervals)}`)
+        }
+    } else {
+        throw new Error(`something is wrong. You passed an array, but typeof(typeClass) is ${typeof(typeClass)}. The array contains ${JSON.stringify(arr)}`)
     }
     return true
 }

@@ -10,20 +10,21 @@ class Interval {
     constructor ( leftEndpointArg, rightEndpointArg ){
         let tempLeft, tempRight
         if(arguments.length === 1
-            && type(leftEndpointArg) === 'Array'
+            && (leftEndpointArg instanceof Array)
             && leftEndpointArg.length === 2
             && (leftEndpointArg[0].length === 2 && leftEndpointArg[1].length === 2)
-            && (type(leftEndpointArg[0]) === 'Array' && type(leftEndpointArg[1]) === 'Array')
+            && ( (leftEndpointArg[0] instanceof Array) && (leftEndpointArg[1] instanceof Array) )
             && (checkArrContents(leftEndpointArg[0], 'number') && checkArrContents(leftEndpointArg[1], 'number'))
         ){
             tempLeft = new Fraction(leftEndpointArg[0])
             tempRight = new Fraction(leftEndpointArg[1])
         } else if (arguments.length === 2
-            && type(leftEndpointArg) === 'Fraction' && type(rightEndpointArg) === 'Fraction') {
+            && (leftEndpointArg instanceof Fraction)
+            && (rightEndpointArg instanceof Fraction)) {
             tempLeft = leftEndpointArg
             tempRight = rightEndpointArg
         } else {
-            throw new ArgumentError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg}, ${rightEndpointArg}`)
+            throw new ArgumentError(`Interval constructor requires 1) two fractions or 2) an array containing two sub-arrays representing the two Fractions: you passed ${leftEndpointArg} of type ${type(leftEndpointArg)},  and ${rightEndpointArg} of type ${type(rightEndpointArg)}`)
         }
 
         if (tempRight.lessThan(tempLeft)) {
@@ -92,7 +93,9 @@ class Interval {
     }
 }
 
-Interval.unit = new Interval( new Fraction(0, 1), new Fraction(1, 1) )
+const newLeft = new Fraction(0, 1)
+const newRight = new Fraction(1, 1)
+Interval.unit = new Interval(newLeft, newRight)
 Interval.prototype.toString = function intervalToString() { return this.str }
 
 export default Interval

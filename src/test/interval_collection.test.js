@@ -2,7 +2,7 @@ import IntervalCollection from '../models/interval_collection'
 import Interval from '../models/interval'
 import Fraction from '../models/fraction'
 import { checkSequence } from '../models/interval_collection'
-import { type, checkArrContents } from '../shared/utils'
+import { checkArrContents } from '../shared/utils'
 import { IntervalSequenceError } from '../shared/errors'
 
 let sampleIntervals = describe.each`
@@ -59,14 +59,14 @@ describe('IntervalCollection', function() {
     describe('Creating IntervalCollections', function() {
         it('Succeeds when passed an empty array', function(){
             let newColl = new IntervalCollection([])
-            expect(type(newColl)).toEqual('IntervalCollection')
+            expect(newColl instanceof IntervalCollection).toBeTruthy()
             expect(newColl.intervals.length).toEqual(0)
             expect(newColl.intervals).toEqual([])
         })
 
         it('With no args passed to new, it initializes an empty set of Intervals', function(){
             let newColl = new IntervalCollection()
-            expect(type(newColl)).toEqual('IntervalCollection')
+            expect(newColl instanceof IntervalCollection).toBeTruthy()
             expect(newColl.intervals.length).toEqual(0)
             expect(newColl.intervals).toEqual([])
         })

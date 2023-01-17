@@ -10,22 +10,22 @@ class Fraction {
 
         if(arguments.length === 0
             ||( arguments.length === 1
-                && type(numeratorArg) === 'Array'
+                && Array.isArray(numeratorArg)
                 && numeratorArg.length === 0 )
         ){
             this.#numerator = 1
             this.#denominator = 1
             return this
         } else if (arguments.length === 1
-            && type(numeratorArg) === 'Array'
+            && Array.isArray(numeratorArg)
             && numeratorArg.length === 2
             && checkArrContents(numeratorArg, 'number')
         ){
             numerator = numeratorArg[0]
             denominator = numeratorArg[1]
         } else if (arguments.length === 2
-            && type(numeratorArg) === 'number'
-            && type(denominatorArg === 'number')
+            && typeof(numeratorArg) === 'number'
+            && typeof(denominatorArg === 'number')
         ){
             numerator = numeratorArg
             denominator = denominatorArg
@@ -58,7 +58,7 @@ class Fraction {
     }
 
     commonDen(otherFrac){
-        if (type(otherFrac) !== 'Fraction'){
+        if( !(otherFrac instanceof Fraction) ){
             throw new ArgumentError(`Must pass one fraction to Fraction.commonDen: you passed in ${type(otherFrac)}`)
         } else if (this.den === otherFrac.den){
             return([this, otherFrac])
@@ -89,7 +89,7 @@ class Fraction {
 
     // subtract the passed in fraction from and return a new Fraction
     subtract(rhs) {
-        if (type(rhs) !== 'Fraction'){
+        if( !(rhs instanceof Fraction) ){
             throw new ArgumentError(`Must pass only Fraction argument to subtract: you passed in ${type(rhs)}`)
         }
         let [ leftHS, rightHS ] = this.commonDen(rhs)
@@ -101,16 +101,15 @@ class Fraction {
     }
 
     add(rhs) {
-        if(type(rhs) === 'Fraction'){
-            let [ leftHS, rightHS ] = this.commonDen(rhs)
-            let numerator = leftHS.num + rightHS.num
-            if (numerator > leftHS.den){
-                throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
-            }
-            return new Fraction(numerator, leftHS.den)
-        } else {
+        if( !(rhs instanceof Fraction) ){
             throw new ArgumentError(`Must pass only Fraction argument to add: you passed in ${type(rhs)}`)
         }
+        let [ leftHS, rightHS ] = this.commonDen(rhs)
+        let numerator = leftHS.num + rightHS.num
+        if (numerator > leftHS.den){
+            throw new FracError.FractionTooLarge(`Sum of ${this.str} and ${rhs.str} would be greater than 1.`)
+        }
+        return new Fraction(numerator, leftHS.den)
     }
 
     lessThan(rhs){
@@ -129,9 +128,9 @@ class Fraction {
     }
 
     mult(rhs){
-        if(type(rhs) === 'number'){
+        if(typeof(rhs) === 'number'){
             return new Fraction(this.num * rhs, this.den)
-        } else if (type(rhs) === 'Fraction'){
+        } else if (rhs instanceof Fraction){
             return new Fraction(this.num * rhs.num, this.den * rhs.den)
         } else {
             throw new ArgumentError('Can only multiply fractions by a scalar or another fraction.')
