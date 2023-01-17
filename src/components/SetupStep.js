@@ -6,7 +6,7 @@ const SetupStep = (props) => {
 
     const allInstructions = {
         'numSegments': 'How many segments should the line be divided into?',
-        'toRemove': 'Which segments should be removed?',
+        'toRemove': 'Which segments should be removed?\n(comma-separated list)',
         'numIter': 'How many iterations would you like to run?'
     }
 

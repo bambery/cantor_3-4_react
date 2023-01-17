@@ -39,9 +39,15 @@ function App() {
 
     useEffect( () => {
         if(!anyErrors()) {
+            // no errors: display numberline
+            setDisableCanvas(false)
+            setCantor( new Cantor(numSegments, toRemove, 1) )
+        } else if(!anyErrors('numSegments') && !anyErrors('numIter') && !toRemoveStr.trim().length){
+            // if there are an appropriate number of segments and no "impossible" entries in toRemove, display the demo numberline
             setDisableCanvas(false)
             setCantor( new Cantor(numSegments, toRemove, 1) )
         } else {
+            // there is no sensible content to display, so grey out the numberline
             setDisableCanvas(true)
         }
     }, [numSegments, toRemove])
@@ -66,6 +72,7 @@ function App() {
     }
 
     const validateFields = () => {
+        setDisableSubmit(false)
         let errorState = { ...formErrors }
 
         //validate numSegments
@@ -93,6 +100,7 @@ function App() {
             } else if( !toRemoveStr ){
                 if( numSegmentsStr !== '1' ){
                     setDisableSubmit(true)
+                    errorState['toRemove'] = inputErrors['toRemove']
                 }
                 setToRemove([])
             } else if( !toRemoveStr.match(legalToRem) ){
@@ -127,7 +135,6 @@ function App() {
             setNumIter(parseInt(numIterStr))
         }
 
-        setDisableSubmit(false)
         setFormErrors(errorState)
     }
 
