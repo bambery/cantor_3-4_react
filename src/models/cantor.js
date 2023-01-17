@@ -2,7 +2,7 @@ import Fraction from './fraction'
 import Interval from './interval'
 import IntervalCollection from './interval_collection'
 import { ValueError, ArgumentError } from '../shared/errors'
-import { type, checkArrContents } from '../shared/utils'
+import { checkArrContents } from '../shared/utils'
 
 // in case I ever decide to look into alternating the segments between iterations, I removed most of the utility functions from the class to keep the flexibility that was lost when everything was tied to an instance
 
@@ -10,9 +10,9 @@ import { type, checkArrContents } from '../shared/utils'
 export default class Cantor {
     constructor(numSegments, toRemove, numIter){
         if(
-            type(numSegments) !== 'number'
-            || !( type(toRemove) === 'Array' && checkArrContents(toRemove, 'number') )
-            || type(numIter) !== 'number'
+            typeof(numSegments) !== 'number'
+            || !( Array.isArray(toRemove) && checkArrContents(toRemove, 'number') )
+            || typeof(numIter) !== 'number'
         ){
             throw new ArgumentError(`Invalid arguments passed to new - numSegments: ${numSegments}, toRemove: ${toRemove}, numIter: ${numIter}`)
         } else if(toRemove.includes(1) || toRemove.includes(numSegments)){
@@ -40,7 +40,7 @@ export default class Cantor {
     }
 
     performOneIteration(intCol) {
-        if(type(intCol) !== 'IntervalCollection'){
+        if( !(intCol instanceof IntervalCollection) ){
             throw new Error('huh')
         }
         let iterResults = []
@@ -51,7 +51,6 @@ export default class Cantor {
         this.iterations.push(new IntervalCollection(iterResults))
     }
 }
-
 
 function removeIntervals(interval, numSegments, toRemove){
     if(toRemove.includes(1) || toRemove.includes(numSegments)){

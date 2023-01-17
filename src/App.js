@@ -29,6 +29,7 @@ function App() {
     const [cantor, setCantor] = useState(null)
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
+    const[disableSubmit, setDisableSubmit] = useState(false)
     //const[notification, setNotification] = useState({'notifications': []})
 
     useEffect( () => {
@@ -38,9 +39,15 @@ function App() {
 
     useEffect( () => {
         if(!anyErrors()) {
+            // no errors: display numberline
+            setDisableCanvas(false)
+            setCantor( new Cantor(numSegments, toRemove, 1) )
+        } else if(!anyErrors('numSegments') && !anyErrors('numIter') && !toRemoveStr.trim().length){
+            // if there are an appropriate number of segments and no "impossible" entries in toRemove, display the demo numberline
             setDisableCanvas(false)
             setCantor( new Cantor(numSegments, toRemove, 1) )
         } else {
+            // there is no sensible content to display, so grey out the numberline
             setDisableCanvas(true)
         }
     }, [numSegments, toRemove])
@@ -65,6 +72,7 @@ function App() {
     }
 
     const validateFields = () => {
+        setDisableSubmit(false)
         let errorState = { ...formErrors }
 
         //validate numSegments
@@ -90,6 +98,10 @@ function App() {
                 errorState['toRemove'] = inputErrors['toRemove3Seg']
                 setToRemove(null)
             } else if( !toRemoveStr ){
+                if( numSegmentsStr !== '1' ){
+                    setDisableSubmit(true)
+                    errorState['toRemove'] = inputErrors['toRemove']
+                }
                 setToRemove([])
             } else if( !toRemoveStr.match(legalToRem) ){
                 errorState['toRemove'] = inputErrors['toRemove']
@@ -163,7 +175,7 @@ function App() {
                 'text':     'Cantor-ize!',
                 'color':    'button-blue',
                 'type':     'submit',
-                'disabled': anyErrors(),
+                'disabled': disableSubmit || anyErrors(),
                 'icon':     BsBorderStyle,
                 'onClick':  handleCantorizeClick,
             }
@@ -239,6 +251,7 @@ function App() {
         setNumSegments(1)
         setNumIter(1)
         setToRemove([])
+        setDisableSubmit(true)
     }
 
     const handleDownloadReport = () => {
@@ -261,7 +274,7 @@ function App() {
     return (
         <div>
             <Header/>
-            <form onSubmit={handleCantorizeClick}>
+            <form autoComplete='off' onSubmit={handleCantorizeClick}>
                 <SetupCantor
                     numSegmentsStr={numSegmentsStr}
                     toRemoveStr={toRemoveStr}

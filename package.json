@@ -2,6 +2,7 @@
   "name": "cantor_3-4_react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://bambery.github.io/cantor_3-4_react",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -15,6 +16,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:prod": "npx serve -s build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:all": "react-scripts test --verbose --watchAll",
@@ -44,7 +48,8 @@
   },
   "devDependencies": {
     "eslint": "^8.29.0",
-    "eslint-plugin-react": "^7.31.11"
+    "eslint-plugin-react": "^7.31.11",
+    "gh-pages": "^4.0.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [

@@ -18,7 +18,7 @@ class IntervalCollection {
     // pass the gaps or intervals arr (or any arr of intervals)
     constructor( intervalsArr ){
         if(intervalsArr !== undefined){
-            checkArrContents(intervalsArr, 'Interval')
+            checkArrContents(intervalsArr, Interval)
             checkSequence(intervalsArr)
             this.#myIntervals = intervalsArr
         }

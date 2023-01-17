@@ -6,21 +6,28 @@ const SetupStep = (props) => {
 
     const allInstructions = {
         'numSegments': 'How many segments should the line be divided into?',
-        'toRemove': 'Which segments should be removed?',
+        'toRemove': 'Which segments should be removed?\n(comma-separated list)',
         'numIter': 'How many iterations would you like to run?'
     }
 
+    let toDisplay = inputState
+
     const isResults = () => {
         if(showResults){
+            if(name === 'toRemove'){
+                toDisplay = inputState.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) ).sort( (a, b) => a-b).join(', ')
+            }
             return(
                 <div className='step-result'>
-                    {inputState}
+                    {toDisplay}
                 </div>
             )
         } else {
             return(
                 <input
                     value={inputState}
+                    autoComplete='false'
+                    data-lpignore='true'
                     name={name}
                     onChange={handleInputChange}
                     onBlur={handleLoseFocus}
