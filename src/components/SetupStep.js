@@ -19,13 +19,13 @@ const SetupStep = (props) => {
             )
         } else {
             return(
-                    <input
-                        value={inputState}
-                        name={name}
-                        onChange={handleInputChange}
-                        onBlur={handleLoseFocus}
-                        disabled={ name==='toRemove' && anyErrors('numSegments') }
-                    />
+                <input
+                    value={inputState}
+                    name={name}
+                    onChange={handleInputChange}
+                    onBlur={handleLoseFocus}
+                    disabled={ name==='toRemove' && anyErrors('numSegments') }
+                />
             )
         }
     }
