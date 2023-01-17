@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineArrowUp } from 'react-icons/ai'
+//import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineArrowUp } from 'react-icons/ai'
+import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlineArrowUp } from 'react-icons/ai'
 import { BsBorderStyle } from 'react-icons/bs'
 
 import Cantor from './models/cantor'
@@ -28,7 +29,7 @@ function App() {
     const [cantor, setCantor] = useState(null)
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
-    const[notification, setNotification] = useState({'notifications': []})
+    //const[notification, setNotification] = useState({'notifications': []})
 
     useEffect( () => {
         let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
@@ -64,7 +65,7 @@ function App() {
     }
 
     const validateFields = () => {
-        let errorState = {...formErrors}
+        let errorState = { ...formErrors }
 
         //validate numSegments
         let legalNumSeg = /^\s*\d+\s*$/
@@ -125,8 +126,7 @@ function App() {
         setFormErrors(errorState)
     }
 
-    const handleLoseFocus = (event) => {
-        const elementName = event.target.name
+    const handleLoseFocus = () => {
         validateFields()
     }
 
@@ -177,7 +177,7 @@ function App() {
         setCantor(cantor.performOneIteration(lastIntervalCol))
     }
 */
-    const showResultsTopButtons = (cantor) => {
+    const showResultsTopButtons = () => {
         const resultsTopButtonConfig = {
             'download': {
                 'text':     'Download Data',
@@ -199,7 +199,7 @@ function App() {
         return(<ButtonSet buttonSetConfig={resultsTopButtonConfig}/>)
     }
 
-    const showResultsBottomButtons = (cantor) => {
+    const showResultsBottomButtons = () => {
         const resultsBottomButtonsConfig = {
             /*
             'oneMore': {
@@ -239,10 +239,6 @@ function App() {
         setNumSegments(1)
         setNumIter(1)
         setToRemove([])
-    }
-
-    const tempHandler = () => {
-        typeof Function.prototype === "function"
     }
 
     const handleDownloadReport = () => {

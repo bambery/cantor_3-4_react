@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 import Fraction from '../models/fraction'
+import { getLabel } from '../shared/utils'
 
 const Numberline = ({ intCol, isDemo }) => {
 //////////////////////////////////////////////
@@ -20,14 +21,6 @@ const Numberline = ({ intCol, isDemo }) => {
         drawNumberline(ctx, margin, width, height, midH)
         drawIntervals(ctx, intCol, width, margin, midH)
     }, [intCol, isDemo])
-
-    const determineFontSize = (numSeg) => {
-        if(numSeg <= 25){
-            return 30
-        } else {
-            return 18
-        }
-    }
 
     const drawCanvas = (canvasRef) => {
         const canvas = canvasRef.current
@@ -61,20 +54,44 @@ const Numberline = ({ intCol, isDemo }) => {
         ctx.stroke()
     }
 
-    const drawFraction = (ctx, frac, x, y) => {
+    const fontDetails = {
+        'labels': {
+            'normal': {
+                'fontSize': 30
+            },
+            'small': {
+                'fontSize': 17
+            }
+        },
+        'frac': {
+            'normal': {
+                'lineWidth':    1.0, // fraction bar width
+                'fontSize':     15,
+                'fillStyle':    'white',
+                'strokeStyle':  'white'
+            },
+            'small' : {
+                'lineWidth':    1.0,
+                'fontSize':     9,
+                'fillStyle':    'white',
+                'strokeStyle':  'white'
+            }
+        }
+    }
+
+    const drawFraction = (ctx, frac, x, y, size) => {
         const oldStyle = ctx.strokeStyle
         const oldLineWidth = ctx.lineWidth
         const oldFont = ctx.font
         const endpointFontBaseline = 'top'
-        const fracBarWidth = 1.0
-        const fracBarPad = 2
         const endpointFontTop = 15
-        const fracFontSize = 15
-        ctx.font = `${fracFontSize}px Verdana`
-        ctx.lineWidth = fracBarWidth
+        const fracBarPad = 2
+        const { lineWidth, fontSize, fillStyle, strokeStyle } = fontDetails['frac'][size]
+        ctx.font = `${fontSize}px Verdana`
+        ctx.lineWidth = lineWidth
         ctx.textBaseline = endpointFontBaseline
-        ctx.fillStyle = 'white'
-        ctx.strokeStyle = 'white'
+        ctx.fillStyle = fillStyle
+        ctx.strokeStyle = strokeStyle
 
         // draw numerator
         const numTop = y + endpointFontTop
@@ -85,12 +102,12 @@ const Numberline = ({ intCol, isDemo }) => {
         ctx.beginPath()
         // what's that sneaky 0.5 at the end? It's so the line is crisp and white and not fat and grey
         // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html#linewidth
-        const barTop = numTop + fracFontSize + fracBarPad + 0.5
+        const barTop = numTop + fontSize + fracBarPad + 0.5
         ctx.moveTo( x - lineLen/2, barTop)
         ctx.lineTo(x + lineLen/2, barTop)
         ctx.stroke()
         // draw denominator
-        const denTop = barTop + fracBarWidth + fracBarPad
+        const denTop = barTop + lineWidth + fracBarPad
         ctx.fillText(frac.den, x, denTop)
 
         // return changed styles to what they were before this fxn call
@@ -110,6 +127,9 @@ const Numberline = ({ intCol, isDemo }) => {
         const intervalLineWidth = 4.0
         const dotSize = 5
 
+        // font size should be determined here
+        let size = segmentLen < 35 ? 'small' : 'normal'
+
         intColCommon.forEach( (interval, idx) => {
             const startPix = start + (interval.left.num * segmentLen)
             const segDrawLen = interval.len.num * segmentLen
@@ -123,6 +143,7 @@ const Numberline = ({ intCol, isDemo }) => {
             ctx.moveTo(startPix, midH)
             ctx.lineTo(endPix, midH)
             ctx.stroke()
+
             if(!isDemo){
                 // draw white points on line
                 ctx.fillStyle = 'white'
@@ -130,10 +151,10 @@ const Numberline = ({ intCol, isDemo }) => {
                 fillCircle(ctx, endPix, midH, dotSize)
                 // draw fractions
 
-                ctx.font = `${determineFontSize(commonD)}px Verdana`
+                ctx.font = `${fontDetails['labels'][size]['fontSize']}px Verdana`
                 // label fractional endpoints of segment
-                drawFraction(ctx, interval.left, startPix, midH)
-                drawFraction(ctx, interval.right, endPix, midH)
+                drawFraction(ctx, interval.left, startPix, midH, size)
+                drawFraction(ctx, interval.right, endPix, midH, size)
 
                 //label the segments numerically from left to right
                 ctx.fillStyle = '#e5b513'
@@ -150,10 +171,10 @@ const Numberline = ({ intCol, isDemo }) => {
                 ctx.fillStyle = 'white'
                 fillCircle(ctx, dotPix, midH, dotSize)
                 // label the points with their fractional value
-                drawFraction(ctx, new Fraction(i, commonD), dotPix, midH)
+                drawFraction(ctx, new Fraction(i, commonD), dotPix, midH, size)
                 // label the segments left to right numerically
                 if(i < commonD){
-                    ctx.font = `${determineFontSize(commonD)}px Verdana`
+                    ctx.font = `${fontDetails['labels']['normal']['fontSize']}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
                     ctx.fillStyle = '#e5b513'
                     ctx.textBaseline = 'bottom'
@@ -172,7 +193,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 ctx.fillStyle = '#609ab8'
                 ctx.textBaseline = 'bottom'
                 const numBottomMargin = 15
-                ctx.fillText( String.fromCharCode(index + 65), midPoint, midH - numBottomMargin )
+                ctx.fillText( getLabel(index), midPoint, midH - numBottomMargin )
             })
         }
     }

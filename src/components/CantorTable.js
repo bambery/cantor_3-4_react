@@ -1,9 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Fraction from '../models/fraction'
+import { getLabel } from '../shared/utils'
+import IntervalDisplay from './IntervalDisplay'
+import FracDisplay from './FracDisplay'
 
 const CantorTable = ({ intervalArr, kind, totLen }) => {
-    const numOrLetter = (kind, idx) => kind === 'segment' ? idx + 1 : String.fromCharCode(idx + 65)
+    const numOrLetter = (kind, idx) => kind === 'segment' ? idx + 1 : getLabel(idx)
 
     return(
         <div className={`cantor-result-${kind}s`}>
@@ -23,8 +26,12 @@ const CantorTable = ({ intervalArr, kind, totLen }) => {
                         return(
                             <tr key={index} >
                                 <td className="cantor-table-row">{numOrLetter(kind, index)}</td>
-                                <td className="cantor-table-row">{interval.strMinimal}</td>
-                                <td className="cantor-table-row">{interval.len.str}</td>
+                                <td className="cantor-table-row">
+                                    <IntervalDisplay interval={interval}/>
+                                </td>
+                                <td className="cantor-table-row">
+                                    <FracDisplay frac={interval.len}/>
+                                </td>
                             </tr>
                         )
                     }) }

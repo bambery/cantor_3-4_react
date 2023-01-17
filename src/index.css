@@ -156,7 +156,7 @@ a {
     border-color: var(--color-bluish);
     border-width: 2px;
     text-align: center;
-    padding: 20px;
+    padding: 20px 0px;
 }
 
 .cantor-table-header {
@@ -168,6 +168,36 @@ a {
     font-size: 1.5rem;
     font-weight: 400;
     text-transform: capitalize;
+}
+
+.interval-display {
+    display: flex;
+    justify-content: center;
+}
+
+.parens-left {
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 0 2px 2px;
+    width: 3px;
+    margin: 0 5px 0 0;
+}
+
+.parens-right {
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 2px 2px 0;
+    width: 3px;
+    margin: 0 0 0 5px;
+}
+.frac-display {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+}
+
+.frac-line {
+    border-top: 2px solid;
 }
 
 /****************/

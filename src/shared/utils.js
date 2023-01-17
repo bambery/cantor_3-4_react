@@ -93,6 +93,13 @@ function checkArrContents(arr, typeStr){
     return true
 }
 
+function getLabel(index){
+    if(index < 26){
+        return String.fromCharCode(Math.floor(index + 65))
+    } else {
+        return `${String.fromCharCode(Math.floor(index/26) + 64)}${String.fromCharCode(index%26 + 65)}`
+    }
+}
 
 /* istanbul ignore if */
 if (process.env['NODE_ENV'] === 'test') {
@@ -103,5 +110,6 @@ export {
     lcm,
     type,
     checkArrContents,
-    checkUnsafe
+    checkUnsafe,
+    getLabel
 }
