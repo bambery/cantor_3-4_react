@@ -9,6 +9,7 @@ import Report from './models/report'
 import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
 
 import Header from './components/Header'
+import ErrorNotification from './components/ErrorNotification'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
@@ -30,12 +31,18 @@ function App() {
     const[displayResults, setDisplayResults] = useState(false)
     const[disableCanvas, setDisableCanvas] = useState(false)
     const[disableSubmit, setDisableSubmit] = useState(false)
-    //const[notification, setNotification] = useState({'notifications': []})
+    const[notification, setNotification] = useState()
 
     useEffect( () => {
-        let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
-        setCantor(defaultCantor)
+        try{
+            let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
+            setCantor(defaultCantor)
+        } catch(e) {
+            setNotification(e)
+            setCantor( new Cantor(numSegments, toRemove, 1) )
+        }
     }, [])
+
 
     useEffect( () => {
         if(!anyErrors()) {
@@ -152,12 +159,20 @@ function App() {
 
     const handleCantorizeClick = (event) => {
         event.preventDefault()
+        setNotification()
         if(anyErrors()){
             return
         }
 
-        setCantor(new Cantor(numSegments, toRemove, numIter))
-        setDisplayResults(true)
+
+        try {
+            let newCantor = new Cantor(numSegments, toRemove, numIter)
+            setCantor(newCantor)
+            setDisplayResults(true)
+        } catch(e) {
+            setNotification(e)
+            setCantor( new Cantor(numSegments, toRemove, 1) )
+        }
     }
 
 
@@ -271,9 +286,14 @@ function App() {
         return(<CantorResults cantorSet={cantor}/>)
     }
 
+    const showNotification = () => {
+        return(<ErrorNotification error={notification}/>)
+    }
+
     return (
         <div>
             <Header/>
+            { notification && showNotification() }
             <form autoComplete='off' onSubmit={handleCantorizeClick}>
                 <SetupCantor
                     numSegmentsStr={numSegmentsStr}

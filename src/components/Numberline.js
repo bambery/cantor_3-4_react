@@ -128,7 +128,7 @@ const Numberline = ({ intCol, isDemo }) => {
         const dotSize = 5
 
         // font size should be determined here
-        let size = segmentLen < 35 ? 'small' : 'normal'
+        let size = segmentLen < 50 ? 'small' : 'normal'
 
         intColCommon.forEach( (interval, idx) => {
             const startPix = start + (interval.left.num * segmentLen)
@@ -174,6 +174,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 drawFraction(ctx, new Fraction(i, commonD), dotPix, midH, size)
                 // label the segments left to right numerically
                 if(i < commonD){
+                    // always use 'normal' font size for demo
                     ctx.font = `${fontDetails['labels']['normal']['fontSize']}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
                     ctx.fillStyle = '#e5b513'

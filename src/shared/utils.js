@@ -20,7 +20,7 @@ function lcm(arr) {
             try {
                 checkUnsafe(arr[i] * ans)
             } catch(e) {
-                e.message = `While trying to compute the LCM for the common denominator, ${arr[i]} * ${ans} exceded max integer size.`
+                e.message = `While trying to compute the LCM for the common denominator, ${arr[i]} * ${ans} exceeded max integer size. Please decrease the number of segments or the number of iterations and try again.`
                 throw e
             }
             ans = (( arr[i] * ans ) / ( gcd(arr[i], ans) ))
