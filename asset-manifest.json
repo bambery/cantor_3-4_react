@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "./static/css/main.7fefd24d.css",
-    "main.js": "./static/js/main.7fd23612.js",
-    "static/media/github-mark.svg": "./static/media/github-mark.6fa18895f6e6c7772cab.svg",
-    "index.html": "./index.html",
-    "main.7fefd24d.css.map": "./static/css/main.7fefd24d.css.map",
-    "main.7fd23612.js.map": "./static/js/main.7fd23612.js.map"
+    "main.css": "/cantor_3-4_react/static/css/main.d9592981.css",
+    "main.js": "/cantor_3-4_react/static/js/main.88eb68f2.js",
+    "static/media/github-mark.svg": "/cantor_3-4_react/static/media/github-mark.6fa18895f6e6c7772cab.svg",
+    "index.html": "/cantor_3-4_react/index.html",
+    "main.d9592981.css.map": "/cantor_3-4_react/static/css/main.d9592981.css.map",
+    "main.88eb68f2.js.map": "/cantor_3-4_react/static/js/main.88eb68f2.js.map"
   },
   "entrypoints": [
-    "static/css/main.7fefd24d.css",
-    "static/js/main.7fd23612.js"
+    "static/css/main.d9592981.css",
+    "static/js/main.88eb68f2.js"
   ]
 }
