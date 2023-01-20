@@ -102,12 +102,22 @@ function checkArrContents(arr, typeClass){
     return true
 }
 
+// translates 1 = A, 2 = B, ..., 26 = Z, 27 = AA, 28 = AB, ....702 = ZZ, 703 = AAA, ...
+// convert base 10 to 26, then convert back to base 10 digit by digit as an index into the dictionary. Must account for the representation of "10" in any base.
 function getLabel(index){
+    let alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     if(index < 26){
-        return String.fromCharCode(Math.floor(index + 65))
-    } else {
-        return `${String.fromCharCode(Math.floor(index/26) + 64)}${String.fromCharCode(index%26 + 65)}`
+        return alpha[index]
     }
+    let base26 = (index).toString(26)
+    let result = ''
+    for(let i = base26.length - 1; i >= 0; i--){
+        let base10 = parseInt(base26[i], 26)
+        result = ( i === 0 )
+            ? alpha.charAt(base10 - 1) + result
+            : alpha.charAt(base10) + result
+    }
+    return result
 }
 
 /* istanbul ignore if */

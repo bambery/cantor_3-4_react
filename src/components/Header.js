@@ -8,7 +8,7 @@ const Header = () => {
                     Asymmetrical Cantor-like Sets
                 </div>
                 <div id="paper-title">
-                    <a href="#">Read the Paper: Insert Paper Title Here</a>
+                    <a href="https://arxiv.org/pdf/2211.08664.pdf">Read the Paper: Insert Paper Title Here</a>
                 </div>
             </div>
             <div id="credit-and-github">
