@@ -16,10 +16,10 @@ After pressing "Cantor-ify!", you will see a graphic representing the intervals 
 
 ## History
 This is a react rewrite of a small proof of concept that I hacked together:
-https://github.com/bambery/cantor_3-4 to demonstrate [asymmetrical Cantor sets](https://bambery.github.io/cantor_3-4/).
+https://github.com/bambery/cantor_3-4 to demonstrate [asymmetrical Cantor sets](https://bambery.github.io/cantor_3-4/). I described this set originally by accident when I misinterpreted a midterm question while studying under Dr. Wilfredo O. Urbina-Romero at Roosevelt University in 2022.
 
 ## Usage Permisions
-I attempted to find a software license that would allow for general, non-commercial use and modification with accreditation, but this [appears](https://choosealicense.com/licenses/) [to not](https://creativecommons.org/faq/#can-i-apply-a-creative-commons-license-to-software) [exist](https://opensource.stackexchange.com/questions/6719/non-commercial-licensing-recommendation). Only allocated one story point to this task: therefore at this time, there is no license to use this software or any contents presented herein. If you wish to use or modify this codebase, please feel free to [contact me](mailto:cantor@bettercriticals.mozmail.com) and I will provide permission. You may reproduce this work without modification with accreditation back to me without permission.
+I attempted to find a software license that would allow for general, non-commercial use and modification with accreditation, but this [appears](https://choosealicense.com/licenses/) [to not](https://creativecommons.org/faq/#can-i-apply-a-creative-commons-license-to-software) [exist](https://opensource.stackexchange.com/questions/6719/non-commercial-licensing-recommendation). I only allocated one story point to this task: therefore at this time, there is no license to use this software or any contents presented herein. If you wish to use or modify this codebase, please feel free to [contact me](mailto:cantor@bettercriticals.mozmail.com) and I will provide permission. You may reproduce this work without modification with accreditation back to me without permission.
 
 When I have suitable time to allocate time to investigate, I will find and attach a suitable license. You can check where that is ranked on the [Trello for remaining tasks](https://trello.com/b/VnjJEpic/cantor-3-4).
 
