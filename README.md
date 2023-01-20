@@ -3,15 +3,15 @@
 [![Node.js CI](https://github.com/bambery/cantor_3-4_react/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/bambery/cantor_3-4_react/actions/workflows/node.js.yml)
 
 ## I Have Described Every Cantor Set
-Sorry math students, I have described every Cantor set (within the limitations of MAX_SAFE_INTEGER of course)!
+Sorry math students, I have described every Cantor set (within the limitations of [MAX_SAFE_INTEGER](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) of course)!
 
 Please visit https://bambery.github.io/cantor_3-4_react/ to play with nowhere-dense sets.
 
 
 ## How to Use
-Using the UI, select the number of segments to divide the interval into. Next, select the segments you wish to have removed with each iteration. Third, select how many iterations you wish to view, keeping in mind that the more iterations, the less comprehensible the graphics will be.
+Using the UI, select the number of segments to divide the interval into. Next, select the segments you wish to have removed with each iteration. Third, select how many iterations you wish to view, keeping in mind that the more iterations, the less comprehensible the graphics will be. Additionally, the denominator must stay below 2<sup>53</sup> - 1: due to this, I have restricted the number of iterations to maximum of 10. I could not justify a switch to BigInt, but please feel free to message me with reasons why it might be interesting.
 
-## Downloading the generated Cantor sets
+## Downloading the Generated Cantor-like Sets
 After pressing "Cantor-ify!", you will see a graphic representing the intervals for each Cantorian iteration with a table listing the endpoints. All tables can be downloaded into a csv with the "Download This Data" button at the top.
 
 ## History
