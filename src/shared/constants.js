@@ -5,5 +5,5 @@ export const maxIter = 10
 export const stateDefaults = {
     'numSegments':  4,
     'toRemove':     [3],
-    'numIter':      1
+    'numIter':      3
 }
