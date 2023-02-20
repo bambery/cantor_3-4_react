@@ -319,9 +319,6 @@ function App() {
         return(<ErrorNotification error={notification}/>)
     }
 
-    const dummy = () => {
-    }
-
     return (
         <div>
             <Header/>
