@@ -8,7 +8,8 @@ import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai'
 import { IconContext } from 'react-icons'
 
 const CantorIteration = ({ intCol, index }) => {
-    const [showDetails, setShowDetails] = useState(false)
+    const toggleDefault = index === 0 ? true : false
+    const [showDetails, setShowDetails] = useState(toggleDefault)
 
     const toggleDetails = () => {
         setShowDetails(!showDetails)

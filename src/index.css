@@ -167,6 +167,7 @@ a {
     grid-area: nl;
 }
 
+/* https://tobiasahlin.com/blog/css-trick-animating-link-underlines/ */
 .cantor-result-iteration-name {
     grid-area: iter;
     font-size: 2em;
