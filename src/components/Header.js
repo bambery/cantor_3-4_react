@@ -5,7 +5,7 @@ const Header = () => {
         <div className="page-header">
             <div id="page-and-paper-title">
                 <div id="page-title">
-                    Asymmetrical Cantor-like Sets
+                    Cantor-like Set Generator
                 </div>
                 <div id="paper-title">
                     <a href="https://arxiv.org/pdf/2211.08664.pdf">Read the Paper: A Non-Centered Asymmetric Cantor-like Set</a>
