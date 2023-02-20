@@ -12,7 +12,6 @@ import Header from './components/Header'
 import ErrorNotification from './components/ErrorNotification'
 import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
-import Numberline from './components/Numberline'
 import CantorResults from './components/CantorResults'
 import Demo from './components/Demo'
 

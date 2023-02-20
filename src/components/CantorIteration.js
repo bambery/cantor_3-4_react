@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import IntervalCollection from '../models/interval_collection'
 import Numberline from './Numberline'
 import CantorTable from './CantorTable'
@@ -24,8 +24,8 @@ const CantorIteration = ({ intCol, index }) => {
     const cantorTable = (kind) => {
         return (
             kind === 'seg'
-            ? <CantorTable intervalArr={intCol.intervals} kind='segment' totLen={intCol.len}/>
-            : <CantorTable intervalArr={intCol.gaps} kind='gap' totLen={intCol.gapLen} />
+                ? <CantorTable intervalArr={intCol.intervals} kind='segment' totLen={intCol.len}/>
+                : <CantorTable intervalArr={intCol.gaps} kind='gap' totLen={intCol.gapLen} />
         )
     }
 
