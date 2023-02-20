@@ -13,6 +13,7 @@ const CantorResults = ({ cantorSet }) => {
             <div className='cantor-results'>
                 {cantorSet.iterations.map( (iter, idx) => <CantorIteration key={idx} intCol={iter} index={idx}/>)}
             </div>
+            <hr className='horizontal-line'></hr>
         </div>
     )
 }

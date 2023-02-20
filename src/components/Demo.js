@@ -1,19 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Numberline from './Numberline'
-import Cantor from '../models/cantor'
+import IntervalCollection from '../models/interval_collection'
+import RiseLoader from 'react-spinners/RiseLoader'
 
-const Demo = ({ cantor }) => {
-    return(
-        <Numberline
-            intCol={cantor.iterations[0]}
-            isDemo={true}
-        />
+const Demo = ({ cantorIter, isDemo, disableCanvas, loading }) => {
+    return (
+        <div className='spinner-parent'>
+            <div className={ `${ loading ? '' : 'hidden'} loading-spinner`} >
+                <RiseLoader
+                    color={getComputedStyle(document.body).getPropertyValue('--color-dark-bluish')}
+                />
+            </div>
+            <div className={`${(disableCanvas || loading) ? 'disable-item': ''}`}>
+                <Numberline
+                    intCol={cantorIter}
+                    isDemo={isDemo}
+                />
+            </div>
+        </div>
     )
 }
 
 Demo.propTypes = {
-    cantor: PropTypes.instanceOf(Cantor)
+    cantorIter:     PropTypes.instanceOf(IntervalCollection),
+    isDemo:         PropTypes.bool,
+    disableCanvas:  PropTypes.bool,
+    loading:        PropTypes.bool
 }
 
 export default Demo
