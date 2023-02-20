@@ -14,6 +14,7 @@ import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import Numberline from './components/Numberline'
 import CantorResults from './components/CantorResults'
+import Demo from './components/Demo'
 
 function App() {
     const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
@@ -28,10 +29,11 @@ function App() {
         'numIter':      null
     })
     const [cantor, setCantor] = useState(null)
-    const[displayResults, setDisplayResults] = useState(false)
-    const[disableCanvas, setDisableCanvas] = useState(false)
-    const[disableSubmit, setDisableSubmit] = useState(false)
-    const[notification, setNotification] = useState()
+    const [displayResults, setDisplayResults] = useState(false)
+    const [disableCanvas, setDisableCanvas] = useState(false)
+    const [disableSubmit, setDisableSubmit] = useState(false)
+    const [notification, setNotification] = useState()
+    const [loading, setLoading] = useState(false)
 
     useEffect( () => {
         try{
@@ -58,6 +60,21 @@ function App() {
             setDisableCanvas(true)
         }
     }, [numSegments, toRemove])
+
+    useEffect( () => {
+        if(loading) {
+            try {
+                let newCantor = new Cantor(numSegments, toRemove, numIter)
+                setCantor(newCantor)
+                setDisplayResults(true)
+                setLoading(false)
+            } catch(e) {
+                setNotification(e)
+                setCantor( new Cantor(numSegments, toRemove, 1) )
+                setLoading(false)
+            }
+        }
+    }, [ loading ])
 
     const inputErrors = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
@@ -164,7 +181,8 @@ function App() {
             return
         }
 
-
+        setLoading(true)
+/*
         try {
             let newCantor = new Cantor(numSegments, toRemove, numIter)
             setCantor(newCantor)
@@ -173,15 +191,26 @@ function App() {
             setNotification(e)
             setCantor( new Cantor(numSegments, toRemove, 1) )
         }
+        */
     }
 
 
     const showDemo = () => {
         return(
+            <Demo
+                cantorIter = {cantor.iterations[0]}
+                isDemo={true}
+                loading={loading}
+                disableCanvas={disableCanvas}
+            />
+        )
+        /*
+        return(
             <div className={`${disableCanvas ? 'disable-item': ''}`}>
                 <Numberline intCol={cantor.iterations[0]} isDemo={true}/>
             </div>
         )
+        */
     }
 
     const showSetupButtons = () => {
@@ -288,6 +317,9 @@ function App() {
 
     const showNotification = () => {
         return(<ErrorNotification error={notification}/>)
+    }
+
+    const dummy = () => {
     }
 
     return (

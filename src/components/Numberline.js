@@ -157,7 +157,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 drawFraction(ctx, interval.right, endPix, midH, size)
 
                 //label the segments numerically from left to right
-                ctx.fillStyle = '#e5b513'
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--color-gold')
                 ctx.textBaseline = 'bottom'
                 ctx.fillText(idx + 1, midPoint, midH - numBottomMargin)
             }
@@ -177,7 +177,7 @@ const Numberline = ({ intCol, isDemo }) => {
                     // always use 'normal' font size for demo
                     ctx.font = `${fontDetails['labels']['normal']['fontSize']}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
-                    ctx.fillStyle = '#e5b513'
+                    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--color-gold')
                     ctx.textBaseline = 'bottom'
                     const numBottomMargin = 15
                     ctx.fillText(i + 1, segMid, midH - numBottomMargin)
@@ -191,7 +191,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 const startPix = start + (interval.left.num * segmentLen)
                 const segDrawLen = interval.len.num * segmentLen
                 const midPoint = (segDrawLen/2) + startPix
-                ctx.fillStyle = '#609ab8'
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--color-gap-label-blue')
                 ctx.textBaseline = 'bottom'
                 const numBottomMargin = 15
                 ctx.fillText( getLabel(index), midPoint, midH - numBottomMargin )

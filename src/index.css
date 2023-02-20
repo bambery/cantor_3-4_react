@@ -14,6 +14,8 @@ body {
     --color-green: #72bb53;
     --color-dark-green: #629c44;
     --color-dark-gray: #696969; /*nice*/
+    --color-gold: #e5b513;
+    --color-gap-label-blue: #609ab8;
 }
 
 a {
@@ -92,13 +94,35 @@ a {
     height: 200px;
 }
 
+.spinner-parent {
+    position: relative;
+}
+
+.loading-spinner {
+    position: absolute;
+    height: 200px;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    position: absolute;
+    display: none;
+    width: 100%;
+}
+
 .disable-item {
+    z-index: auto;
     background-color: grey;
     opacity: 0.3;
     height:100%;
     width:100%;
     background-repeat:no-repeat;
 }
+
 /****************/
 
 .horizontal-line {
@@ -125,6 +149,7 @@ a {
     font-weight: 600;
     font-size: 1.2em;
 }
+
 .cantor-table-tot-len, .cantor-table-count {
     text-transform: capitalize;
     margin: 10px 0px;
@@ -146,6 +171,14 @@ a {
     grid-area: iter;
     font-size: 2em;
     font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.cantor-result-iteration-name:hover {
+    cursor: pointer;
 }
 
 .cantor-result-segments {
