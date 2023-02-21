@@ -14,6 +14,7 @@ import SetupCantor from './components/SetupCantor'
 import ButtonSet from './components/ButtonSet'
 import CantorResults from './components/CantorResults'
 import Demo from './components/Demo'
+import Introduction from './components/Introduction'
 
 function App() {
     const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
@@ -322,6 +323,7 @@ function App() {
         <div>
             <Header/>
             { notification && showNotification() }
+            <Introduction />
             <form autoComplete='off' onSubmit={handleCantorizeClick}>
                 <SetupCantor
                     numSegmentsStr={numSegmentsStr}

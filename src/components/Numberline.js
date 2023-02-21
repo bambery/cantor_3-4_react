@@ -121,7 +121,6 @@ const Numberline = ({ intCol, isDemo }) => {
     const drawIntervals = (ctx, intCol, width, margin, midH) => {
         const intColCommon = intCol.commonDen()
         const commonD = intColCommon[0].left.den
-        //const [intColCommon, commonD] = intCol.commonDen()
         const segmentLen = ( width - (margin * 2) ) / commonD
         const start = margin
         const intervalLineWidth = 4.0

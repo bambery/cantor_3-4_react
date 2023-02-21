@@ -1,8 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { IconContext } from 'react-icons'
+import { AiOutlineQuestionCircle } from 'react-icons/ai'
+import Modal from './Modal'
 
 const SetupStep = (props) => {
     const { stepName, name, inputState, handleInputChange, handleLoseFocus, formError, anyErrors, showResults } = props
+
+    const [showModal, setShowModal] = useState(false)
 
     const allInstructions = {
         'numSegments': 'How many segments should the line be divided into?',
@@ -37,11 +43,31 @@ const SetupStep = (props) => {
         }
     }
 
+    const getId = () => {
+        return(`help-${stepName.toLowerCase().replace(' ', '-')}`)
+    }
+
+    const stepHeader = () => {
+        return(
+            <div className='title-flex'>
+                <div className='title'>
+                    {stepName}
+                </div>
+                <IconContext.Provider value={{ className:'title-help-icon' }}>
+                    <div>
+                        <span onClick={ () => setShowModal(true)} id={getId()}>
+                            <AiOutlineQuestionCircle />
+                        </span>
+                        { showModal && <Modal setShowModal={setShowModal} id={getId()}/> }
+                    </div>
+                </IconContext.Provider>
+            </div>
+        )
+    }
+
     return(
         <div className={`setup-step ${name==='toRemove' && anyErrors('numSegments')? 'disable-item' : ''}`}>
-            <div className='title'>
-                {stepName}
-            </div>
+            {stepHeader()}
             <div className='instruction-box'>
                 <div className='instruction'>
                     { allInstructions[name] }
@@ -72,3 +98,5 @@ SetupStep.propTypes = {
 }
 
 export default SetupStep
+
+//<AiOutlineQuestionCircle value={{ size:getComputedStyle(document.body).getPropertyValue('--step-title-font-size') }}/>

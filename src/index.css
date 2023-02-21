@@ -3,8 +3,9 @@ body {
     width: 95%;
     margin: 2em auto;
     font-family: 'ABeeZee', sans-serif;
-    /* colors */
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
+    --step-title-font-size: 1.5em;
+    /* colors */
     --color-bluish: #00a4d3;
     --color-dark-bluish: #007da1;
     --color-link: #006ec5;
@@ -89,9 +90,17 @@ a {
     vertical-align: bottom;
     padding: 0 2px 0 0;
 }
+
 /****************/
+
 .numberline {
     height: 200px;
+    position: relative;
+}
+
+.numberline canvas {
+    position: absolute;
+    z-index: -1;
 }
 
 .spinner-parent {
@@ -184,7 +193,6 @@ a {
     color: var(--color-bluish);
 }
 
-
 .cantor-result-iteration-name::before {
     content: "";
     position: absolute;
@@ -197,7 +205,6 @@ a {
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
-
 
 .cantor-result-iteration-name:hover::before {
     transform: scaleX(1);
@@ -267,7 +274,34 @@ a {
     border-top: 2px solid;
 }
 
+
 /****************/
+
+.centering-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+}
+
+.introduction {
+    padding: 12px;
+    border: 2px solid #c0c0c0;
+    margin: auto 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-light-bluish);
+}
+
+.introduction-inner {
+    background-color: white;
+    padding: 10px;
+}
+
+/****************/
+
 .setup-cantor {
     width: 80%;
     display: flex;
@@ -278,21 +312,29 @@ a {
 }
 
 .setup-step {
-    /* self */
     background-color: var(--color-light-bluish);
     min-width: 200px;
     min-height: 150px;
     padding: 12px;
     flex: 1 1 0;
     border: 2px solid #c0c0c0;
-    /* children */
     display: flex;
     flex-direction: column;
 }
 
+.title-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .title {
-    font-size: 1.5em;
+    font-size: var(--step-title-font-size);
     margin-bottom: 5px;
+}
+
+.title-help-icon {
+    font-size: var(--step-title-font-size);
 }
 
 .instruction-box {
@@ -325,6 +367,102 @@ a {
     text-align: center;
     margin-top: 5px;
     flex: 1 1 0;
+}
+
+
+/******************/
+/* Modal          */
+/******************/
+
+.darkBG {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.centered {
+    position: fixed;
+    /*
+    top: 10%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    */
+}
+
+.modal {
+    width: 250px;
+    height: 170px;
+    background: white;
+    color: white;
+    z-index: 10;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+    height: 50px;
+    background: white;
+    overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.heading {
+    margin: 0;
+    padding: 10px;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 18px;
+    font-align: center;
+}
+
+.modal-content {
+    padding: 10px;
+    font-size: 14px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.modal-actions {
+    position: absolute;
+    bottom: 2px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    color: #2c3e50;
+    background: white;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
+    position: absolute;
+    right: 0;
+    top: 0;
+    align-self: flex-end;
+    margin-top: -7px;
+    margin-right: -7px;
+}
+
+.close-btn:hover {
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+    transform: translate(-4px, 4px);
 }
 
 /******************/
