@@ -202,6 +202,7 @@ function App() {
                 isDemo={true}
                 loading={loading}
                 disableCanvas={disableCanvas}
+                toRemove={toRemove}
             />
         )
         /*
