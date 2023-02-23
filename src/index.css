@@ -293,12 +293,6 @@ a {
     margin: auto 10px;
     width: 100%;
     box-sizing: border-box;
-    background-color: var(--color-light-bluish);
-}
-
-.introduction-inner {
-    background-color: white;
-    padding: 10px;
 }
 
 /****************/

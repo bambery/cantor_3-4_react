@@ -6,9 +6,10 @@ import Fraction from '../models/fraction'
 import { getLabel } from '../shared/utils'
 
 const Numberline = ({ intCol, isDemo }) => {
-//////////////////////////////////////////////
-// https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
-//////////////////////////////////////////////
+    //////////////////////////////////////////////
+    // credit to:
+    // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
+    //////////////////////////////////////////////
     const canvasRef = useRef()
 
     useEffect( () => {
@@ -136,6 +137,7 @@ const Numberline = ({ intCol, isDemo }) => {
             const midPoint = (segDrawLen/2) + startPix
             const numBottomMargin = 15
             // draw red intervals
+            // these are drawn for both the demo and the results
             ctx.lineWidth = intervalLineWidth
             ctx.strokeStyle = 'red'
             ctx.beginPath()
