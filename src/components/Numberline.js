@@ -7,7 +7,7 @@ import { getLabel } from '../shared/utils'
 
 const Numberline = ({ intCol, isDemo }) => {
     //////////////////////////////////////////////
-    // credit to:
+    // thank you to:
     // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
     //////////////////////////////////////////////
     const canvasRef = useRef()
@@ -23,39 +23,13 @@ const Numberline = ({ intCol, isDemo }) => {
         drawIntervals(ctx, intCol, width, margin, midH)
     }, [intCol, isDemo])
 
-    const drawCanvas = (canvasRef) => {
-        const canvas = canvasRef.current
-        var rect = canvas.parentNode.getBoundingClientRect()
-        canvas.width = rect.width
-        canvas.height = rect.height
-        const ctx = canvas.getContext('2d')
-        const width = ctx.canvas.offsetWidth
-        const height = ctx.canvas.offsetHeight
-        ctx.fillStyle = 'black'
-        ctx.fillRect(0, 0, width, height)
-        return ctx
-    }
-
-    const fillCircle = (contextObj, x, y, r) => {
-        contextObj.beginPath()
-        contextObj.arc(x, y, r, 0, 2* Math.PI)
-        contextObj.fill()
-    }
-
-    const drawNumberline = (ctx, margin, width, height, midH) => {
-        const numberlineWidth = 2.0
-        ctx.strokeStyle = 'white'
-        ctx.fillStyle = 'white'
-        ctx.textAlign = 'center'
-        // draw numberline
-        ctx.lineWidth = numberlineWidth
-        ctx.beginPath()
-        ctx.moveTo(margin, midH)
-        ctx.lineTo(width - margin, midH)
-        ctx.stroke()
-    }
-
-    const fontDetails = {
+    const canvasConfig = {
+        'numberline': {
+            'lineWidth':    2.0,
+            'fillStyle':    'white',
+            'strokeStyle':  'white',
+            'textAlign':    'center'
+        },
         'labels': {
             'normal': {
                 'fontSize': 30
@@ -77,8 +51,47 @@ const Numberline = ({ intCol, isDemo }) => {
                 'fillStyle':    'white',
                 'strokeStyle':  'white'
             }
+        },
+        'title': {
+            'fontSize':     30,
+            'fillStyle':    '--color-gold'
         }
     }
+
+    let config
+
+    const drawCanvas = (canvasRef) => {
+        const canvas = canvasRef.current
+        var rect = canvas.parentNode.getBoundingClientRect()
+        canvas.width = rect.width
+        canvas.height = rect.height
+        const ctx = canvas.getContext('2d')
+        const width = ctx.canvas.offsetWidth
+        const height = ctx.canvas.offsetHeight
+        ctx.fillStyle = 'black'
+        ctx.fillRect(0, 0, width, height)
+        return ctx
+    }
+
+    const fillCircle = (contextObj, x, y, r) => {
+        contextObj.beginPath()
+        contextObj.arc(x, y, r, 0, 2* Math.PI)
+        contextObj.fill()
+    }
+
+    const drawNumberline = (ctx, margin, width, height, midH) => {
+        config = canvasConfig['numberline']
+        ctx.lineWidth = config['lineWidth']
+        ctx.strokeStyle = config['strokeStyle']
+        ctx.fillStyle = config['fillStyle']
+        ctx.textAlign = config['textAlign']
+        // draw numberline
+        ctx.beginPath()
+        ctx.moveTo(margin, midH)
+        ctx.lineTo(width - margin, midH)
+        ctx.stroke()
+    }
+
 
     const drawFraction = (ctx, frac, x, y, size) => {
         const oldStyle = ctx.strokeStyle
@@ -87,7 +100,7 @@ const Numberline = ({ intCol, isDemo }) => {
         const endpointFontBaseline = 'top'
         const endpointFontTop = 15
         const fracBarPad = 2
-        const { lineWidth, fontSize, fillStyle, strokeStyle } = fontDetails['frac'][size]
+        const { lineWidth, fontSize, fillStyle, strokeStyle } = canvasConfig['frac'][size]
         ctx.font = `${fontSize}px Verdana`
         ctx.lineWidth = lineWidth
         ctx.textBaseline = endpointFontBaseline
@@ -152,7 +165,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 fillCircle(ctx, endPix, midH, dotSize)
                 // draw fractions
 
-                ctx.font = `${fontDetails['labels'][size]['fontSize']}px Verdana`
+                ctx.font = `${canvasConfig['labels'][size]['fontSize']}px Verdana`
                 // label fractional endpoints of segment
                 drawFraction(ctx, interval.left, startPix, midH, size)
                 drawFraction(ctx, interval.right, endPix, midH, size)
@@ -176,7 +189,7 @@ const Numberline = ({ intCol, isDemo }) => {
                 // label the segments left to right numerically
                 if(i < commonD){
                     // always use 'normal' font size for demo
-                    ctx.font = `${fontDetails['labels']['normal']['fontSize']}px Verdana`
+                    ctx.font = `${canvasConfig['labels']['normal']['fontSize']}px Verdana`
                     const segMid = start + (segmentLen * i) + segmentLen/2
                     ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--color-gold')
                     ctx.textBaseline = 'bottom'
@@ -184,6 +197,12 @@ const Numberline = ({ intCol, isDemo }) => {
                     ctx.fillText(i + 1, segMid, midH - numBottomMargin)
                 }
             }
+
+            // draw the demo title
+            config = canvasConfig['title']
+            ctx.font = `${config['fontSize']}px Verdana`
+            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue(config['fillStyle'])
+            ctx.fillText('1st Iteration Demo', 0, 0)
         }
 
         // label the gaps alphabetically from left to right
