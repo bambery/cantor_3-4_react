@@ -16,14 +16,14 @@ const SetupStep = (props) => {
         threshold: 1.0
     }
 
-    const modalCallback = (entries, observer) => {
+    const modalCallback = (entries) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting){
                 const diff = Math.ceil(entry.boundingClientRect.width - entry.intersectionRect.width)
                 entry.target.style.left = entry.target.style.left - (diff + 20) + 'px'
                 console.log(`is intersecting: ${entry.isIntersecting}`)
             }
-            entry.target.style.visibility = "visible"
+            entry.target.style.visibility = 'visible'
         })
     }
 

@@ -5,9 +5,10 @@ body {
     font-family: 'ABeeZee', sans-serif;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
     --step-title-font-size: 1.5em;
+    --color-error-text: #cb4818;
+    --color-error-bg: #ffe0e0;
     /* colors */
     --color-link: #006ec5;
-    --color-error-text: #cb4818;
     --color-bluish: #00a4d3;
     --color-light-bluish: #c9f1fd;
     --color-gap-label-blue: #609ab8;
@@ -28,9 +29,9 @@ a {
 .notification {
     margin: 10px;
     padding: 0 10px;
-    color: #ba3939;
-    background: #ffe0e0;
-    border: 1px solid #a33a3a;
+    color: var(--color-error-text);
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-text);
     border-radius: 10px;
 }
 
@@ -289,7 +290,7 @@ a {
 
 .introduction {
     padding: 12px;
-    border: 2px solid #c0c0c0;
+    border: 2px solid var(--color-light-gray);
     margin: auto 10px;
     width: 100%;
     box-sizing: border-box;
@@ -312,7 +313,7 @@ a {
     min-height: 150px;
     padding: 12px;
     flex: 1 1 0;
-    border: 2px solid #c0c0c0;
+    border: 2px solid var(--color-light-gray);
     display: flex;
     flex-direction: column;
 }
@@ -410,7 +411,6 @@ a {
     align-items: center;
     margin: 0;
     padding: 4px;
-    color: #2c3e50;
     font-weight: 500;
     font-size: 18px;
 }
@@ -422,7 +422,6 @@ a {
 .modal-content {
     padding: 10px;
     font-size: 14px;
-    color: #2c3e50;
     text-align: center;
 }
 
@@ -433,7 +432,6 @@ a {
     border-radius: 8px;
     border: none;
     font-size: 18px;
-    color: #2c3e50;
     background: white;
     transition: all 0.25s ease;
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
