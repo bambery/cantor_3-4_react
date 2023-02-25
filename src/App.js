@@ -289,14 +289,13 @@ function App() {
     }
 
     const handleClearForm = () => {
-        setNumSegmentsStr('1')
-        setToRemoveStr('')
-        setNumIterStr('1')
+        setNumSegmentsStr(stateDefaults['numSegments'].toString())
+        setToRemoveStr(stateDefaults['toRemove'].toString())
+        setNumIterStr(stateDefaults['numIter'].toString())
         setDisplayResults(false)
-        setNumSegments(1)
-        setNumIter(1)
-        setToRemove([])
-        setDisableSubmit(true)
+        setNumSegments(stateDefaults['numSegments'])
+        setNumIter(stateDefaults['numIter'])
+        setToRemove(stateDefaults['toRemove'])
     }
 
     const handleDownloadReport = () => {
@@ -320,6 +319,27 @@ function App() {
         return(<ErrorNotification error={notification}/>)
     }
 
+    const stepConfig = [
+        {
+            'name': 'numSegments',
+            'title': 'Step 1',
+            'valueStr': numSegmentsStr,
+            'handleChange': handleNumSegmentsChange
+        },
+        {
+            'name': 'toRemove',
+            'title': 'Step 2',
+            'valueStr': toRemoveStr,
+            'handleChange': handleToRemoveChange
+        },
+        {
+            'name': 'numIter',
+            'title': 'Step 3',
+            'valueStr': numIterStr,
+            'handleChange': handleNumIterChange
+        }
+    ]
+
     return (
         <div>
             <Header/>
@@ -327,15 +347,9 @@ function App() {
             <Introduction />
             <form autoComplete='off' onSubmit={handleCantorizeClick}>
                 <SetupCantor
-                    numSegmentsStr={numSegmentsStr}
-                    toRemoveStr={toRemoveStr}
-                    numIterStr={numIterStr}
-                    handleNumSegmentsChange={handleNumSegmentsChange}
-                    handleToRemoveChange={handleToRemoveChange}
-                    handleNumIterChange={handleNumIterChange}
+                    stepConfig={stepConfig}
                     handleLoseFocus={handleLoseFocus}
                     formErrors={formErrors}
-                    anyErrors={anyErrors}
                     showResults={displayResults}
                 />
                 {displayResults && cantor && showResultsTopButtons()}

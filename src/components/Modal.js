@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { RiCloseLine } from 'react-icons/ri'
 
 const Modal = ({ setShowModal, name, instructions }) => {
-
     return (
         <>
             <div className='darkBG' onClick={ () => setShowModal(false)} />

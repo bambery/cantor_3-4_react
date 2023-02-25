@@ -78,7 +78,7 @@ const Numberline = ({ intCol, isDemo, toRemove = [] }) => {
                 'boxSize':      10,
                 'textBaseline': 'middle',
                 'segText':      '= Line Segment',
-                'gapText':      '= Gap in Line'
+                'gapText':      '= Gap in Interval'
             }
         }
     }
@@ -126,6 +126,7 @@ const Numberline = ({ intCol, isDemo, toRemove = [] }) => {
             ctx.fillText(config['text'], config['leftMargin'], config['topMargin'])
             // measure for drawing the legend
             const textMeasure = ctx.measureText(config['text'])
+            // exploiting that my fontsize is very close to the height in px for this font
             const titleMidpointY = Math.floor(config['fontSize']/2) + config['topMargin']
             let titleLeftCursor = config['leftMargin'] + textMeasure.width
             // draw legend
@@ -259,6 +260,7 @@ const Numberline = ({ intCol, isDemo, toRemove = [] }) => {
         // draw bar
         const lineLen = Math.max( ctx.measureText(frac.num).width, ctx.measureText(frac.den).width )
         // 0.5 added to the end to make line smooth. https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html#linewidth
+        // exploiting that my fontsize is very close to the height in px for this font
         const barTop = numTop + fontSize + config['fracBarPad'] + 0.5
         ctx.beginPath()
         ctx.moveTo( x - lineLen/2, barTop)
