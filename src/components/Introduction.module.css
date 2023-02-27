@@ -33,6 +33,16 @@
     text-decoration: underline;
 }
 
+/* so css modules have some problems when styling nested component children.... I could not google a "better" solution that was less confusing than this span-wrapping solution. CSS modules do not allow modifying the .fracDisplay class which is set on FracDisplay components.
+*/
+.smallerFrac {
+    font-size: 0.8rem;
+}
+
+.evenSmallerFrac {
+    font-size: 0.8em;
+}
+
 .twoCol {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -48,4 +58,59 @@
     margin-top: 10px;
     margin-bottom: 5px;
     text-decoration: underline;
+}
+
+.introEmphasis {
+    font-weight: bolder;
+    color: var(--color-dark-bluish);
+    margin-right: 5px;
+}
+
+.eq {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+/*    font-family: sans-serif; */
+}
+
+.eq .sum {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-0.4rem);
+    margin-right: 0.3rem;
+}
+
+.sum .sigma {
+    font-size: 1.3rem;
+}
+
+.sum .end {
+    transform: translateY(0.4rem);
+}
+
+.sum .start {
+    font-size: 0.6rem;
+}
+
+.bigParens {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 0;
+    margin: 0 3px;
+}
+
+.parens {
+    font-size: 1.5em;
+    transform: translateY(0.4em) scale(0.9, 2);
+}
+
+.equation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }

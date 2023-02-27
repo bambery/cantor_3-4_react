@@ -1,7 +1,7 @@
 /****************/
 body {
     width: 95%;
-    margin: 2em auto;
+    margin: 1em auto 2em auto;
     font-family: 'ABeeZee', sans-serif;
     font-size: 16px;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
@@ -272,16 +272,6 @@ a {
     width: 3px;
     margin: 0 0 0 5px;
 }
-.frac-display {
-    display: inline-flex;
-    flex-direction: column;
-    vertical-align: middle;
-}
-
-.frac-line {
-    border-top: 2px solid;
-}
-
 
 /****************/
 
