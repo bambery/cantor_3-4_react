@@ -57,24 +57,6 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
         }
     }
 
-    /*
-    const stepInstructions = {
-        'numSegments': 'How many segments should the line be divided into?',
-        'toRemove': 'Which segments should be removed?\n(comma-separated list)',
-        'numIter': 'How many iterations would you like to run?'
-    }
-
-    const stepModals = {
-        'numSegments': {
-        'toRemove': {
-            title: 'Segments to Remove',
-            message: 'Using the numbered line segment in the box below, select the number of the sections you wish to remove for each iteration of Cantor.' },
-        'numIter': {
-            title: 'Number of Iterations',
-            message: 'This number chooses how many times to run the Cantor process on a line segment. If you select 3, the page will display 3 numberlines, each one removing more segments from the previous.' }
-    }
-    */
-
     let toDisplay = inputState
 
     const isResults = () => {
@@ -148,8 +130,7 @@ SetupStep.propTypes = {
     handleInputChange: PropTypes.func.isRequired,
     handleLoseFocus: PropTypes.func.isRequired,
     formErrors: PropTypes.object.isRequired,
-    showResults: PropTypes.bool.isRequired,
-    ley: PropTypes.string.isRequired
+    showResults: PropTypes.bool.isRequired
 }
 
 export default SetupStep

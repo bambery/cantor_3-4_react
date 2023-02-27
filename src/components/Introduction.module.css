@@ -1,0 +1,51 @@
+.centeringDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+}
+
+.introduction {
+    padding: 12px;
+    border: 2px solid var(--color-light-gray);
+    margin: 4px 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.whatIsCantorTitle {
+    font-size: var(--step-title-font-size);
+}
+
+.textDescription {
+    padding-top: 10px;
+}
+
+.textDescription a {
+    color: var(--color-basic-font);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.textDescription a:hover {
+    text-decoration: underline;
+}
+
+.twoCol {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    row-gap: 8px;
+    margin-bottom: 5px;
+}
+
+.howToCantorTitle {
+    color: var(--color-dark-bluish);
+    font-size: 1.2rem;
+    font-weight: bolder;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-decoration: underline;
+}

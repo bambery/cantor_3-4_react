@@ -3,10 +3,12 @@ body {
     width: 95%;
     margin: 2em auto;
     font-family: 'ABeeZee', sans-serif;
+    font-size: 16px;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
     --step-title-font-size: 1.5em;
     --color-error-text: #cb4818;
     --color-error-bg: #ffe0e0;
+    --color-basic-font: black;
     /* colors */
     --color-link: #006ec5;
     --color-bluish: #00a4d3;
@@ -190,6 +192,10 @@ a {
     position: relative;
 }
 
+.caretToggle {
+    color: var(--color-bluish);
+}
+
 .cantor-result-iteration-name:hover {
     cursor: pointer;
     color: var(--color-bluish);
@@ -276,25 +282,6 @@ a {
     border-top: 2px solid;
 }
 
-
-/****************/
-
-.centering-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 80%;
-}
-
-.introduction {
-    padding: 12px;
-    border: 2px solid var(--color-light-gray);
-    margin: auto 10px;
-    width: 100%;
-    box-sizing: border-box;
-}
 
 /****************/
 

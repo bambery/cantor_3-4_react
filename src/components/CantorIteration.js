@@ -16,9 +16,14 @@ const CantorIteration = ({ intCol, index }) => {
     }
 
     const displayToggle = () => {
-        return showDetails
-            ? <AiFillCaretDown/>
-            : <AiFillCaretRight/>
+        return (
+            <span className='caretToggle'>
+                {showDetails
+                    ? <AiFillCaretDown/>
+                    : <AiFillCaretRight/>
+                }
+            </span>
+        )
     }
 
     const cantorTable = (kind) => {
@@ -31,19 +36,17 @@ const CantorIteration = ({ intCol, index }) => {
 
 
     return(
-        <IconContext.Provider value={{ color: getComputedStyle(document.body).getPropertyValue('--color-bluish') }}>
-            <div className='cantor-result-iteration'>
-                <div className='cantor-result-numberline'>
-                    <Numberline intCol={intCol} isDemo={false}/>
-                </div>
-                <div className='cantor-result-iteration-name' onClick={toggleDetails}>
-                    {displayToggle()}
-                    Iteration {index + 1}
-                </div>
-                {showDetails && cantorTable('seg')}
-                {showDetails && cantorTable('gap')}
+        <div className='cantor-result-iteration'>
+            <div className='cantor-result-numberline'>
+                <Numberline intCol={intCol} isDemo={false}/>
             </div>
-        </IconContext.Provider>
+            <div className='cantor-result-iteration-name' onClick={toggleDetails}>
+                {displayToggle()}
+                Iteration {index + 1}
+            </div>
+            {showDetails && cantorTable('seg')}
+            {showDetails && cantorTable('gap')}
+        </div>
     )
 }
 
