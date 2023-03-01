@@ -5,7 +5,6 @@ import IntervalCollection from '../models/interval_collection'
 import Numberline from './Numberline'
 import CantorTable from './CantorTable'
 import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai'
-import { IconContext } from 'react-icons'
 
 const CantorIteration = ({ intCol, index }) => {
     const toggleDefault = index === 0 ? true : false

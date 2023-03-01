@@ -20,7 +20,7 @@
 }
 
 .textDescription {
-    padding-top: 10px;
+    margin-top: 1rem;
 }
 
 .textDescription a {
@@ -58,6 +58,7 @@
     margin-top: 10px;
     margin-bottom: 5px;
     text-decoration: underline;
+    align-self: flex-start;
 }
 
 .introEmphasis {
@@ -71,7 +72,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-/*    font-family: sans-serif; */
 }
 
 .eq .sum {
@@ -79,8 +79,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transform: translateY(-0.4rem);
-    margin-right: 0.3rem;
 }
 
 .sum .sigma {
@@ -96,21 +94,23 @@
 }
 
 .bigParens {
-    display: flex;
+    display: inline flex;
     flex-direction: row;
     justify-content: center;
-    flex-grow: 0;
-    margin: 0 3px;
+    align-items: center;
+    margin: 2px 3px;
 }
 
 .parens {
     font-size: 1.5em;
-    transform: translateY(0.4em) scale(0.9, 2);
+    transform: scale(0.9, 1.5);
 }
 
 .equation {
-    display: flex;
+    display: inline flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    white-space: nowrap;
+    margin-left: 0.3em;
 }

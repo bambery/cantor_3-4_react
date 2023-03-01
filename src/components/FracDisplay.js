@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Fraction from '../models/fraction'
 import styles from './FracDisplay.module.css'
 
 const FracDisplay = ({ frac }) => {

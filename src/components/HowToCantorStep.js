@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import styles from './HowToCantorStep.module.css'
 
 const HowToCantorStep = ({ stepInfo, stepNum }) => {
