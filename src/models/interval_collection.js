@@ -55,7 +55,9 @@ class IntervalCollection {
         }
     }
 
-    // convert all endpoints in the interval to a common denominator - used for display
+    // convert all endpoints in the interval to a common denominator
+    // used for display
+    // returns an array of Intervals
     commonDen() {
         let denominators = []
 

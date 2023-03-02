@@ -1,0 +1,26 @@
+.numeralInstruction {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.numeral {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 20%;
+    padding: .3rem;
+    font-weight: bolder;
+    background-color: var(--color-light-bluish);
+    color: black;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.diagram {
+    height: 25px;
+}
+
+.diagram:last-child {
+    height: 50px;
+}

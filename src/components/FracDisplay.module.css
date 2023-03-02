@@ -1,0 +1,10 @@
+.fracDisplay {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.fracLine {
+    border-top: 2px solid;
+}

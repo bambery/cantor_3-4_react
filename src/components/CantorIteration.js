@@ -5,7 +5,6 @@ import IntervalCollection from '../models/interval_collection'
 import Numberline from './Numberline'
 import CantorTable from './CantorTable'
 import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai'
-import { IconContext } from 'react-icons'
 
 const CantorIteration = ({ intCol, index }) => {
     const toggleDefault = index === 0 ? true : false
@@ -16,9 +15,14 @@ const CantorIteration = ({ intCol, index }) => {
     }
 
     const displayToggle = () => {
-        return showDetails
-            ? <AiFillCaretDown/>
-            : <AiFillCaretRight/>
+        return (
+            <span className='caretToggle'>
+                {showDetails
+                    ? <AiFillCaretDown/>
+                    : <AiFillCaretRight/>
+                }
+            </span>
+        )
     }
 
     const cantorTable = (kind) => {
@@ -31,19 +35,17 @@ const CantorIteration = ({ intCol, index }) => {
 
 
     return(
-        <IconContext.Provider value={{ color: getComputedStyle(document.body).getPropertyValue('--color-bluish') }}>
-            <div className='cantor-result-iteration'>
-                <div className='cantor-result-numberline'>
-                    <Numberline intCol={intCol} isDemo={false}/>
-                </div>
-                <div className='cantor-result-iteration-name' onClick={toggleDetails}>
-                    {displayToggle()}
-                    Iteration {index + 1}
-                </div>
-                {showDetails && cantorTable('seg')}
-                {showDetails && cantorTable('gap')}
+        <div className='cantor-result-iteration'>
+            <div className='cantor-result-numberline'>
+                <Numberline intCol={intCol} isDemo={false}/>
             </div>
-        </IconContext.Provider>
+            <div className='cantor-result-iteration-name' onClick={toggleDetails}>
+                {displayToggle()}
+                Iteration {index + 1}
+            </div>
+            {showDetails && cantorTable('seg')}
+            {showDetails && cantorTable('gap')}
+        </div>
     )
 }
 

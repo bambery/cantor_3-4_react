@@ -1,21 +1,27 @@
 /****************/
 body {
     width: 95%;
-    margin: 2em auto;
+    margin: 1em auto 2em auto;
     font-family: 'ABeeZee', sans-serif;
-    /* colors */
+    font-size: 16px;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
-    --color-bluish: #00a4d3;
-    --color-dark-bluish: #007da1;
-    --color-link: #006ec5;
-    --color-light-bluish: #c9f1fd;
+    --step-title-font-size: 1.5em;
     --color-error-text: #cb4818;
+    --color-error-bg: #ffe0e0;
+    --color-basic-font: black;
+    /* colors */
+    --color-bluish: #00a4d3;
+    --color-light-bluish: #c9f1fd;
+    --color-gap-label-blue: #609ab8;
+    --color-dark-bluish: #007da1;
     --color-gray: gray;
+    --color-light-gray: lightgray;
+    --color-dark-gray: #696969; /*nice*/
     --color-green: #72bb53;
     --color-dark-green: #629c44;
-    --color-dark-gray: #696969; /*nice*/
     --color-gold: #e5b513;
-    --color-gap-label-blue: #609ab8;
+    /* site-wide */
+    --color-link: var(--color-dark-bluish);
 }
 
 a {
@@ -26,9 +32,9 @@ a {
 .notification {
     margin: 10px;
     padding: 0 10px;
-    color: #ba3939;
-    background: #ffe0e0;
-    border: 1px solid #a33a3a;
+    color: var(--color-error-text);
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-text);
     border-radius: 10px;
 }
 
@@ -89,9 +95,17 @@ a {
     vertical-align: bottom;
     padding: 0 2px 0 0;
 }
+
 /****************/
+
 .numberline {
     height: 200px;
+    position: relative;
+}
+
+.numberline canvas {
+    position: absolute;
+    z-index: -1;
 }
 
 .spinner-parent {
@@ -179,11 +193,14 @@ a {
     position: relative;
 }
 
+.caretToggle {
+    color: var(--color-bluish);
+}
+
 .cantor-result-iteration-name:hover {
     cursor: pointer;
     color: var(--color-bluish);
 }
-
 
 .cantor-result-iteration-name::before {
     content: "";
@@ -197,7 +214,6 @@ a {
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
-
 
 .cantor-result-iteration-name:hover::before {
     transform: scaleX(1);
@@ -257,17 +273,9 @@ a {
     width: 3px;
     margin: 0 0 0 5px;
 }
-.frac-display {
-    display: inline-flex;
-    flex-direction: column;
-    vertical-align: middle;
-}
-
-.frac-line {
-    border-top: 2px solid;
-}
 
 /****************/
+
 .setup-cantor {
     width: 80%;
     display: flex;
@@ -278,21 +286,29 @@ a {
 }
 
 .setup-step {
-    /* self */
     background-color: var(--color-light-bluish);
     min-width: 200px;
     min-height: 150px;
     padding: 12px;
     flex: 1 1 0;
-    border: 2px solid #c0c0c0;
-    /* children */
+    border: 2px solid var(--color-light-gray);
     display: flex;
     flex-direction: column;
 }
 
+.title-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .title {
-    font-size: 1.5em;
+    font-size: var(--step-title-font-size);
     margin-bottom: 5px;
+}
+
+.title-help-icon {
+    font-size: var(--step-title-font-size);
 }
 
 .instruction-box {
@@ -325,6 +341,83 @@ a {
     text-align: center;
     margin-top: 5px;
     flex: 1 1 0;
+}
+
+
+/******************/
+/* Modal          */
+/******************/
+
+.darkBG {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.modal-placement {
+    position: fixed;
+    visibility: hidden;
+    /*
+    top: 10%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    */
+}
+
+.modal {
+    position: absolute;
+    width: 250px;
+    height: 170px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+    overflow: hidden;
+    background-color: var(--color-light-gray);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 4px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.modal-title-text {
+    padding-left: 5px;
+}
+
+.modal-content {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-weight: 500;
+    padding: 2px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    background: white;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
+    align-self: flex-end;
+}
+
+.close-btn:hover {
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+    transform: translate(-2px, 2px);
 }
 
 /******************/

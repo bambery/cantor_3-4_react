@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const ErrorNotification = ({ error }) => {
     return (
         <div role="alert" className='notification'>
-            <pre>{error.message ? error.message : error}</pre>
+            <pre>{error.message}</pre>
         </div>
     )
 }
