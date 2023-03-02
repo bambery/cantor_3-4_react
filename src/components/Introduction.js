@@ -7,7 +7,7 @@ import FracDisplay from './FracDisplay'
 
 const Introduction = () => {
 
-    const [showCantorInfo, setShowCantorInfo] = useState(true)
+    const [showCantorInfo, setShowCantorInfo] = useState(false)
 
     const stepDetails = [
         {
@@ -43,12 +43,13 @@ const Introduction = () => {
         )
     }
 
-    const parensSection = (inside) => {
+    const parensSection = (inside, nestedFrac) => {
+        const parensClass = nestedFrac ? 'parensBigger' : 'parensBig'
         return(
-            <span className={styles.bigParens}>
-                <span className={styles.parens}>(</span>
+            <span className={styles.parensExpresion}>
+                <span className={styles[parensClass]}>(</span>
                 {inside}
-                <span className={styles.parens}>)</span>
+                <span className={styles[parensClass]}>)</span>
             </span>
         )
     }
@@ -71,7 +72,7 @@ const Introduction = () => {
                     </div>
                 </div>
                 <div className={styles.equation}>
-                    <span>{frac(top, bottom)} = {frac(1,3)} + {frac(2,9)} + {frac(4, 27)} + {frac(8, 81)} + {'\u22ef'} + = {frac(1,3)}</span> {parensSection(frac(1, bigDen))} <span>= 1</span>
+                    <span>{frac(top, bottom)} = {frac(1,3)} + {frac(2,9)} + {frac(4, 27)} + {frac(8, 81)} + {'\u22ef'} + = {frac(1,3)}</span> {parensSection(frac(1, bigDen), true)} <span>= 1</span>
                 </div>
             </div>
         )
@@ -86,6 +87,10 @@ const Introduction = () => {
         return(
             <span className={styles[optionalClass]}><FracDisplay frac={newFrac}/></span>
         )
+    }
+
+    const dotOperator = () => {
+        return <span className={styles.dotOperator}>{'\u22c5'}</span>
     }
 
     const cantorDescription = () => {
@@ -105,23 +110,29 @@ const Introduction = () => {
                     </div>
                     <div className={styles.textDescription}>
                         <div className={styles.howToCantorTitle}>
-                            {`What about those 'unusual properties'?`}
+                            What about those &quot;unusual properties&quot;?
                         </div>
-                        <span className={styles.introEmphasis}>How many points are in the Cantor Set?</span>{`Because the endpoints of each interval are never candidates for removal (because each iteration must remove the "middle" interval), the set of all points remaining after each iteration will never be empty. The process of removing the "middle" interval can be formed an infinite number of times upon a non-empty set of intervals, thus making an `}<a href='https://en.wikipedia.org/wiki/Infinite_set'>infinite set</a> with an infinite number of points{`.`}
+                        <span className={styles.introEmphasis}>How many points are in the Cantor Set?</span>Because the endpoints of each interval are never candidates for removal (by definition, each iteration must remove a &quot;middle&quot; interval), the set of all points remaining after each iteration will never be empty. The process of removing the &quot;middle&quot; interval can be formed an infinite number of times upon a non-empty set of intervals, thus making an <a href='https://en.wikipedia.org/wiki/Infinite_set'>infinite set</a> with an infinite number of points.
                         <div className={styles.textDescription}>
-                            <span className={styles.introEmphasis}>What is the length of the Cantor Set?</span>
-                            The original length of the interval is 1. In the first iteration, we remove an interval of length {frac(1,3)}, leaving <span className={styles.equation}>1 - {frac(1,3)} = {frac(2,3)}</span>.
-                                In the second iteration, we remove 2 intervals of length {frac(1,9)}, leaving
-                            <span className={styles.equation}>1 - {frac(1, 3)} - {parensSection(<span>{frac(1,9)} * 2</span>)} = {frac(4,9)}</span>
-                            . A third iteration would remove 4 intervals of length {frac(1, 27)}, leaving length
-                            <span className={styles.equation}>
-                                1 - {frac(1,3)} - {parensSection(<span>{frac(1,9)} * 2</span>)} - {parensSection(<span>{frac(1,27)} * 4</span>)}.
-                            </span> {`If we can compute the total length of "middle" intervals that get removed, we can subtract that from 1 and get the total length of the Cantor Set:`}
+                            <span className={styles.introEmphasis}>What is the length of the Cantor Set?</span> The original length of the interval is 1.
+                            <div className={styles.eqLine}>In the first iteration, we remove an interval of length {frac(1,3)}, leaving <span className={styles.equation}>1 - {frac(1,3)} = {frac(2,3)}</span>.</div>
+                            <div className={styles.eqLine}>In the second iteration, we remove 2 intervals of length {frac(1,9)}, leaving
+                                <span className={styles.equation}>1 - {frac(1, 3)} - {parensSection(<span>{frac(1,9)} {dotOperator()} 2</span>)} = {frac(4,9)}</span>
+                                .</div>
+                            <div className={styles.eqLine}>A third iteration would remove 4 intervals of length {frac(1, 27)}, leaving length
+                                <div className={styles.equation}>
+                                    1 - {frac(1,3)} - {parensSection(<span>{frac(1,9)} {dotOperator()} 2</span>)} - {parensSection(<span>{frac(1,27)} {dotOperator()} 4</span>)} = {frac(8, 27)}.
+                                </div>
+                            </div>
+                            If we can compute the total length of &quot;middle&quot; intervals that get removed, we can subtract that from 1 and get the total length of the Cantor Set:
                             <div className={styles.geometricEq}>
                                 {geometricSum()}
                             </div>
+                            <div> We can see that the total length of all <span className={styles.underline}>removed intervals</span> is 1, meaning that the length of the Cantor set is 0! Thus the Cantor set contains infinite points and yet has no length: quite an unusual set.
+                            </div>
                         </div>
                     </div>
+                    <div className={styles.closeInstructions} onClick={toggleDetails}>close</div>
                 </div>
             </div>
         )
@@ -129,8 +140,8 @@ const Introduction = () => {
 
     return(
         <div className={styles.centeringDiv}>
-            <div className={styles.introduction} onClick={toggleDetails}>
-                <div className={styles.whatIsCantorTitle}>
+            <div className={styles.introduction} >
+                <div className={styles.whatIsCantorTitle} onClick={toggleDetails}>
                     {displayToggle()}
                     What is a Cantor Set?
                 </div>

@@ -17,6 +17,7 @@
 
 .whatIsCantorTitle {
     font-size: var(--step-title-font-size);
+    cursor: pointer;
 }
 
 .textDescription {
@@ -31,8 +32,12 @@
 
 .textDescription a:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
+.eqLine {
+    line-height: 0.8rem;
+}
 /* so css modules have some problems when styling nested component children.... I could not google a "better" solution that was less confusing than this span-wrapping solution. CSS modules do not allow modifying the .fracDisplay class which is set on FracDisplay components.
 */
 .smallerFrac {
@@ -52,7 +57,7 @@
 }
 
 .howToCantorTitle {
-    color: var(--color-dark-bluish);
+    color: var(--color-bluish);
     font-size: 1.2rem;
     font-weight: bolder;
     margin-top: 10px;
@@ -63,7 +68,7 @@
 
 .introEmphasis {
     font-weight: bolder;
-    color: var(--color-dark-bluish);
+    color: var(--color-bluish);
     margin-right: 5px;
 }
 
@@ -93,24 +98,49 @@
     font-size: 0.6rem;
 }
 
-.bigParens {
+.parensExpression {
     display: inline flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.parensBig {
+    font-size: 1.3em;
+    transform: scale(0.9, 1.3);
     margin: 2px 3px;
 }
 
-.parens {
+.parensBigger {
     font-size: 1.5em;
-    transform: scale(0.9, 1.5);
+    transform: scale(0.9, 1.8);
+    margin: 2px 3px;
 }
 
 .equation {
-    display: inline flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    display: inline;
     white-space: nowrap;
     margin-left: 0.3em;
+}
+
+.geometricEq {
+    transform: translateY(-0.4rem);
+}
+
+.dotOperator {
+    font-size: 1.5em;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.closeInstructions {
+    margin-top: 1em;
+    color: var(--color-link);
+}
+
+.closeInstructions:hover {
+    cursor: pointer;
+
 }
