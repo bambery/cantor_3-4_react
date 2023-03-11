@@ -19,6 +19,13 @@
 
 .diagram {
     height: 25px;
+    position: relative;
+}
+
+.diagram canvas {
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
 
 .diagram:last-child {

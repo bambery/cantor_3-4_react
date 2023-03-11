@@ -7,7 +7,7 @@ import FracDisplay from './FracDisplay'
 
 const Introduction = () => {
 
-    const [showCantorInfo, setShowCantorInfo] = useState(false)
+    const [showCantorInfo, setShowCantorInfo] = useState(true)
 
     const stepDetails = [
         {

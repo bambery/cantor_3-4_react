@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { IconContext } from 'react-icons'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import Modal from './Modal'
+import styles from './SetupStep.module.css'
 
 const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFocus, formErrors, showResults }) => {
     const [showModal, setShowModal] = useState(false)
@@ -86,11 +87,11 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
 
     const stepHeader = () => {
         return(
-            <div className='title-flex'>
-                <div className='title'>
+            <div className={styles.titleFlex}>
+                <div className={styles.title}>
                     {stepName}
                 </div>
-                <IconContext.Provider value={{ className:'title-help-icon' }}>
+                <IconContext.Provider value={{ className: styles.titleHelpIcon }}>
                     <div>
                         <span onClick={ () => setShowModal(true)}>
                             <AiOutlineQuestionCircle />
@@ -103,16 +104,16 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
     }
 
     return(
-        <div className={`setup-step ${name==='toRemove' && formErrors['numSegments']? 'disable-item' : ''}`}>
+        <div className={`${styles.setupStep} ${name==='toRemove' && formErrors['numSegments']? 'disable-item' : ''}`}>
             {stepHeader()}
-            <div className='instruction-box'>
+            <div className={styles.instructionBox}>
                 <div className='instruction'>
                     { stepText[name].instructions }
                 </div>
-                <div className='step-input'>
+                <div className={styles.stepInput}>
                     {isResults()}
                 </div>
-                <div className='step-error'>
+                <div className={styles.stepError}>
                     {formErrors[name]}
                 </div>
             </div>

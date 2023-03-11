@@ -1,0 +1,66 @@
+.setupStep {
+    background-color: var(--color-light-bluish);
+    /*
+    min-width: 200px;
+    */
+    min-height: 150px;
+    padding: 12px;
+    flex: 1 1 0;
+    border: 2px solid var(--color-light-gray);
+    display: flex;
+    flex-direction: column;
+}
+
+.titleFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: var(--step-title-font-size);
+    margin-bottom: 5px;
+}
+
+.titleHelpIcon {
+    font-size: var(--step-title-font-size);
+}
+
+.instructionBox {
+    min-height: 50px;
+    background-color: white;
+    flex-grow: 1;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (width <= 700px) {
+    .instructionBox {
+        padding: .2em;
+    }
+}
+
+.instruction {
+    text-align: center;
+    white-space: pre-wrap;
+    flex: 2 1 0;
+}
+
+.stepInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    flex: 1 1 0;
+}
+
+.stepError {
+    font-size: .65em;
+    color: var(--color-error-text);
+    text-align: center;
+    margin-top: 5px;
+    flex: 1 1 0;
+}
+

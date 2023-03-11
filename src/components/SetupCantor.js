@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SetupStep from './SetupStep'
+import styles from './SetupCantor.module.css'
 
 const SetupCantor = ({ stepConfig, handleLoseFocus, formErrors, showResults }) => {
 
@@ -19,7 +20,7 @@ const SetupCantor = ({ stepConfig, handleLoseFocus, formErrors, showResults }) =
         )
     }
     return(
-        <div className='setup-cantor'>
+        <div className={styles.setupCantor}>
             {stepConfig.map(s => renderSetupStep(s))}
         </div>
     )

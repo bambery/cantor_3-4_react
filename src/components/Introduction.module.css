@@ -7,6 +7,13 @@
     width: 80%;
 }
 
+/* figure out how to move this up */
+@media (width <= 700px) {
+    .centeringDiv {
+        width: 95%;
+    }
+}
+
 .introduction {
     padding: 12px;
     border: 2px solid var(--color-light-gray);
