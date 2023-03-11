@@ -1,9 +1,9 @@
 /****************/
 body {
-    width: 95%;
     margin: 1em auto 2em auto;
     font-family: 'ABeeZee', sans-serif;
     font-size: 16px;
+    min-width: 640px;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
     --step-title-font-size: 1.5em;
     --color-error-text: #cb4818;
@@ -26,6 +26,10 @@ body {
 
 a {
     color: var(--color-link);
+}
+
+main > header, section {
+    margin-bottom: 0.5rem;
 }
 
 /****************/
@@ -272,200 +276,4 @@ a {
     border-width: 2px 2px 2px 0;
     width: 3px;
     margin: 0 0 0 5px;
-}
-
-/****************/
-
-.setup-cantor {
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    margin: 10px auto;
-    column-gap: 20px;
-    text-align: left;
-}
-
-.setup-step {
-    background-color: var(--color-light-bluish);
-    min-width: 200px;
-    min-height: 150px;
-    padding: 12px;
-    flex: 1 1 0;
-    border: 2px solid var(--color-light-gray);
-    display: flex;
-    flex-direction: column;
-}
-
-.title-flex {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.title {
-    font-size: var(--step-title-font-size);
-    margin-bottom: 5px;
-}
-
-.title-help-icon {
-    font-size: var(--step-title-font-size);
-}
-
-.instruction-box {
-    width: 95%;
-    min-height: 50px;
-    background-color: white;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
-.instruction {
-    text-align: center;
-    white-space: pre-wrap;
-    flex: 2 1 0;
-}
-
-.step-input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    flex: 1 1 0;
-}
-
-.step-error {
-    font-size: .65em;
-    color: var(--color-error-text);
-    text-align: center;
-    margin-top: 5px;
-    flex: 1 1 0;
-}
-
-
-/******************/
-/* Modal          */
-/******************/
-
-.darkBG {
-    background-color: rgba(0, 0, 0, 0.2);
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-}
-
-.modal-placement {
-    position: fixed;
-    visibility: hidden;
-    /*
-    top: 10%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    */
-}
-
-.modal {
-    position: absolute;
-    width: 250px;
-    height: 170px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
-}
-
-.modal-header {
-    overflow: hidden;
-    background-color: var(--color-light-gray);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding: 4px;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.modal-title-text {
-    padding-left: 5px;
-}
-
-.modal-content {
-    padding: 10px;
-    font-size: 14px;
-    text-align: center;
-}
-
-.close-btn {
-    cursor: pointer;
-    font-weight: 500;
-    padding: 2px;
-    border-radius: 8px;
-    border: none;
-    font-size: 18px;
-    background: white;
-    transition: all 0.25s ease;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
-    align-self: flex-end;
-}
-
-.close-btn:hover {
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
-    transform: translate(-2px, 2px);
-}
-
-/******************/
-/* css for header */
-/******************/
-.page-header {
-    display: flex;
-    height: 75px;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-}
-
-#page-title {
-    font-family: var(--font-title), sans-serif;
-    font-weight: 800;
-    font-size: 2.5em;
-    color: black;
-    margin: 0;
-}
-
-#credit-and-github {
-    padding: 10px;
-    margin-right: 50px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr 1fr;
-    font-size: 1em;
-    align-items: center;
-}
-
-#github-logo {
-    width: 50px;
-    height: 50px;
-    overflow: auto;
-    grid-column: 1;
-    grid-row: 1 / -1;
-    background-image: url("./shared/assets/github-mark.svg");
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-#author {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-#github-link {
-    grid-column: 2;
-    grid-row: 2;
 }

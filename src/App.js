@@ -341,7 +341,7 @@ function App() {
     ]
 
     return (
-        <div>
+        <main>
             <Header/>
             { notification && showNotification() }
             <Introduction />
@@ -359,7 +359,7 @@ function App() {
                 {displayResults && cantor && showCantor()}
                 {displayResults && cantor && showResultsBottomButtons()}
             </form>
-        </div>
+        </main>
     )
 }
 

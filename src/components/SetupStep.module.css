@@ -1,0 +1,69 @@
+.setupStep {
+    background-color: var(--color-light-bluish);
+    /*
+    min-width: 200px;
+    */
+    min-height: 150px;
+    padding: 12px;
+    flex: 1 1 0;
+    border: 2px solid var(--color-light-gray);
+    display: flex;
+    flex-direction: column;
+}
+
+.titleFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: var(--step-title-font-size);
+    margin-bottom: 5px;
+}
+
+.titleHelpIcon {
+    font-size: var(--step-title-font-size);
+}
+
+.titleHelpIcon:hover {
+    cursor: pointer;
+}
+
+.instructionBox {
+    min-height: 50px;
+    background-color: white;
+    flex-grow: 1;
+    padding: 0.5em;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+/* figure out how to move this up */
+@media (width <= 700px) {
+    .instructionBox {
+        padding: .2em;
+        grid-template-rows: 2fr 1fr 2fr;
+    }
+}
+
+.instruction {
+    text-align: center;
+    white-space: pre-wrap;
+    flex: 2 1 0;
+}
+
+.stepInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.stepError {
+    font-size: .65em;
+    color: var(--color-error-text);
+    text-align: center;
+}
+

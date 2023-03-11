@@ -1,0 +1,15 @@
+.setupCantor {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    margin: 10px auto;
+    column-gap: 20px;
+    text-align: left;
+}
+
+/* figure out how to move this up */
+@media (width <= 700px) {
+    .setupCantor {
+        width: 95%;
+    }
+}
