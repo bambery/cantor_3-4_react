@@ -1,26 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { RiCloseLine } from 'react-icons/ri'
+import styles from './Modal.module.css'
 
 const Modal = ({ setShowModal, name, instructions }) => {
     return (
         <>
-            <div className='darkBG' onClick={ () => setShowModal(false)} />
-            <div className='modal-placement'>
-                <div className='modal' id={`modal-${name}`}>
-                    <div className='modal-header'>
-                        <div className='modal-title-text'>
+            <div className={styles.modalPlacement}>
+                <div className={styles.modal} id={`modal-${name}`}>
+                    <div className={styles.modalHeader }>
+                        <div className={styles.modalTitleText}>
                             {instructions['title']}
                         </div>
-                        <button className='close-btn' onClick={() => setShowModal(false)}>
+                        <button className={styles.closeBtn} onClick={() => setShowModal(false)}>
                             <RiCloseLine style={{ marginBottom: '-3px' }} />
                         </button>
                     </div>
-                    <div className='modal-content'>
+                    <div className={styles.modalContent}>
                         {instructions['message']}
                     </div>
                 </div>
             </div>
+            <div className={styles.darkBG} onClick={ () => setShowModal(false)} />
         </>
     )
 }

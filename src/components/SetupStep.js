@@ -24,12 +24,12 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
         threshold: 1.0
     }
 
+    // if modal runs offscreen on the right, shift it
     const modalCallback = (entries) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting){
                 const diff = Math.ceil(entry.boundingClientRect.width - entry.intersectionRect.width)
                 entry.target.style.left = entry.target.style.left - (diff + 20) + 'px'
-                console.log(`is intersecting: ${entry.isIntersecting}`)
             }
             entry.target.style.visibility = 'visible'
         })
