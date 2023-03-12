@@ -1,37 +1,17 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-
-import Cantor from '../models/cantor'
+import { minSegments, maxSegments, maxIter } from '../shared/constants'
 import SetupStep from './SetupStep'
-import Demo from './Demo'
-import styles from './SetupCantor.module.css'
-import { minSegments, maxSegments, maxIter, stateDefaults } from '../shared/constants'
+import styles from './CantorInputs.module.css'
 
-const SetupCantor = ({ setNotification }) => {
-    const [setup, setSetup] = useState({
-        'numSegments':  stateDefaults['numSegments'],
-        'toRemove':     stateDefaults['toRemove'],
-        'numIter':      stateDefaults['numIter']
-    })
+const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmit, setDisableSubmit, displayResults }) => {
 
     const [setupStr, setSetupStr] = useState({
-        'numSegments':  stateDefaults['numSegments'].toString(),
-        'toRemove':     stateDefaults['toRemove'].toString(),
-        'numIter':      stateDefaults['numIter'].toString()
+        'numSegments':  setup['numSegments'] ? setup['numSegments'].toString() : '',
+        'toRemove':     setup['toRemove'] ? setup['toRemove'].toString() : '',
+        'numIter':      setup['numIter'] ? setup['numIter'].toString() : ''
     })
-
-    const [formErrors, setFormErrors] = useState({
-        'numSegments':  null,
-        'toRemove':     null,
-        'numIter':      null
-    })
-
-    const [cantor, setCantor] = useState(null)
-    const [displayResults, setDisplayResults] = useState(false)
-    const [disableCanvas, setDisableCanvas] = useState(false)
-    const [disableSubmit, setDisableSubmit] = useState(false)
-    const [loading, setLoading] = useState(false)
 
     const handleNumSegmentsChange = (event) => {
         const newSetupStr = {
@@ -90,59 +70,9 @@ const SetupCantor = ({ setNotification }) => {
         }
     ]
 
-    // on first page load, present a default 3/4 set
-    useEffect( () => {
-        setCantor( new Cantor(setup.numSegments, setup.toRemove, setup.numIter) )
-    }, [])
-
-    useEffect( () => {
-        if(loading) {
-            try {
-                let newCantor = new Cantor(setup.numSegments, setup.toRemove, setup.numIter)
-                setCantor(newCantor)
-                setDisplayResults(true)
-                setLoading(false)
-            } catch(e) {
-                setNotification(e)
-                setCantor( new Cantor(setup.numSegments, setup.toRemove, 1) )
-                setLoading(false)
-            }
-        }
-    }, [ loading ])
-
-
-
-    const anyErrors = (specific=null) => {
-        if(specific){
-            return !!formErrors[specific]
-        } else {
-            return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
-        }
-    }
-
-    const handleCantorizeClick = (event) => {
-        event.preventDefault()
-        setNotification()
-        if(anyErrors()){
-            return
-        }
-
-        setLoading(true)
-        /*
-        try {
-            let newCantor = new Cantor(numSegments, toRemove, numIter)
-            setCantor(newCantor)
-            setDisplayResults(true)
-        } catch(e) {
-            setNotification(e)
-            setCantor( new Cantor(numSegments, toRemove, 1) )
-        }
-        */
-    }
-
     const errorMessages = {
         'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
-        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${parseInt(setupStr.numSegments) - 1}. The first and last intervals may not be removed.`,
+        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${parseInt(setupStr['numSegments']) - 1}. The first and last intervals may not be removed.`,
         'numIter': `Please enter a number between 1 and ${maxIter}.`,
         'youDidACantor': 'Because you entered 3 in step 1, you have chosen to form the Cantor Set! Your only choice in this field is 2 :)'
     }
@@ -192,7 +122,7 @@ const SetupCantor = ({ setNotification }) => {
                 let hasError = !arr.every( (val) => val > 1 && val < parseInt(setupStr.numSegments) )
                 if(!hasError){
                     // does this check need to happen? doesnt react do this?
-                    if(JSON.stringify(arr) !== JSON.stringify(setup.toRemove)){
+                    if(JSON.stringify(arr) !== JSON.stringify(setup['toRemove'])){
                         newSetup.toRemove = arr
                         setSetup(newSetup)
                     }
@@ -236,29 +166,20 @@ const SetupCantor = ({ setNotification }) => {
         )
     }
 
-    function renderDemo() {
-        return(
-            <Demo
-                cantorIter = {cantor.iterations[0]}
-                isDemo={true}
-                loading={loading}
-                disableCanvas={disableCanvas}
-                toRemove={setup.toRemove}
-            />
-        )
-    }
-
     return(
-        <form autoComplete='off' onSubmit={handleCantorizeClick}>
-            <div className={styles.setupCantor}>
-                {stepConfig.map(s => renderSetupStep(s))}
-            </div>
-        </form>
+        <div className={styles.setupCantor}>
+            {stepConfig.map(s => renderSetupStep(s))}
+        </div>
     )
 }
-
-SetupCantor.propTypes = {
-    setNotification:    PropTypes.func.isRequired,
+CantorInputs.propTypes = {
+    setup:              PropTypes.object.isRequired,
+    setSetup:           PropTypes.func.isRequired,
+    formErrors:         PropTypes.object.isRequired,
+    setFormErrors:      PropTypes.func.isRequired,
+    disableSubmit:      PropTypes.bool.isRequired,
+    setDisableSubmit:   PropTypes.func.isRequired,
+    displayResults:     PropTypes.bool.isRequired
 }
 
-export default SetupCantor
+export default CantorInputs

@@ -9,7 +9,7 @@ import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/const
 
 import Header from './components/Header'
 import ErrorNotification from './components/ErrorNotification'
-import SetupCantor from './components/SetupCantor'
+import GenerateCantor from './components/GenerateCantor'
 import ButtonSet from './components/ButtonSet'
 import CantorResults from './components/CantorResults'
 import Demo from './components/Demo'
@@ -232,7 +232,7 @@ function App() {
             <Header/>
             { notification && showNotification() }
             <Introduction />
-            <SetupCantor setNotification={setNotification}/>
+            <GenerateCantor setNotification={setNotification}/>
         </main>
     )
 }

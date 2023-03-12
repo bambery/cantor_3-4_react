@@ -1,0 +1,57 @@
+.buttonSet {
+    display: flex;
+    justify-content: center;
+    row-gap: 10px;
+}
+
+.button {
+    width: 250px;
+    padding: 5px;
+    color: white;
+    border-radius:10px;
+    outline: 0;
+    text-transform: capitalize;
+    margin: 10px 10px;
+    box-shadow: 0px 2px 2px lightgray;
+    border-bottom: 2px solid transparent;
+    transition: ease background-color 250ms;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.button-blue {
+    background-color: var(--color-bluish);
+}
+
+.button-blue:hover {
+    background-color: var(--color-dark-bluish);
+}
+
+.button-gray {
+    background-color: var(--color-gray);
+}
+
+.button-gray:hover {
+    background-color: var(--color-dark-gray);
+}
+
+.button:disabled {
+    background-color: gray;
+}
+
+.button-green {
+    background-color: var(--color-green)
+}
+
+.button-green:hover {
+    background-color: var(--color-dark-green)
+}
+
+.icon {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: bottom;
+    padding: 0 2px 0 0;
+}
+
+
