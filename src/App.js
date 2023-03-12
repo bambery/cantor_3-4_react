@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlineArrowUp } from 'react-icons/ai'
 import { BsBorderStyle } from 'react-icons/bs'
 
-import Cantor from './models/cantor'
 import Report from './models/report'
 import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
 
@@ -17,35 +16,9 @@ import Demo from './components/Demo'
 import Introduction from './components/Introduction'
 
 function App() {
-    const [numSegments, setNumSegments] = useState(stateDefaults['numSegments'])
-    const [numSegmentsStr, setNumSegmentsStr] = useState(stateDefaults['numSegments'].toString())
-    const [toRemove, setToRemove] = useState(stateDefaults['toRemove'])
-    const [toRemoveStr, setToRemoveStr] = useState(stateDefaults['toRemove'].toString())
-    const [numIter, setNumIter] = useState(stateDefaults['numIter'])
-    const [numIterStr, setNumIterStr] = useState(stateDefaults['numIter'].toString())
-    const [formErrors, setFormErrors] = useState({
-        'numSegments':  null,
-        'toRemove':     null,
-        'numIter':      null
-    })
-    const [cantor, setCantor] = useState(null)
-    const [displayResults, setDisplayResults] = useState(false)
-    const [disableCanvas, setDisableCanvas] = useState(false)
-    const [disableSubmit, setDisableSubmit] = useState(false)
     const [notification, setNotification] = useState()
-    const [loading, setLoading] = useState(false)
 
-    useEffect( () => {
-        try{
-            let defaultCantor = new Cantor(stateDefaults['numSegments'], stateDefaults['toRemove'], stateDefaults['numIter'])
-            setCantor(defaultCantor)
-        } catch(e) {
-            setNotification(e)
-            setCantor( new Cantor(numSegments, toRemove, 1) )
-        }
-    }, [])
-
-
+/*
     useEffect( () => {
         if(!anyErrors()) {
             // no errors: display numberline
@@ -60,41 +33,9 @@ function App() {
             setDisableCanvas(true)
         }
     }, [numSegments, toRemove])
+    */
 
-    useEffect( () => {
-        if(loading) {
-            try {
-                let newCantor = new Cantor(numSegments, toRemove, numIter)
-                setCantor(newCantor)
-                setDisplayResults(true)
-                setLoading(false)
-            } catch(e) {
-                setNotification(e)
-                setCantor( new Cantor(numSegments, toRemove, 1) )
-                setLoading(false)
-            }
-        }
-    }, [ loading ])
-
-    const inputErrors = {
-        'numSegments': `Please enter a number between ${minSegments} and ${maxSegments}.`,
-        'toRemove': `Please enter a comma-separated list of numbers between 2 and ${parseInt(numSegmentsStr) - 1}. The first and last intervals may not be removed.`,
-        'toRemove3Seg': 'You have chosen to form the Cantor Set. Your only choice in this field is 2 :)',
-        'numIter': `Please enter a number between 1 and ${maxIter}.`
-    }
-
-    const handleNumSegmentsChange = (event) => {
-        setNumSegmentsStr(event.target.value)
-    }
-
-    const handleToRemoveChange = (event) => {
-        setToRemoveStr(event.target.value)
-    }
-
-    const handleNumIterChange = (event) => {
-        setNumIterStr(event.target.value)
-    }
-
+    /*
     const validateFields = () => {
         setDisableSubmit(false)
         let errorState = { ...formErrors }
@@ -130,10 +71,12 @@ function App() {
             } else if( !toRemoveStr.match(legalToRem) ){
                 errorState['toRemove'] = inputErrors['toRemove']
                 setToRemove(null)
-            }else {
+            } else {
                 // string was valid, convert to arr of numbers
                 let arr = toRemoveStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) )
                 // check that all numbers are greater than 1 and less than the number of segments
+                // ***** do this in parent
+                // ***********************
                 let hasError = !arr.every( (val) => val > 1 && val < parseInt(numSegmentsStr) )
                 if(!hasError){
                     if(JSON.stringify(arr) !== JSON.stringify(toRemove)){
@@ -161,40 +104,9 @@ function App() {
 
         setFormErrors(errorState)
     }
+    */
 
-    const handleLoseFocus = () => {
-        validateFields()
-    }
-
-    const anyErrors = (specific=null) => {
-        if(specific){
-            return !!formErrors[specific]
-        } else {
-            return Object.values(formErrors).reduce((acc, curr) => acc || !!curr, false)
-        }
-    }
-
-    const handleCantorizeClick = (event) => {
-        event.preventDefault()
-        setNotification()
-        if(anyErrors()){
-            return
-        }
-
-        setLoading(true)
-/*
-        try {
-            let newCantor = new Cantor(numSegments, toRemove, numIter)
-            setCantor(newCantor)
-            setDisplayResults(true)
-        } catch(e) {
-            setNotification(e)
-            setCantor( new Cantor(numSegments, toRemove, 1) )
-        }
-        */
-    }
-
-
+    /*
     const showDemo = () => {
         return(
             <Demo
@@ -205,15 +117,10 @@ function App() {
                 toRemove={toRemove}
             />
         )
-        /*
-        return(
-            <div className={`${disableCanvas ? 'disable-item': ''}`}>
-                <Numberline intCol={cantor.iterations[0]} isDemo={true}/>
-            </div>
-        )
-        */
     }
+        */
 
+    /*
     const showSetupButtons = () => {
         const setupButtonConfig = {
             'cantorize': {
@@ -228,12 +135,15 @@ function App() {
 
         return(<ButtonSet buttonSetConfig={setupButtonConfig}/>)
     }
+    */
+
 /*
     const handleOneMore = () => {
         const lastIntervalCol = cantor.iterations[cantor.numIter - 1]
         setCantor(cantor.performOneIteration(lastIntervalCol))
     }
 */
+    /*
     const showResultsTopButtons = () => {
         const resultsTopButtonConfig = {
             'download': {
@@ -255,10 +165,11 @@ function App() {
         }
         return(<ButtonSet buttonSetConfig={resultsTopButtonConfig}/>)
     }
+    */
 
+    /*
     const showResultsBottomButtons = () => {
         const resultsBottomButtonsConfig = {
-            /*
             'oneMore': {
                 'text':     'One More Iteration!',
                 'color':    'button-green',
@@ -267,7 +178,6 @@ function App() {
                 'onClick':  handleOneMore,
                 'icon':     AiOutlinePlusCircle
             },
-            */
             'download': {
                 'text':     'Download Data',
                 'color':    'button-blue',
@@ -287,7 +197,9 @@ function App() {
         }
         return(<ButtonSet buttonSetConfig={resultsBottomButtonsConfig}/>)
     }
+    */
 
+    /*
     const handleClearForm = () => {
         setNumSegmentsStr(stateDefaults['numSegments'].toString())
         setToRemoveStr(stateDefaults['toRemove'].toString())
@@ -297,8 +209,9 @@ function App() {
         setNumIter(stateDefaults['numIter'])
         setToRemove(stateDefaults['toRemove'])
     }
+    */
 
-    const handleDownloadReport = () => {
+    const handleDownloadReport = (cantor) => {
         const report = new Report(cantor)
         const blob = new Blob([report.output], { type: 'text/csv;charset=utf-8,' })
         const objUrl = URL.createObjectURL(blob)
@@ -310,57 +223,27 @@ function App() {
         link.click()
     }
 
-
-    const showCantor = () => {
-        return(<CantorResults cantorSet={cantor}/>)
-    }
-
     const showNotification = () => {
         return(<ErrorNotification error={notification}/>)
     }
-
-    const stepConfig = [
-        {
-            'name': 'numSegments',
-            'title': 'Step 1',
-            'valueStr': numSegmentsStr,
-            'handleChange': handleNumSegmentsChange
-        },
-        {
-            'name': 'toRemove',
-            'title': 'Step 2',
-            'valueStr': toRemoveStr,
-            'handleChange': handleToRemoveChange
-        },
-        {
-            'name': 'numIter',
-            'title': 'Step 3',
-            'valueStr': numIterStr,
-            'handleChange': handleNumIterChange
-        }
-    ]
 
     return (
         <main>
             <Header/>
             { notification && showNotification() }
             <Introduction />
-            <form autoComplete='off' onSubmit={handleCantorizeClick}>
-                <SetupCantor
-                    stepConfig={stepConfig}
-                    handleLoseFocus={handleLoseFocus}
-                    formErrors={formErrors}
-                    showResults={displayResults}
-                />
-                {displayResults && cantor && showResultsTopButtons()}
-                {!displayResults && cantor && showDemo()}
-                {!displayResults && cantor && showSetupButtons()}
-
-                {displayResults && cantor && showCantor()}
-                {displayResults && cantor && showResultsBottomButtons()}
-            </form>
+            <SetupCantor setNotification={setNotification}/>
         </main>
     )
 }
 
 export default App
+
+/*
+            {displayResults && cantor && showResultsTopButtons()}
+                {!displayResults && cantor && showDemo()}
+                {!displayResults && cantor && showSetupButtons()}
+
+                {displayResults && cantor && showCantor()}
+                {displayResults && cantor && showResultsBottomButtons()}
+                */
