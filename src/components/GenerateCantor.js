@@ -2,18 +2,27 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import Report from '../models/report'
 import Cantor from '../models/cantor'
+import { stateDefaults } from '../shared/constants'
+
+import styles from './GenerateCantor.module.css'
 import CantorInputs from './CantorInputs'
 import SetupStep from './SetupStep'
+import Results from './Results'
 import Demo from './Demo'
-import styles from './GenerateCantor.module.css'
-import { stateDefaults } from '../shared/constants'
 
 const GenerateCantor = ({ setNotification }) => {
     const [setup, setSetup] = useState({
         'numSegments':  stateDefaults['numSegments'],
         'toRemove':     stateDefaults['toRemove'],
         'numIter':      stateDefaults['numIter']
+    })
+
+    const [setupStr, setSetupStr] = useState({
+        'numSegments':  setup['numSegments'] ? setup['numSegments'].toString() : '',
+        'toRemove':     setup['toRemove'] ? setup['toRemove'].toString() : '',
+        'numIter':      setup['numIter'] ? setup['numIter'].toString() : ''
     })
 
     const [formErrors, setFormErrors] = useState({
@@ -27,7 +36,6 @@ const GenerateCantor = ({ setNotification }) => {
     const [disableCanvas, setDisableCanvas] = useState(false)
     const [disableSubmit, setDisableSubmit] = useState(false)
     const [loading, setLoading] = useState(false)
-
 
     useEffect( () => {
         if(loading) {
@@ -43,6 +51,29 @@ const GenerateCantor = ({ setNotification }) => {
             }
         }
     }, [ loading ])
+
+    useEffect( () => {
+        if( !anyErrors('numSegments') && !anyErrors('toRemove') ){
+            // no errors that would affect the numberline, display numberline
+            setDisableCanvas(false)
+            setCantor( new Cantor(setup.numSegments, setup.toRemove, 1) )
+        } else if(!anyErrors('numSegments') && !setupStr['toRemove']) {
+            // valid numSeg, blank toRemove can display a numberline with no gaps
+            setDisableCanvas(false)
+            setCantor( new Cantor(setup.numSegments, [], 1) )
+        } else {
+            //otherwise, there is nothing sensible to display so grey out the numberline
+            setDisableCanvas(true)
+        }
+    }, [setup])
+
+    useEffect( () => {
+        if(anyErrors()){
+            setDisableSubmit(true)
+        } else {
+            setDisableSubmit(false)
+        }
+    }, [formErrors])
 
     const anyErrors = (specific=null) => {
         if(specific){
@@ -76,16 +107,30 @@ const GenerateCantor = ({ setNotification }) => {
         )
     }
 
-    const renderResults = () => {
-            /*
-            <Results
+    const reopenForEdit = () => {
+        setDisplayResults(false)
+    }
 
-            >
-            //  show top button
-            //  show numberline
-            //  show bottom
-            */
-        typeof Function.prototype === "function"
+    const handleDownload = () => {
+        const report = new Report(cantor)
+        const blob = new Blob([report.output], { type: 'text/csv;charset=utf-8,' })
+        const objUrl = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.setAttribute('download', `cantorSet-${cantor.numSegments}Seg-${cantor.toRemove.join('_')}Removed-${cantor.numIter}Iter.csv`)
+        link.setAttribute('href', objUrl)
+        link.setAttribute('visibility', 'hidden')
+        link.setAttribute('display', 'none')
+        link.click()
+    }
+
+    const renderResults = () => {
+        return(
+            <Results
+                cantorSet={cantor}
+                reopenForEdit={reopenForEdit}
+                handleDownload={handleDownload}
+            />
+        )
     }
 
     return(
@@ -93,6 +138,8 @@ const GenerateCantor = ({ setNotification }) => {
             <CantorInputs
                 setup={setup}
                 setSetup={setSetup}
+                setupStr={setupStr}
+                setSetupStr={setSetupStr}
                 formErrors={formErrors}
                 setFormErrors={setFormErrors}
                 disableSubmit={disableSubmit}
@@ -100,8 +147,7 @@ const GenerateCantor = ({ setNotification }) => {
                 displayResults={displayResults}
             />
             { !displayResults && renderDemo() }
-            {// displayResults && renderResults()
-            }
+            { displayResults && renderResults() }
         </form>
     )
 }

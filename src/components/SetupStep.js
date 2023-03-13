@@ -7,7 +7,7 @@ import Modal from './Modal'
 import styles from './SetupStep.module.css'
 import { maxIter, maxSegments, minSegments } from '../shared/constants'
 
-const SetupStep = ({ stepConfig, setup, formErrors, showResults, setDisableSubmit, validateFields }) => {
+const SetupStep = ({ stepConfig, setup, formErrors, showResults, validateFields }) => {
 
     const [showModal, setShowModal] = useState(false)
     const { name, title, valueStr, handleChange, instructions, modal } = stepConfig
@@ -62,6 +62,7 @@ const SetupStep = ({ stepConfig, setup, formErrors, showResults, setDisableSubmi
                     name={name}
                     onChange={handleChange}
                     onBlur={validateFields}
+                    onKeyDown={validateFields}
                     disabled={ name==='toRemove' && formErrors['numSegments'] }
                 />
             )
@@ -109,7 +110,6 @@ SetupStep.propTypes = {
     setup:              PropTypes.object.isRequired,
     formErrors:         PropTypes.object.isRequired,
     showResults:        PropTypes.bool.isRequired,
-    setDisableSubmit:   PropTypes.func.isRequired,
     validateFields:     PropTypes.func.isRequired
 }
 

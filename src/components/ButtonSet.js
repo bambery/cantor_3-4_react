@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './ButtonSet.module.css'
-//import { AiOutlineDownload, AiOutlineCloseCircle } from 'react-icons/ai'
 
 const ButtonSet = ({ buttonSetConfig }) => {
 

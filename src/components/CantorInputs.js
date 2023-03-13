@@ -5,13 +5,7 @@ import { minSegments, maxSegments, maxIter } from '../shared/constants'
 import SetupStep from './SetupStep'
 import styles from './CantorInputs.module.css'
 
-const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmit, setDisableSubmit, displayResults }) => {
-
-    const [setupStr, setSetupStr] = useState({
-        'numSegments':  setup['numSegments'] ? setup['numSegments'].toString() : '',
-        'toRemove':     setup['toRemove'] ? setup['toRemove'].toString() : '',
-        'numIter':      setup['numIter'] ? setup['numIter'].toString() : ''
-    })
+const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setFormErrors, displayResults }) => {
 
     const handleNumSegmentsChange = (event) => {
         const newSetupStr = {
@@ -78,7 +72,6 @@ const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmi
     }
 
     const validateFields = () => {
-        setDisableSubmit(false)
         let newFormErrors = { ...formErrors }
         let newSetup = { ...setup }
 
@@ -107,7 +100,6 @@ const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmi
                 newSetup.toRemove = null
                 setSetup(newSetup)
             } else if( !setupStr.toRemove ){
-                setDisableSubmit(true)
                 newFormErrors['toRemove'] = errorMessages['toRemove']
                 newSetup.toRemove = []
                 setSetup(newSetup)
@@ -159,7 +151,6 @@ const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmi
                 setup={setup}
                 formErrors={formErrors}
                 showResults={displayResults}
-                setDisableSubmit={setDisableSubmit}
                 validateFields={validateFields}
                 key={step.name}
             />
@@ -175,10 +166,11 @@ const CantorInputs = ({ setup, setSetup, formErrors, setFormErrors, disableSubmi
 CantorInputs.propTypes = {
     setup:              PropTypes.object.isRequired,
     setSetup:           PropTypes.func.isRequired,
+    setupStr:           PropTypes.object.isRequired,
+    setSetupStr:        PropTypes.func.isRequired,
     formErrors:         PropTypes.object.isRequired,
     setFormErrors:      PropTypes.func.isRequired,
     disableSubmit:      PropTypes.bool.isRequired,
-    setDisableSubmit:   PropTypes.func.isRequired,
     displayResults:     PropTypes.bool.isRequired
 }
 
