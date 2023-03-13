@@ -4,8 +4,9 @@ import Cantor from '../models/cantor'
 import CantorIteration from './CantorIteration'
 import ButtonSet from './ButtonSet'
 import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlineArrowUp } from 'react-icons/ai'
+import styles from './Results.module.css'
 
-const Results = ({ cantorSet, reopenForEdit, handleDownload }) => {
+function Results({ cantorSet, reopenForEdit, handleDownload }) {
     const resultsTopButtonConfig = {
         'download': {
             'text':     'Download Data',
@@ -55,16 +56,14 @@ const Results = ({ cantorSet, reopenForEdit, handleDownload }) => {
     }
 
     return(
-        <div className='cantor-results'>
+        <div className={styles.cantorResults}>
             <ButtonSet buttonSetConfig={resultsTopButtonConfig}/>
-            <hr className='horizontal-line'></hr>
-            <div className='cantor-results-description'>
+            <hr/>
+            <div className={styles.cantorResultsDescription}>
                 Cantor-like Set of {cantorSet.numSegments} Segmented Intervals, Removing Segment{cantorSet.toRemove.length > 1 ? 's' : ''} {cantorSet.toRemove.join(', ')}
             </div>
-            <div className='cantor-results'>
-                {cantorSet.iterations.map( (iter, idx) => <CantorIteration key={idx} intCol={iter} index={idx}/>)}
-            </div>
-            <hr className='horizontal-line'></hr>
+            {cantorSet.iterations.map( (iter, idx) => <CantorIteration key={idx} intCol={iter} index={idx}/>)}
+            <hr/>
             <ButtonSet buttonSetConfig={resultsBottomButtonsConfig}/>
         </div>
     )

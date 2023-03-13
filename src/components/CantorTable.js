@@ -4,32 +4,33 @@ import Fraction from '../models/fraction'
 import { getLabel } from '../shared/utils'
 import IntervalDisplay from './IntervalDisplay'
 import FracDisplay from './FracDisplay'
+import styles from './CantorTable.module.css'
 
-const CantorTable = ({ intervalArr, kind, totLen }) => {
+function CantorTable({ intervalArr, kind, totLen }) {
     const numOrLetter = (kind, idx) => kind === 'segment' ? idx + 1 : getLabel(idx)
 
     return(
-        <div className={`cantor-result-${kind}s`}>
-            <div className='cantor-table-count'>
+        <>
+            <div className={styles.cantorTableCount}>
                 {`${kind}s: ${intervalArr.length}`}
             </div>
-            <table className='cantor-table'>
+            <table className={styles.cantorTable}>
                 <thead>
-                    <tr className='cantor-table-header'>
-                        <th className="cantor-table-row">{kind} ID</th>
-                        <th className="cantor-table-row">{kind} Intervals</th>
-                        <th className="cantor-table-row">{kind} Size</th>
+                    <tr className={styles.cantorTableHeader}>
+                        <th className={styles.cantorTableRow}>{kind} ID</th>
+                        <th className={styles.cantorTableRow}>{kind} Intervals</th>
+                        <th className={styles.cantorTableRow}>{kind} Size</th>
                     </tr>
                 </thead>
                 <tbody>
                     {intervalArr.map( (interval, index) => {
                         return(
                             <tr key={index} >
-                                <td className="cantor-table-row">{numOrLetter(kind, index)}</td>
-                                <td className="cantor-table-row">
+                                <td className={styles.cantorTableRow}>{numOrLetter(kind, index)}</td>
+                                <td className={styles.cantorTableRow}>
                                     <IntervalDisplay interval={interval}/>
                                 </td>
-                                <td className="cantor-table-row">
+                                <td className={styles.cantorTableRow}>
                                     <FracDisplay frac={interval.len}/>
                                 </td>
                             </tr>
@@ -37,10 +38,10 @@ const CantorTable = ({ intervalArr, kind, totLen }) => {
                     }) }
                 </tbody>
             </table>
-            <div className='cantor-table-tot-len'>
+            <div className={styles.cantorTableTotLen}>
                 Total {kind} Length: {totLen.str}
             </div>
-        </div>
+        </>
     )
 }
 

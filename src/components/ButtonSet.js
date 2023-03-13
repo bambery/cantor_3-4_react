@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './ButtonSet.module.css'
 
-const ButtonSet = ({ buttonSetConfig }) => {
+function ButtonSet({ buttonSetConfig }) {
 
     return(
         <div className={styles.buttonSet}>

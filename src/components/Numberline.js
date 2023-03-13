@@ -6,7 +6,7 @@ import Fraction from '../models/fraction'
 import { getLabel } from '../shared/utils'
 import styles from './Numberline.module.css'
 
-const Numberline = ({ intCol, isDemo, toRemove }) => {
+function Numberline({ intCol, isDemo, toRemove }) {
     //////////////////////////////////////////////
     // thank you to:
     // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
@@ -104,7 +104,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         drawPoints(ctx, intColCommon, commonD, segmentLen, margin, midH, size)
     }, [intCol, isDemo])
 
-    const drawCanvas = (canvasRef) => {
+    function drawCanvas(canvasRef) {
         config = canvasConfig['canvas']
 
         const canvas = canvasRef.current
@@ -125,7 +125,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         return ctx
     }
 
-    const drawNumberline = (ctx, width, margin, midH) => {
+    function drawNumberline(ctx, width, margin, midH) {
         config = canvasConfig['numberline']
         ctx.lineWidth = config['lineWidth']
         ctx.strokeStyle = config['strokeStyle']
@@ -138,7 +138,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         ctx.stroke()
     }
 
-    const drawDemoTitle = (ctx) => {
+    function drawDemoTitle(ctx) {
         config = canvasConfig['demoTitle']
         const colorGold = getComputedStyle(document.body).getPropertyValue(config['fontColor'])
         ctx.fillStyle = colorGold
@@ -171,7 +171,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         ctx.fillText(config['gapText'], titleLeftCursor, titleMidpointY)
     }
 
-    const drawIntervals = (ctx, intColCommon, segmentLen, margin, midH) => {
+    function drawIntervals(ctx, intColCommon, segmentLen, margin, midH) {
         config = canvasConfig['interval']
         ctx.lineWidth = config['lineWidth']
         ctx.strokeStyle = config['color']
@@ -188,7 +188,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         })
     }
 
-    const drawSegmentLabel = (ctx, text, midpoint, midH, size, kind) => {
+    function drawSegmentLabel(ctx, text, midpoint, midH, size, kind) {
         config = canvasConfig['label']
         ctx.textBaseline = config['textBaseline']
         ctx.font = `${config[size]['fontSize']}px ${config['fontFamily']}`
@@ -196,7 +196,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         ctx.fillText( text, midpoint, midH - config['bottomMargin'])
     }
 
-    const drawPoints = (ctx, intColCommon, commonD, segmentLen, margin, midH, size) => {
+    function drawPoints(ctx, intColCommon, commonD, segmentLen, margin, midH, size) {
         if(isDemo){
             for( let i = 0; i < commonD; i++){
                 // draw left endpoint and fraction
@@ -249,7 +249,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         }
     }
 
-    const drawFrac = (ctx, frac, x, y, size) => {
+    function drawFrac(ctx, frac, x, y, size) {
         config = canvasConfig['frac']
         // position where the top of the fraction will go
         const numTop = y + config['endpointFontTop']
@@ -277,7 +277,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
         ctx.fillText(frac.den, x, denTop)
     }
 
-    const fillCircle = (ctx, x, y) => {
+    function fillCircle(ctx, x, y) {
         config = canvasConfig['dot']
         ctx.fillStyle = config['color']
         ctx.beginPath()

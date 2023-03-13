@@ -5,9 +5,9 @@ import { minSegments, maxSegments, maxIter } from '../shared/constants'
 import StepInput from './StepInput'
 import styles from './CantorInputs.module.css'
 
-const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setFormErrors, displayResults }) => {
+function CantorInputs({ setup, setSetup, setupStr, setSetupStr, formErrors, setFormErrors, displayResults }) {
 
-    const handleNumSegmentsChange = (event) => {
+    function handleNumSegmentsChange(event) {
         const newSetupStr = {
             ...setupStr,
             numSegments: event.target.value
@@ -15,7 +15,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         setSetupStr(newSetupStr)
     }
 
-    const handleToRemoveChange = (event) => {
+    function handleToRemoveChange(event) {
         const newSetupStr = {
             ...setupStr,
             toRemove: event.target.value
@@ -23,7 +23,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         setSetupStr(newSetupStr)
     }
 
-    const handleNumIterChange = (event) => {
+    function handleNumIterChange(event) {
         const newSetupStr = {
             ...setupStr,
             numIter: event.target.value
@@ -71,7 +71,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         'youDidACantor': 'Because you entered 3 in step 1, you have chosen to form the Cantor Set! Your only choice in this field is 2 :)'
     }
 
-    const validateFields = () => {
+    function validateFields() {
         let newFormErrors = { ...formErrors }
         let newSetup = { ...setup }
 
@@ -144,7 +144,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         setFormErrors(newFormErrors)
     }
 
-    function renderStepInput(step){
+    const renderStepInput = (step) => {
         return(
             <StepInput
                 stepConfig={step}

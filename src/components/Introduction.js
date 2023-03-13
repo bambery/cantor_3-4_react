@@ -5,7 +5,7 @@ import styles from './Introduction.module.css'
 import HowToCantorStep from './HowToCantorStep'
 import FracDisplay from './FracDisplay'
 
-const Introduction = () => {
+function Introduction() {
 
     const [showCantorInfo, setShowCantorInfo] = useState(false)
 
@@ -28,7 +28,7 @@ const Introduction = () => {
         }
     ]
 
-    const toggleDetails = () => {
+    function toggleDetails() {
         setShowCantorInfo(!showCantorInfo)
     }
 
@@ -43,7 +43,7 @@ const Introduction = () => {
         )
     }
 
-    const parensSection = (inside, nestedFrac) => {
+    function parensSection(inside, nestedFrac) {
         const parensClass = nestedFrac ? 'parensBigger' : 'parensBig'
         return(
             <span className={styles.parensExpresion}>
@@ -54,7 +54,7 @@ const Introduction = () => {
         )
     }
 
-    const geometricSum = () => {
+    function geometricSum() {
         const top = <span>2<sup>n</sup></span>
         const bottom = <span>3<sup>n+1</sup></span>
         const bigDen = <span>1 - {frac(2,3, 'evenSmallerFrac')}</span>
@@ -78,7 +78,7 @@ const Introduction = () => {
         )
     }
 
-    const frac = (num, den, optionalClass='smallerFrac') => {
+    function frac(num, den, optionalClass='smallerFrac') {
         const newFrac = {
             'num': num,
             'den': den

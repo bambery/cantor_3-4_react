@@ -7,7 +7,7 @@ import Modal from './Modal'
 import styles from './StepInput.module.css'
 import { maxIter, maxSegments, minSegments } from '../shared/constants'
 
-const StepInput = ({ stepConfig, setup, formErrors, showResults, validateFields }) => {
+function StepInput({ stepConfig, setup, formErrors, showResults, validateFields }) {
 
     const [showModal, setShowModal] = useState(false)
     const { name, title, valueStr, handleChange, instructions, modal } = stepConfig
@@ -28,7 +28,7 @@ const StepInput = ({ stepConfig, setup, formErrors, showResults, validateFields 
     }
 
     // if modal runs offscreen on the right, shift it
-    const modalCallback = (entries) => {
+    function modalCallback(entries) {
         entries.forEach((entry) => {
             if (!entry.isIntersecting){
                 const diff = Math.ceil(entry.boundingClientRect.width - entry.intersectionRect.width)
@@ -40,7 +40,7 @@ const StepInput = ({ stepConfig, setup, formErrors, showResults, validateFields 
 
     const modalWatcher = new IntersectionObserver(modalCallback, modalWatcherOptions)
 
-    const handleEnter = (e) => {
+    function handleEnter(e) {
         const keycode = e.code || e.key
         if(keycode === 'Enter'){
             console.log('enter was hit')
@@ -52,11 +52,9 @@ const StepInput = ({ stepConfig, setup, formErrors, showResults, validateFields 
 
     }
 
-    // what is this for? FIXME
-    let toDisplay = valueStr
-
-    const isResults = () => {
+    function isResults() {
         if(showResults){
+            let toDisplay = valueStr
             if(name === 'toRemove'){
                 toDisplay = valueStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) ).sort( (a, b) => a-b).join(', ')
             }

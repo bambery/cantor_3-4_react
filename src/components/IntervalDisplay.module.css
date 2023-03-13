@@ -1,0 +1,20 @@
+.intervalDisplay {
+    display: flex;
+    justify-content: center;
+}
+
+.parensLeft {
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 0 2px 2px;
+    width: 3px;
+    margin: 0 5px 0 0;
+}
+
+.parensRight {
+    border-style: solid;
+    border-color: black;
+    border-width: 2px 2px 2px 0;
+    width: 3px;
+    margin: 0 0 0 5px;
+}
