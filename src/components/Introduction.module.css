@@ -1,23 +1,7 @@
-.centeringDiv {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 80%;
-}
-
-/* figure out how to move this up */
-@media (width <= 700px) {
-    .centeringDiv {
-        width: 95%;
-    }
-}
-
 .introduction {
     padding: 12px;
     border: 2px solid var(--color-light-gray);
-    margin: 4px 10px;
+    margin: 4px auto;
     width: 100%;
     box-sizing: border-box;
 }

@@ -3,9 +3,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    /* this margin should live on main or body or root */
-    margin-left: 1em;
-    margin-right: 1em;
 }
 
 #pageTitleAndLink {

@@ -139,7 +139,7 @@ function Introduction() {
     }
 
     return(
-        <div className={styles.centeringDiv}>
+        <>
             <div className={styles.introduction} >
                 <div className={styles.whatIsCantorTitle} onClick={toggleDetails}>
                     {displayToggle()}
@@ -150,7 +150,7 @@ function Introduction() {
             <div className={styles.introduction}>
                 This tool will construct both symmetric and asymmetric Cantor-like sets based on your custom inputs. The numberline in black below shows an example of the segmentation to be performed on each iteration. Results can be downloaded in CSV format.
             </div>
-        </div>
+        </>
     )
 }
 

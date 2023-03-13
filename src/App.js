@@ -15,10 +15,12 @@ function App() {
 
     return (
         <main>
-            <Header/>
-            { notification && showNotification() }
-            <Introduction />
-            <CantorForm setNotification={setNotification}/>
+            <div className='centeringDiv'>
+                <Header/>
+                { notification && showNotification() }
+                <Introduction />
+                <CantorForm setNotification={setNotification}/>
+            </div>
         </main>
     )
 }
