@@ -7,7 +7,7 @@ import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/const
 
 import Header from './components/Header'
 import ErrorNotification from './components/ErrorNotification'
-import GenerateCantor from './components/GenerateCantor'
+import CantorForm from './components/CantorForm'
 import ButtonSet from './components/ButtonSet'
 import Introduction from './components/Introduction'
 
@@ -23,7 +23,7 @@ function App() {
             <Header/>
             { notification && showNotification() }
             <Introduction />
-            <GenerateCantor setNotification={setNotification}/>
+            <CantorForm setNotification={setNotification}/>
         </main>
     )
 }

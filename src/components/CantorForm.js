@@ -6,13 +6,12 @@ import Report from '../models/report'
 import Cantor from '../models/cantor'
 import { stateDefaults } from '../shared/constants'
 
-import styles from './GenerateCantor.module.css'
+import styles from './CantorForm.module.css'
 import CantorInputs from './CantorInputs'
-import SetupStep from './SetupStep'
 import Results from './Results'
 import Demo from './Demo'
 
-const GenerateCantor = ({ setNotification }) => {
+const CantorForm = ({ setNotification }) => {
     const [setup, setSetup] = useState({
         'numSegments':  stateDefaults['numSegments'],
         'toRemove':     stateDefaults['toRemove'],
@@ -37,6 +36,9 @@ const GenerateCantor = ({ setNotification }) => {
     const [disableSubmit, setDisableSubmit] = useState(false)
     const [loading, setLoading] = useState(false)
 
+    console.log('cantor ####')
+    console.log(cantor)
+
     useEffect( () => {
         if(loading) {
             try {
@@ -53,14 +55,21 @@ const GenerateCantor = ({ setNotification }) => {
     }, [ loading ])
 
     useEffect( () => {
+        console.log("form errors")
+        console.log(formErrors)
         if( !anyErrors('numSegments') && !anyErrors('toRemove') ){
             // no errors that would affect the numberline, display numberline
             setDisableCanvas(false)
             setCantor( new Cantor(setup.numSegments, setup.toRemove, 1) )
-        } else if(!anyErrors('numSegments') && !setupStr['toRemove']) {
+        } else if(!anyErrors('numSegments') && !setupStr['toRemove'].length) {
             // valid numSeg, blank toRemove can display a numberline with no gaps
             setDisableCanvas(false)
             setCantor( new Cantor(setup.numSegments, [], 1) )
+        } else if( !anyErrors('numSegments') && anyErrors('toRemove') ){
+            // valid numSeg, invalid toRemove should update numberline but grey it out
+            setDisableCanvas(true)
+            setCantor( new Cantor(setup.numSegments, [], 1) )
+            console.log('the problem isnt here')
         } else {
             //otherwise, there is nothing sensible to display so grey out the numberline
             setDisableCanvas(true)
@@ -89,7 +98,6 @@ const GenerateCantor = ({ setNotification }) => {
         if(anyErrors()){
             return
         }
-
         setLoading(true)
     }
 
@@ -152,8 +160,8 @@ const GenerateCantor = ({ setNotification }) => {
     )
 }
 
-GenerateCantor.propTypes = {
+CantorForm.propTypes = {
     setNotification:    PropTypes.func.isRequired,
 }
 
-export default GenerateCantor
+export default CantorForm

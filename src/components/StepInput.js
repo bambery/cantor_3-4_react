@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { IconContext } from 'react-icons'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import Modal from './Modal'
-import styles from './SetupStep.module.css'
+import styles from './StepInput.module.css'
 import { maxIter, maxSegments, minSegments } from '../shared/constants'
 
-const SetupStep = ({ stepConfig, setup, formErrors, showResults, validateFields }) => {
+const StepInput = ({ stepConfig, setup, formErrors, showResults, validateFields }) => {
 
     const [showModal, setShowModal] = useState(false)
     const { name, title, valueStr, handleChange, instructions, modal } = stepConfig
@@ -40,6 +40,18 @@ const SetupStep = ({ stepConfig, setup, formErrors, showResults, validateFields 
 
     const modalWatcher = new IntersectionObserver(modalCallback, modalWatcherOptions)
 
+    const handleEnter = (e) => {
+        const keycode = e.code || e.key
+        if(keycode === 'Enter'){
+            console.log('enter was hit')
+            e.preventDefault()
+            validateFields()
+        } else {
+            console.log('another key ws hit')
+        }
+
+    }
+
     // what is this for? FIXME
     let toDisplay = valueStr
 
@@ -62,7 +74,7 @@ const SetupStep = ({ stepConfig, setup, formErrors, showResults, validateFields 
                     name={name}
                     onChange={handleChange}
                     onBlur={validateFields}
-                    onKeyDown={validateFields}
+                    onKeyDown={handleEnter}
                     disabled={ name==='toRemove' && formErrors['numSegments'] }
                 />
             )
@@ -105,7 +117,7 @@ const SetupStep = ({ stepConfig, setup, formErrors, showResults, validateFields 
     )
 }
 
-SetupStep.propTypes = {
+StepInput.propTypes = {
     stepConfig:         PropTypes.object.isRequired,
     setup:              PropTypes.object.isRequired,
     formErrors:         PropTypes.object.isRequired,
@@ -113,4 +125,4 @@ SetupStep.propTypes = {
     validateFields:     PropTypes.func.isRequired
 }
 
-export default SetupStep
+export default StepInput

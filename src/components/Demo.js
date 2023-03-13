@@ -5,8 +5,12 @@ import ButtonSet from './ButtonSet'
 import IntervalCollection from '../models/interval_collection'
 import RiseLoader from 'react-spinners/RiseLoader'
 import { BsBorderStyle } from 'react-icons/bs'
+import { useState, useEffect } from 'react'
 
 const Demo = ({ cantorIter, isDemo, disableCanvas, loading, toRemove, disableSubmit, handleCantorizeClick }) => {
+
+    console.log('indemo')
+    console.log(cantorIter)
 
     const setupButtonConfig = {
         'cantorize': {

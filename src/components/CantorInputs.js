@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { minSegments, maxSegments, maxIter } from '../shared/constants'
-import SetupStep from './SetupStep'
+import StepInput from './StepInput'
 import styles from './CantorInputs.module.css'
 
 const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setFormErrors, displayResults }) => {
@@ -72,6 +72,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
     }
 
     const validateFields = () => {
+        console.log("**** inside validate *****")
         let newFormErrors = { ...formErrors }
         let newSetup = { ...setup }
 
@@ -144,9 +145,9 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         setFormErrors(newFormErrors)
     }
 
-    function renderSetupStep(step){
+    function renderStepInput(step){
         return(
-            <SetupStep
+            <StepInput
                 stepConfig={step}
                 setup={setup}
                 formErrors={formErrors}
@@ -159,7 +160,7 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
 
     return(
         <div className={styles.setupCantor}>
-            {stepConfig.map(s => renderSetupStep(s))}
+            {stepConfig.map(s => renderStepInput(s))}
         </div>
     )
 }
