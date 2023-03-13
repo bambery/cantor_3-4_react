@@ -1,14 +1,9 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import { AiOutlineDownload, AiOutlineCloseCircle, AiOutlineArrowUp } from 'react-icons/ai'
-import { BsBorderStyle } from 'react-icons/bs'
-
-import { maxIter, maxSegments, minSegments, stateDefaults } from './shared/constants'
+import { useState } from 'react'
 
 import Header from './components/Header'
 import ErrorNotification from './components/ErrorNotification'
 import CantorForm from './components/CantorForm'
-import ButtonSet from './components/ButtonSet'
 import Introduction from './components/Introduction'
 
 function App() {

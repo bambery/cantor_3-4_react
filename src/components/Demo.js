@@ -5,9 +5,9 @@ import ButtonSet from './ButtonSet'
 import IntervalCollection from '../models/interval_collection'
 import RiseLoader from 'react-spinners/RiseLoader'
 import { BsBorderStyle } from 'react-icons/bs'
-import { useState, useEffect } from 'react'
+import styles from './Demo.module.css'
 
-const Demo = ({ cantorIter, disableCanvas, loading, toRemove, disableSubmit, handleCantorizeClick }) => {
+function Demo({ cantorIter, disableCanvas, loading, toRemove, disableSubmit, handleCantorizeClick }) {
 
     const setupButtonConfig = {
         'cantorize': {
@@ -21,13 +21,13 @@ const Demo = ({ cantorIter, disableCanvas, loading, toRemove, disableSubmit, han
     }
 
     return (
-        <div className='spinner-parent'>
-            <div className={ `${ loading ? '' : 'hidden'} loading-spinner`} >
+        <div className={styles.spinnerParent}>
+            <div className={ `${loading ? '' : styles.hidden} loadingSpinner`} >
                 <RiseLoader
                     color={getComputedStyle(document.body).getPropertyValue('--color-dark-bluish')}
                 />
             </div>
-            <div className={`${(disableCanvas || loading) ? 'disable-item': ''}`}>
+            <div className={`${(disableCanvas || loading) ? 'disableItem': ''}`}>
                 <Numberline
                     intCol={cantorIter}
                     isDemo={true}

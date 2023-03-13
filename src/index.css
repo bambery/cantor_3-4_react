@@ -44,47 +44,6 @@ main > header, section {
 
 /****************/
 
-.numberline {
-    height: 200px;
-    position: relative;
-}
-
-.numberline canvas {
-    position: absolute;
-    z-index: -1;
-}
-
-.spinner-parent {
-    position: relative;
-}
-
-.loading-spinner {
-    position: absolute;
-    height: 200px;
-    width: 100%;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hidden {
-    position: absolute;
-    display: none;
-    width: 100%;
-}
-
-.disable-item {
-    z-index: auto;
-    background-color: grey;
-    opacity: 0.3;
-    height:100%;
-    width:100%;
-    background-repeat:no-repeat;
-}
-
-/****************/
-
 .horizontal-line {
     width: 30%;
     margin: 15px auto;

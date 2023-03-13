@@ -2,7 +2,7 @@
     width: 80%;
     display: flex;
     flex-direction: row;
-    margin: 10px auto;
+    margin: 4px auto 10px;
     column-gap: 20px;
     text-align: left;
 }

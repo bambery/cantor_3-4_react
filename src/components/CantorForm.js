@@ -6,12 +6,11 @@ import Report from '../models/report'
 import Cantor from '../models/cantor'
 import { stateDefaults } from '../shared/constants'
 
-import styles from './CantorForm.module.css'
 import CantorInputs from './CantorInputs'
 import Results from './Results'
 import Demo from './Demo'
 
-const CantorForm = ({ setNotification }) => {
+function CantorForm({ setNotification }) {
     const [setup, setSetup] = useState({
         'numSegments':  stateDefaults['numSegments'],
         'toRemove':     stateDefaults['toRemove'],
@@ -78,7 +77,7 @@ const CantorForm = ({ setNotification }) => {
         }
     }, [formErrors])
 
-    const anyErrors = (specific=null) => {
+    function anyErrors(specific = null) {
         if(specific){
             return !!formErrors[specific]
         } else {
@@ -86,7 +85,7 @@ const CantorForm = ({ setNotification }) => {
         }
     }
 
-    const handleCantorizeClick = (event) => {
+    function handleCantorizeClick(event) {
         event.preventDefault()
         setNotification()
         if(anyErrors()){
@@ -108,11 +107,11 @@ const CantorForm = ({ setNotification }) => {
         )
     }
 
-    const reopenForEdit = () => {
+    function reopenForEdit() {
         setDisplayResults(false)
     }
 
-    const handleDownload = () => {
+    function handleDownload() {
         const report = new Report(cantor)
         const blob = new Blob([report.output], { type: 'text/csv;charset=utf-8,' })
         const objUrl = URL.createObjectURL(blob)

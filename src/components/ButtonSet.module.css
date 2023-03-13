@@ -48,10 +48,8 @@
 }
 
 .icon {
-    height: 1.2em;
-    width: 1.2em;
     vertical-align: bottom;
     padding: 0 2px 0 0;
+    height: 1.2em;
+    width: 1.2em;
 }
-
-

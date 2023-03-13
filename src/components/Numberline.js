@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import IntervalCollection from '../models/interval_collection'
 import Fraction from '../models/fraction'
 import { getLabel } from '../shared/utils'
+import styles from './Numberline.module.css'
 
 const Numberline = ({ intCol, isDemo, toRemove }) => {
     //////////////////////////////////////////////
@@ -138,36 +139,36 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
     }
 
     const drawDemoTitle = (ctx) => {
-            config = canvasConfig['demoTitle']
-            const colorGold = getComputedStyle(document.body).getPropertyValue(config['fontColor'])
-            ctx.fillStyle = colorGold
-            ctx.font = `${config['fontSize']}px ${config['fontFamily']}`
-            ctx.textBaseline = config['textBaseline']
-            // draw the title
-            ctx.fillText(config['text'], config['leftMargin'], config['topMargin'])
-            // measure for drawing the legend
-            const textMeasure = ctx.measureText(config['text'])
-            // exploiting that my fontsize is very close to the height in px for this font
-            const titleMidpointY = Math.floor(config['fontSize']/2) + config['topMargin']
-            let titleLeftCursor = config['leftMargin'] + textMeasure.width
-            // draw legend
-            config = config['legend']
-            ctx.font = `${config['fontSize']}px ${canvasConfig['canvas']['fontFamily']}`
-            ctx.textBaseline = config['textBaseline']
-            // draw segment key
-            ctx.fillStyle = canvasConfig['label']['fillStyle']['segment']
-            titleLeftCursor += (config['leftMargin'] * 2)
-            ctx.fillRect(titleLeftCursor, Math.floor(titleMidpointY - config['boxSize']/2), config['boxSize'], config['boxSize'])
-            titleLeftCursor += config['boxSize'] + config['leftMargin']
-            ctx.fillStyle = colorGold
-            ctx.fillText(config['segText'], titleLeftCursor, titleMidpointY)
-            // draw gap key
-            ctx.fillStyle = canvasConfig['label']['fillStyle']['gap']
-            titleLeftCursor += ctx.measureText(config['segText']).width + (config['leftMargin'] * 2)
-            ctx.fillRect(titleLeftCursor, Math.floor(titleMidpointY - config['boxSize']/2), config['boxSize'], config['boxSize'])
-            titleLeftCursor += config['boxSize'] + config['leftMargin']
-            ctx.fillStyle = colorGold
-            ctx.fillText(config['gapText'], titleLeftCursor, titleMidpointY)
+        config = canvasConfig['demoTitle']
+        const colorGold = getComputedStyle(document.body).getPropertyValue(config['fontColor'])
+        ctx.fillStyle = colorGold
+        ctx.font = `${config['fontSize']}px ${config['fontFamily']}`
+        ctx.textBaseline = config['textBaseline']
+        // draw the title
+        ctx.fillText(config['text'], config['leftMargin'], config['topMargin'])
+        // measure for drawing the legend
+        const textMeasure = ctx.measureText(config['text'])
+        // exploiting that my fontsize is very close to the height in px for this font
+        const titleMidpointY = Math.floor(config['fontSize']/2) + config['topMargin']
+        let titleLeftCursor = config['leftMargin'] + textMeasure.width
+        // draw legend
+        config = config['legend']
+        ctx.font = `${config['fontSize']}px ${canvasConfig['canvas']['fontFamily']}`
+        ctx.textBaseline = config['textBaseline']
+        // draw segment key
+        ctx.fillStyle = canvasConfig['label']['fillStyle']['segment']
+        titleLeftCursor += (config['leftMargin'] * 2)
+        ctx.fillRect(titleLeftCursor, Math.floor(titleMidpointY - config['boxSize']/2), config['boxSize'], config['boxSize'])
+        titleLeftCursor += config['boxSize'] + config['leftMargin']
+        ctx.fillStyle = colorGold
+        ctx.fillText(config['segText'], titleLeftCursor, titleMidpointY)
+        // draw gap key
+        ctx.fillStyle = canvasConfig['label']['fillStyle']['gap']
+        titleLeftCursor += ctx.measureText(config['segText']).width + (config['leftMargin'] * 2)
+        ctx.fillRect(titleLeftCursor, Math.floor(titleMidpointY - config['boxSize']/2), config['boxSize'], config['boxSize'])
+        titleLeftCursor += config['boxSize'] + config['leftMargin']
+        ctx.fillStyle = colorGold
+        ctx.fillText(config['gapText'], titleLeftCursor, titleMidpointY)
     }
 
     const drawIntervals = (ctx, intColCommon, segmentLen, margin, midH) => {
@@ -285,7 +286,7 @@ const Numberline = ({ intCol, isDemo, toRemove }) => {
     }
 
     return(
-        <div className='numberline'>
+        <div className={styles.numberline}>
             <canvas
                 ref={canvasRef}
             />

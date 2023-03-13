@@ -14,11 +14,9 @@ const ButtonSet = ({ buttonSetConfig }) => {
                     type={config['type']}
                     disabled={config['disabled']}
                 >
-                    <span className={styles.icon}>
-                        {config['icon']
-                            ? React.createElement(config['icon'], { className: 'icon' })
-                            : ''}
-                    </span>
+                    {config['icon']
+                        ? React.createElement(config['icon'], { className: styles.icon })
+                        : ''}
                     {config['text']}
                 </button>
             )}
