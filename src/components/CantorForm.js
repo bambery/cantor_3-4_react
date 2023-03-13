@@ -36,9 +36,6 @@ const CantorForm = ({ setNotification }) => {
     const [disableSubmit, setDisableSubmit] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    console.log('cantor ####')
-    console.log(cantor)
-
     useEffect( () => {
         if(loading) {
             try {
@@ -55,8 +52,6 @@ const CantorForm = ({ setNotification }) => {
     }, [ loading ])
 
     useEffect( () => {
-        console.log("form errors")
-        console.log(formErrors)
         if( !anyErrors('numSegments') && !anyErrors('toRemove') ){
             // no errors that would affect the numberline, display numberline
             setDisableCanvas(false)
@@ -69,7 +64,6 @@ const CantorForm = ({ setNotification }) => {
             // valid numSeg, invalid toRemove should update numberline but grey it out
             setDisableCanvas(true)
             setCantor( new Cantor(setup.numSegments, [], 1) )
-            console.log('the problem isnt here')
         } else {
             //otherwise, there is nothing sensible to display so grey out the numberline
             setDisableCanvas(true)
@@ -105,7 +99,6 @@ const CantorForm = ({ setNotification }) => {
         return(
             <Demo
                 cantorIter = {cantor.iterations[0]}
-                isDemo={true}
                 loading={loading}
                 disableCanvas={disableCanvas}
                 disableSubmit={disableSubmit}

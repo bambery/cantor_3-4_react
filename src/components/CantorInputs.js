@@ -72,7 +72,6 @@ const CantorInputs = ({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
     }
 
     const validateFields = () => {
-        console.log("**** inside validate *****")
         let newFormErrors = { ...formErrors }
         let newSetup = { ...setup }
 

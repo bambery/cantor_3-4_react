@@ -7,10 +7,7 @@ import RiseLoader from 'react-spinners/RiseLoader'
 import { BsBorderStyle } from 'react-icons/bs'
 import { useState, useEffect } from 'react'
 
-const Demo = ({ cantorIter, isDemo, disableCanvas, loading, toRemove, disableSubmit, handleCantorizeClick }) => {
-
-    console.log('indemo')
-    console.log(cantorIter)
+const Demo = ({ cantorIter, disableCanvas, loading, toRemove, disableSubmit, handleCantorizeClick }) => {
 
     const setupButtonConfig = {
         'cantorize': {
@@ -33,8 +30,8 @@ const Demo = ({ cantorIter, isDemo, disableCanvas, loading, toRemove, disableSub
             <div className={`${(disableCanvas || loading) ? 'disable-item': ''}`}>
                 <Numberline
                     intCol={cantorIter}
-                    isDemo={isDemo}
-                    toRemove={toRemove}
+                    isDemo={true}
+                    toRemove={toRemove ? toRemove : []}
                 />
             </div>
             <ButtonSet buttonSetConfig={setupButtonConfig}/>
@@ -44,7 +41,6 @@ const Demo = ({ cantorIter, isDemo, disableCanvas, loading, toRemove, disableSub
 
 Demo.propTypes = {
     cantorIter:         PropTypes.instanceOf(IntervalCollection),
-    isDemo:             PropTypes.bool,
     disableCanvas:      PropTypes.bool,
     loading:            PropTypes.bool,
     toRemove:           PropTypes.array,

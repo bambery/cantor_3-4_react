@@ -5,7 +5,7 @@ import IntervalCollection from '../models/interval_collection'
 import Fraction from '../models/fraction'
 import { getLabel } from '../shared/utils'
 
-const Numberline = ({ intCol, isDemo, toRemove = [] }) => {
+const Numberline = ({ intCol, isDemo, toRemove }) => {
     //////////////////////////////////////////////
     // thank you to:
     // https://bucephalus.org/text/CanvasHandbook/CanvasHandbook.html
@@ -205,7 +205,7 @@ const Numberline = ({ intCol, isDemo, toRemove = [] }) => {
                 // label segments numerically from left to right
                 if(i < commonD){
                     const midpoint = margin + (segmentLen * i) + segmentLen/2
-                    const kind = toRemove.includes(i + 1)
+                    const kind = toRemove && toRemove.includes(i + 1)
                         ? 'gap'
                         : 'segment'
                     drawSegmentLabel(ctx, i+1, midpoint, midH, size, kind)
