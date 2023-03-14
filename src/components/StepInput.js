@@ -5,9 +5,8 @@ import { IconContext } from 'react-icons'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import Modal from './Modal'
 import styles from './StepInput.module.css'
-import { maxIter, maxSegments, minSegments } from '../shared/constants'
 
-function StepInput({ stepConfig, setup, formErrors, showResults, validateFields }) {
+function StepInput({ stepConfig, formErrors, showResults, validateFields }) {
 
     const [showModal, setShowModal] = useState(false)
     const { name, title, valueStr, handleChange, instructions, modal } = stepConfig
@@ -117,7 +116,6 @@ function StepInput({ stepConfig, setup, formErrors, showResults, validateFields 
 
 StepInput.propTypes = {
     stepConfig:         PropTypes.object.isRequired,
-    setup:              PropTypes.object.isRequired,
     formErrors:         PropTypes.object.isRequired,
     showResults:        PropTypes.bool.isRequired,
     validateFields:     PropTypes.func.isRequired

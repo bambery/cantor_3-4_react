@@ -97,7 +97,7 @@ function Introduction() {
         return(
             <div className={styles.textDescription}>
                 In Mathematics, the Cantor set is a <a href="https://en.wikipedia.org/wiki/Set_(mathematics)">set</a> of <a href="https://en.wikipedia.org/wiki/Point_(geometry)">points</a> lying on a single <a href="https://en.wikipedia.org/wiki/Line_segment">line segment</a> with some unusual properties.
-                <div className={styles.centeringDiv}>
+                <div className='centeringDiv'>
                     <div className={styles.howToCantorTitle}>
                         How to construct the Cantor Set:
                     </div>

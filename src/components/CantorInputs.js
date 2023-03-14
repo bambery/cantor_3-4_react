@@ -1,5 +1,4 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { minSegments, maxSegments, maxIter } from '../shared/constants'
 import StepInput from './StepInput'
@@ -148,7 +147,6 @@ function CantorInputs({ setup, setSetup, setupStr, setSetupStr, formErrors, setF
         return(
             <StepInput
                 stepConfig={step}
-                setup={setup}
                 formErrors={formErrors}
                 showResults={displayResults}
                 validateFields={validateFields}

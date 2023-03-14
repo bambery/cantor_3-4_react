@@ -39,6 +39,10 @@
     font-size: 0.8em;
 }
 
+.descriptionDiagrams {
+    width: 80%;
+}
+
 .twoCol {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
