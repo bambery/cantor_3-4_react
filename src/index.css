@@ -50,7 +50,7 @@ main > header, section {
     width: 85%;
 }
 
-@media (width <= 700px) {
+@media (width <= 750px) {
     .centeringDiv {
         width: 100%;
     }
