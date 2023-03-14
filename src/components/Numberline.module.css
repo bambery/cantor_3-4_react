@@ -1,0 +1,15 @@
+.numberline {
+    height: 200px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 96vw;
+    left: calc(-50vw + 52%);
+}
+
+.numberline canvas {
+    position: absolute;
+    z-index: -1;
+}
+

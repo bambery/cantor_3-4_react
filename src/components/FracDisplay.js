@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './FracDisplay.module.css'
 
-const FracDisplay = ({ frac }) => {
+function FracDisplay({ frac }) {
     return(
         <span className={styles.fracDisplay}>
             <span>{frac.num}</span>

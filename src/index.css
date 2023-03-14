@@ -1,9 +1,8 @@
-/****************/
 body {
-    margin: 1em auto 2em auto;
+    margin: 0;
     font-family: 'ABeeZee', sans-serif;
     font-size: 16px;
-    min-width: 640px;
+    min-width: 700px;
     --font-title: 'Montserrat Alternates'; /* 800, 600, 400 */
     --step-title-font-size: 1.5em;
     --color-error-text: #cb4818;
@@ -28,252 +27,31 @@ a {
     color: var(--color-link);
 }
 
+main {
+    margin: 1em 1em 2em 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 main > header, section {
     margin-bottom: 0.5rem;
-}
-
-/****************/
-.notification {
-    margin: 10px;
-    padding: 0 10px;
-    color: var(--color-error-text);
-    background: var(--color-error-bg);
-    border: 1px solid var(--color-error-text);
-    border-radius: 10px;
-}
-
-/****************/
-
-.button-set {
-    display: flex;
-    justify-content: center;
-    row-gap: 10px;
-}
-
-.button {
-    width: 250px;
-    padding: 5px;
-    color: white;
-    border-radius:10px;
-    outline: 0;
-    text-transform: capitalize;
-    margin: 10px 10px;
-    box-shadow: 0px 2px 2px lightgray;
-    border-bottom: 2px solid transparent;
-    transition: ease background-color 250ms;
-    font-size: 1.2em;
-    text-align: center;
-}
-
-.button-blue {
-    background-color: var(--color-bluish);
-}
-
-.button-blue:hover {
-    background-color: var(--color-dark-bluish);
-}
-
-.button-gray {
-    background-color: var(--color-gray);
-}
-
-.button-gray:hover {
-    background-color: var(--color-dark-gray);
-}
-
-.button:disabled {
-    background-color: gray;
-}
-
-.button-green {
-    background-color: var(--color-green)
-}
-
-.button-green:hover {
-    background-color: var(--color-dark-green)
-}
-
-.icon {
-    height: 1.2em;
-    width: 1.2em;
-    vertical-align: bottom;
-    padding: 0 2px 0 0;
-}
-
-/****************/
-
-.numberline {
-    height: 200px;
-    position: relative;
-}
-
-.numberline canvas {
-    position: absolute;
-    z-index: -1;
-}
-
-.spinner-parent {
-    position: relative;
-}
-
-.loading-spinner {
-    position: absolute;
-    height: 200px;
-    width: 100%;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hidden {
-    position: absolute;
-    display: none;
-    width: 100%;
-}
-
-.disable-item {
-    z-index: auto;
-    background-color: grey;
-    opacity: 0.3;
-    height:100%;
-    width:100%;
-    background-repeat:no-repeat;
-}
-
-/****************/
-
-.horizontal-line {
-    width: 30%;
-    margin: 15px auto;
-    height: 3px;
-    background-color: var(--color-dark-bluish);
-    border: 0 none;
-}
-
-.cantor-result-iteration {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-areas:
-        "nl nl nl nl nl nl nl nl"
-        ". iter iter iter iter iter iter ."
-        ". segments segments segments gaps gaps gaps .";
-    gap: 10px;
-    margin: 20px 0px;
-}
-
-.cantor-table-tot-len {
-    text-align:right;
-    font-weight: 600;
-    font-size: 1.2em;
-}
-
-.cantor-table-tot-len, .cantor-table-count {
-    text-transform: capitalize;
-    margin: 10px 0px;
-}
-
-.cantor-results-description {
-    text-align: center;
-    font-family: var(--font-title), sans-serif;
-    font-weight: 600;
-    font-size: 2.2em;
-    padding: 10px;
-}
-
-.cantor-result-numberline {
-    grid-area: nl;
-}
-
-/* https://tobiasahlin.com/blog/css-trick-animating-link-underlines/ */
-.cantor-result-iteration-name {
-    grid-area: iter;
-    font-size: 2em;
-    font-weight: 600;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
 }
 
 .caretToggle {
     color: var(--color-bluish);
 }
 
-.cantor-result-iteration-name:hover {
-    cursor: pointer;
-    color: var(--color-bluish);
-}
-
-.cantor-result-iteration-name::before {
-    content: "";
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--color-bluish);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.cantor-result-iteration-name:hover::before {
-    transform: scaleX(1);
-}
-
-.cantor-result-segments {
-    grid-area: segments;
-    justify-self: stretch;
-}
-
-.cantor-result-gaps {
-    grid-area: gaps;
-    justify-self: stretch;
-}
-
-.cantor-table {
-    width: 100%;
-}
-
-.cantor-table, .cantor-table-row {
-    border-collapse: collapse;
-    border-style: solid;
-    border-color: var(--color-bluish);
-    border-width: 2px;
-    text-align: center;
-    padding: 20px 0px;
-}
-
-.cantor-table-header {
-    background-color: var(--color-light-bluish);
-    text-transform: capitalize;
-}
-
-.cantor-table-count {
-    font-size: 1.5rem;
-    font-weight: 400;
-    text-transform: capitalize;
-}
-
-.interval-display {
+.centeringDiv {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    margin: auto;
+    width: 80%;
 }
 
-.parens-left {
-    border-style: solid;
-    border-color: black;
-    border-width: 2px 0 2px 2px;
-    width: 3px;
-    margin: 0 5px 0 0;
-}
-
-.parens-right {
-    border-style: solid;
-    border-color: black;
-    border-width: 2px 2px 2px 0;
-    width: 3px;
-    margin: 0 0 0 5px;
+@media (width <= 750px) {
+    .centeringDiv {
+        width: 100%;
+    }
 }

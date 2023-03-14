@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 import { IconContext } from 'react-icons'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import Modal from './Modal'
-import styles from './SetupStep.module.css'
+import styles from './StepInput.module.css'
 
-const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFocus, formErrors, showResults }) => {
+function StepInput({ stepConfig, formErrors, showResults, validateFields }) {
+
     const [showModal, setShowModal] = useState(false)
+    const { name, title, valueStr, handleChange, instructions, modal } = stepConfig
 
     useEffect(() => {
         const modalID = document.querySelector(`#modal-${name}`)
@@ -25,7 +27,7 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
     }
 
     // if modal runs offscreen on the right, shift it
-    const modalCallback = (entries) => {
+    function modalCallback(entries) {
         entries.forEach((entry) => {
             if (!entry.isIntersecting){
                 const diff = Math.ceil(entry.boundingClientRect.width - entry.intersectionRect.width)
@@ -37,33 +39,23 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
 
     const modalWatcher = new IntersectionObserver(modalCallback, modalWatcherOptions)
 
-    const stepText = {
-        'numSegments': {
-            'instructions': 'How many segments should the line be divided into?',
-            'modal': {
-                title: 'Number of Segments',
-                message: 'Enter a number between 3 and 30 and the line segment in the black box below will reflect your choice. Each segment will be numbered left to right.' }
-        },
-        'toRemove': {
-            'instructions': 'How many segments should the line be divided into?',
-            'modal': {
-                title: 'Segments to Remove',
-                message: 'Using the numbered line segment in the box below, select the number of the sections you wish to remove for each iteration of Cantor.' }
-        },
-        'numIter':  {
-            'instructions': 'How many iterations would you like to run?',
-            'modal': {
-                title: 'Number of Iterations',
-                message: 'This number chooses how many times to run the Cantor process on a line segment. If you select 3, the page will display 3 numberlines, each one removing more segments from the previous.' }
+    function handleEnter(e) {
+        const keycode = e.code || e.key
+        if(keycode === 'Enter'){
+            console.log('enter was hit')
+            e.preventDefault()
+            validateFields()
+        } else {
+            console.log('another key ws hit')
         }
+
     }
 
-    let toDisplay = inputState
-
-    const isResults = () => {
+    function isResults() {
         if(showResults){
+            let toDisplay = valueStr
             if(name === 'toRemove'){
-                toDisplay = inputState.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) ).sort( (a, b) => a-b).join(', ')
+                toDisplay = valueStr.split(',').map( item => parseInt(item) ).filter( num => Number.isFinite(num) ).sort( (a, b) => a-b).join(', ')
             }
             return(
                 <div className='step-result'>
@@ -73,12 +65,13 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
         } else {
             return(
                 <input
-                    value={inputState}
+                    value={valueStr}
                     autoComplete='false'
                     data-lpignore='true'
                     name={name}
-                    onChange={handleInputChange}
-                    onBlur={handleLoseFocus}
+                    onChange={handleChange}
+                    onBlur={validateFields}
+                    onKeyDown={handleEnter}
                     disabled={ name==='toRemove' && formErrors['numSegments'] }
                 />
             )
@@ -89,14 +82,14 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
         return(
             <div className={styles.titleFlex}>
                 <div className={styles.title}>
-                    {stepName}
+                    {title}
                 </div>
                 <IconContext.Provider value={{ className: styles.titleHelpIcon }}>
                     <div>
                         <span onClick={ () => setShowModal(true)}>
                             <AiOutlineQuestionCircle />
                         </span>
-                        { showModal && <Modal setShowModal={setShowModal} name={name} instructions={stepText[name].modal}/> }
+                        { showModal && <Modal setShowModal={setShowModal} name={name} instructions={modal}/> }
                     </div>
                 </IconContext.Provider>
             </div>
@@ -108,7 +101,7 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
             {stepHeader()}
             <div className={styles.instructionBox}>
                 <div className='instruction'>
-                    { stepText[name].instructions }
+                    { instructions }
                 </div>
                 <div className={styles.stepInput}>
                     {isResults()}
@@ -121,19 +114,11 @@ const SetupStep = ({ stepName, name, inputState, handleInputChange, handleLoseFo
     )
 }
 
-SetupStep.propTypes = {
-    stepName: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    inputState: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
-    handleInputChange: PropTypes.func.isRequired,
-    handleLoseFocus: PropTypes.func.isRequired,
-    formErrors: PropTypes.object.isRequired,
-    showResults: PropTypes.bool.isRequired
+StepInput.propTypes = {
+    stepConfig:         PropTypes.object.isRequired,
+    formErrors:         PropTypes.object.isRequired,
+    showResults:        PropTypes.bool.isRequired,
+    validateFields:     PropTypes.func.isRequired
 }
 
-export default SetupStep
-
-//<AiOutlineQuestionCircle value={{ size:getComputedStyle(document.body).getPropertyValue('--step-title-font-size') }}/>
+export default StepInput

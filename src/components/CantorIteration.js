@@ -5,12 +5,13 @@ import IntervalCollection from '../models/interval_collection'
 import Numberline from './Numberline'
 import CantorTable from './CantorTable'
 import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai'
+import styles from './CantorIteration.module.css'
 
-const CantorIteration = ({ intCol, index }) => {
+function CantorIteration({ intCol, index }) {
     const toggleDefault = index === 0 ? true : false
     const [showDetails, setShowDetails] = useState(toggleDefault)
 
-    const toggleDetails = () => {
+    function toggleDetails() {
         setShowDetails(!showDetails)
     }
 
@@ -27,24 +28,27 @@ const CantorIteration = ({ intCol, index }) => {
 
     const cantorTable = (kind) => {
         return (
-            kind === 'seg'
-                ? <CantorTable intervalArr={intCol.intervals} kind='segment' totLen={intCol.len}/>
-                : <CantorTable intervalArr={intCol.gaps} kind='gap' totLen={intCol.gapLen} />
+            <div className={styles[`cantorResult${kind}s`]}>
+                { kind === 'Segment'
+                    ? <CantorTable intervalArr={intCol.intervals} kind='segment' totLen={intCol.len}/>
+                    : <CantorTable intervalArr={intCol.gaps} kind='gap' totLen={intCol.gapLen} />
+                }
+            </div>
         )
     }
 
 
     return(
-        <div className='cantor-result-iteration'>
-            <div className='cantor-result-numberline'>
+        <div className={styles.cantorResultIteration}>
+            <div className={styles.cantorResultNumberline}>
                 <Numberline intCol={intCol} isDemo={false}/>
             </div>
-            <div className='cantor-result-iteration-name' onClick={toggleDetails}>
+            <div className={styles.cantorResultIterationName} onClick={toggleDetails}>
                 {displayToggle()}
                 Iteration {index + 1}
             </div>
-            {showDetails && cantorTable('seg')}
-            {showDetails && cantorTable('gap')}
+            {showDetails && cantorTable('Segment')}
+            {showDetails && cantorTable('Gap')}
         </div>
     )
 }

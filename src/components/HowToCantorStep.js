@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useRef, useEffect } from 'react'
 import styles from './HowToCantorStep.module.css'
 
-const HowToCantorStep = ({ stepInfo, stepNum }) => {
+function HowToCantorStep({ stepInfo, stepNum }) {
     const canvasRef = useRef()
 
     const stepDraw = [

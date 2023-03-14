@@ -1,24 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-//import { AiOutlineDownload, AiOutlineCloseCircle } from 'react-icons/ai'
+import styles from './ButtonSet.module.css'
 
-const ButtonSet = ({ buttonSetConfig }) => {
+function ButtonSet({ buttonSetConfig }) {
 
     return(
-        <div className='button-set'>
+        <div className={styles.buttonSet}>
             { Object.values(buttonSetConfig).map((config, i) =>
                 <button
                     key={i}
-                    className={`button ${config['color']}`}
+                    className={`${styles.button} ${styles[ config['color'] ]}`}
                     onClick={config['onClick']}
                     type={config['type']}
                     disabled={config['disabled']}
                 >
-                    <span className='icon'>
-                        {config['icon']
-                            ? React.createElement(config['icon'], { className: 'icon' })
-                            : ''}
-                    </span>
+                    {config['icon']
+                        ? React.createElement(config['icon'], { className: styles.icon })
+                        : ''}
                     {config['text']}
                 </button>
             )}

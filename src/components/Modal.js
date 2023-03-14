@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { RiCloseLine } from 'react-icons/ri'
 import styles from './Modal.module.css'
 
-const Modal = ({ setShowModal, name, instructions }) => {
+function Modal({ setShowModal, name, instructions }) {
     return (
         <>
             <div className={styles.modalPlacement}>

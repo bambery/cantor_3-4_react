@@ -1,0 +1,7 @@
+.setupCantor {
+    display: flex;
+    flex-direction: row;
+    margin: 4px auto 10px;
+    column-gap: 20px;
+    text-align: left;
+}
