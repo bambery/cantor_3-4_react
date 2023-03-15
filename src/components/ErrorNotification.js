@@ -5,7 +5,7 @@ import styles from './ErrorNotification.module.css'
 function ErrorNotification({ error }) {
     return (
         <div role="alert" className={styles.notification}>
-            <pre>{error.message}</pre>
+            {error.message}
         </div>
     )
 }
